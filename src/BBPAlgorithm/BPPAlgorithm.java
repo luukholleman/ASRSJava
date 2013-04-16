@@ -1,0 +1,5 @@
+package BBPAlgorithm;
+
+public interface BPPAlgorithm {
+	public abstract String getName();
+}
