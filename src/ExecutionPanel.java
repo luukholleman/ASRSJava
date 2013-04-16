@@ -8,13 +8,14 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
-import BBPAlgorithm.AlmostWorstFit;
-import BBPAlgorithm.BPPAlgorithm;
-import BBPAlgorithm.BestFit;
-import BBPAlgorithm.FirstFit;
-import BBPAlgorithm.FullBin;
-import BBPAlgorithm.NextFit;
-import BBPAlgorithm.WorstFit;
+import bppAlgorithm.AlmostWorstFit;
+import bppAlgorithm.BPPAlgorithm;
+import bppAlgorithm.BestFit;
+import bppAlgorithm.FirstFit;
+import bppAlgorithm.FullBin;
+import bppAlgorithm.NextFit;
+import bppAlgorithm.WorstFit;
+
 
 
 public class ExecutionPanel extends JPanel {
