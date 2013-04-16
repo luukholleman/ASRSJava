@@ -6,19 +6,26 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
-import bppAlgorithm.AlmostWorstFit;
+
 import bppAlgorithm.BPPAlgorithm;
+import bppAlgorithm.AlmostWorstFit;
 import bppAlgorithm.BestFit;
 import bppAlgorithm.FirstFit;
 import bppAlgorithm.FullBin;
 import bppAlgorithm.NextFit;
 import bppAlgorithm.WorstFit;
 
+import tspAlgorithm.BruteForce;
+import tspAlgorithm.Greedy;
+import tspAlgorithm.TSPAlgorithm;
+import tspAlgorithm.TwoOpt;
+
 
 
 public class ExecutionPanel extends JPanel {
 	// bpp algoritmes
 	private ArrayList<BPPAlgorithm> bppAlgorithms = new ArrayList<BPPAlgorithm>();
+	private ArrayList<TSPAlgorithm> tspAlgorithms = new ArrayList<TSPAlgorithm>();
 	
 	public ExecutionPanel()
 	{
@@ -33,6 +40,10 @@ public class ExecutionPanel extends JPanel {
 		bppAlgorithms.add(new WorstFit());
 		bppAlgorithms.add(new AlmostWorstFit());
 		
+		tspAlgorithms.add(new BruteForce());
+		tspAlgorithms.add(new Greedy());
+		tspAlgorithms.add(new TwoOpt());
+		
 		buildUI();
 	}
 	
@@ -44,5 +55,12 @@ public class ExecutionPanel extends JPanel {
 		// loop de bpp algoritmes en plaats de namen in radiobuttons
 		for(BPPAlgorithm bppAlgorithm : bppAlgorithms)
 			add(new JRadioButton(bppAlgorithm.getName()));
+		
+		// hoofdlabel
+		add(new JLabel("TSP algoritme"));
+		
+		// loop de tsp algoritmes en plaats de namen in radiobuttons
+		for(TSPAlgorithm tspAlgorithm : tspAlgorithms)
+			add(new JRadioButton(tspAlgorithm.getName()));
 	}
 }
