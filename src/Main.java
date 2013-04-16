@@ -67,25 +67,28 @@ public class Main extends JFrame {
 		 */
 		setLayout(new BorderLayout());
 		
-		
-		leftPanel.setPreferredSize(new Dimension(500, 900));
-
-		leftPanel.add(xmlPanel);
-		
-		leftPanel.add(executionPanel);
-		
-		leftPanel.add(customerPanel);
-		
-		rightPanel.add(orderPanel);
-		
-		rightPanel.getWidth();
-		
-		add(leftPanel, BorderLayout.WEST);
-		
-		add(rightPanel, BorderLayout.CENTER);
+		buildUI();
 		
 		// als laatste, maak hem zichtbaar
 		setVisible(true);
+	}
+	
+	private void buildUI()
+	{
+		/** 
+		 * zet de leftpanel op een breedte
+		 * de rechter heeft dit niet nodig omdat daar maar 1 panel in zit
+		 */
+		leftPanel.setPreferredSize(new Dimension(500, 900));
+
+		leftPanel.add(xmlPanel);
+		leftPanel.add(executionPanel);
+		leftPanel.add(customerPanel);
+		rightPanel.add(orderPanel);
+	
+		// plaats de panels
+		add(leftPanel, BorderLayout.WEST);
+		add(rightPanel, BorderLayout.CENTER);
 	}
 
 }
