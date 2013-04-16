@@ -2,13 +2,13 @@
  * @author Luuk Holleman
  * @date 16 april
  */
-package BBPAlgorithm;
+package bppAlgorithm;
 
-public class BestFit implements BPPAlgorithm {
+public class WorstFit implements BPPAlgorithm {
 
 	@Override
 	public String getName() {
-		return "Best Fit";
+		return "Worst Fit";
 	}
 
 }

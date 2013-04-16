@@ -2,14 +2,13 @@
  * @author Luuk Holleman
  * @date 16 april
  */
-package BBPAlgorithm;
+package bppAlgorithm;
 
-
-public class FirstFit implements BPPAlgorithm {
+public class FullBin implements BPPAlgorithm {
 
 	@Override
 	public String getName() {
-		return "First Fit";
+		return "Full Bin";
 	}
 
 }

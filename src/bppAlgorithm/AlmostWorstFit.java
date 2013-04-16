@@ -2,9 +2,9 @@
  * @author Luuk Holleman
  * @date 16 april
  */
-package BBPAlgorithm;
+package bppAlgorithm;
 
-public class AlmostWorstFir implements BPPAlgorithm {
+public class AlmostWorstFit implements BPPAlgorithm {
 
 	@Override
 	public String getName() {

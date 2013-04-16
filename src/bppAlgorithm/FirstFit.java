@@ -2,13 +2,14 @@
  * @author Luuk Holleman
  * @date 16 april
  */
-package BBPAlgorithm;
+package bppAlgorithm;
 
-public class NextFit implements BPPAlgorithm {
+
+public class FirstFit implements BPPAlgorithm {
 
 	@Override
 	public String getName() {
-		return "Next Fit";
+		return "First Fit";
 	}
 
 }
