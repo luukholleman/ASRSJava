@@ -5,7 +5,7 @@
 package bppAlgorithm;
 
 public class WorstFit implements BPPAlgorithm {
-	public final String name = "Worst Fit";
+	public static String name = "Worst Fit";
 
 	@Override
 	public String getName() {
