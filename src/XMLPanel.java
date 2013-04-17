@@ -10,6 +10,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.filechooser.FileFilter;
 
 import listener.XMLUploadedListener;
 
@@ -68,24 +69,38 @@ public class XMLPanel extends JPanel implements ActionListener {
 		{
 			JFileChooser fc = new JFileChooser();
 			
+			fc.setAcceptAllFileFilterUsed(false);
+			
+			// voeg een xml file filter toe
+			fc.setFileFilter(new FileFilter() {
+				@Override
+				public String getDescription() {
+					return "XML Bestanden (.xml)";
+				}
+				
+				@Override
+				public boolean accept(File f) {
+					// als het een map is returnen we gelijk true
+					if(f.isDirectory()) return true;
+
+					// haalt de extentie op
+		            String extension = f.getName().substring(f.getName().lastIndexOf(".") + 1, f.getName().length());
+		            
+		            // als het een xml file is triggeren we het event
+		            if(extension.equals("xml")) return true;
+		            // niet true, return false
+		            return false;
+				}
+			});
+			
 			// is de ok knop ingedrukt? of dubbelklik op een file
 	        if (fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
 	        	// file opalen
 	            File file = fc.getSelectedFile();
 	            
-	            // extentie controleren
-	            String filename = file.getName();
-	            String extension = filename.substring(filename.lastIndexOf(".") + 1, filename.length());
-	            
-	            // als het een xml file is triggeren we het event
-	            if(extension.equals("xml"))
-	            {
-	            	xmlUploaded(file.getAbsolutePath());
-	            	
-	            	return;
-	            }
-	            // geen xml file, laat een melding zien
-	            JOptionPane.showMessageDialog(null, "Geen xml bestand");
+            	xmlUploaded(file.getAbsolutePath());
+            	
+            	fileLbl.setText("Gekozen bestand: " + file.getName());
 	        }
 		}
 		// TODO Auto-generated method stub
