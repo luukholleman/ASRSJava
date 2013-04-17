@@ -2,10 +2,15 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 
+import tspAlgorithm.TSPAlgorithm;
+import bppAlgorithm.BPPAlgorithm;
+
 import listener.XMLUploadedListener;
+import listener.ExecuteButtonPressedListener;;
 
 
 /**
@@ -16,7 +21,7 @@ import listener.XMLUploadedListener;
  * @author Luuk
  *
  */
-public class Main extends JFrame implements XMLUploadedListener {
+public class Main extends JFrame implements XMLUploadedListener, ExecuteButtonPressedListener {
 	/**
 	 * Panels voor elke fieldset
 	 */
@@ -93,11 +98,25 @@ public class Main extends JFrame implements XMLUploadedListener {
 	{
 		// voeg listeners toe
 		xmlPanel.addXMLUploadListener(this);
+		executionPanel.addExecutionListener(this);
 	}
 
 	@Override
 	public void xmlUploaded(String xmlFileLocation) {
 		System.out.println(xmlFileLocation);
+	}
+
+	@Override
+	public void simulatePressed(BPPAlgorithm bpp, TSPAlgorithm tsp) {
+		JOptionPane.showMessageDialog(this, "Simulatie wordt gestart met bpp " + bpp.getName() + " en tsp " + tsp.getName());
+	}
+
+	@Override
+	public void executePressed(BPPAlgorithm bpp, TSPAlgorithm tsp,
+			String com1, String com2) {
+		throw new UnsupportedOperationException();
+		// TODO Auto-generated method stub
+		
 	}
 
 }

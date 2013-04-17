@@ -3,13 +3,21 @@
  * @date 15 april
  */
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Enumeration;
 
+import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+
+import listener.ExecuteButtonPressedListener;
+import listener.XMLUploadedListener;
 
 import tspAlgorithm.BruteForce;
 import tspAlgorithm.Greedy;
@@ -22,35 +30,83 @@ import bppAlgorithm.FirstFit;
 import bppAlgorithm.NextFit;
 import bppAlgorithm.WorstFit;
 
-public class ExecutionPanel extends JPanel {
+public class ExecutionPanel extends JPanel implements ActionListener {
 	// bpp algoritmes
 	private ArrayList<BPPAlgorithm> bppAlgorithms = new ArrayList<BPPAlgorithm>();
 	private ArrayList<TSPAlgorithm> tspAlgorithms = new ArrayList<TSPAlgorithm>();
-	
+
+	// de listeners voor de simulatie en uitvoeren knoppen
+	private ArrayList<ExecuteButtonPressedListener> executeButtonPressedListeners = new ArrayList<ExecuteButtonPressedListener>();
+
+	// de 2 knoppen
+	private JButton simulateBtn = new JButton("Simulatie");
+	private JButton executeBtn = new JButton("Uitvoeren");
+
+	// bpp en tsp algoritme button group, zorgt ervoor dat radio button auto
+	// worden uitgezet
+	private ButtonGroup bppBtnGrp = new ButtonGroup();
+	private ButtonGroup tspBtnGrp = new ButtonGroup();
+
+	// de gekozen algoritmes, wordt gevuld na uitvoering van getXAlgorithmFromRadioButtons
+	private BPPAlgorithm bppAlgorithm;
+	private TSPAlgorithm tspAlgorithm;
+
 	/**
 	 * ctor
 	 * 
 	 * @author Luuk
 	 */
-	public ExecutionPanel()
-	{
+	public ExecutionPanel() {
 		setBorder(BorderFactory.createTitledBorder("Uitvoeren"));
-		
+
 		setPreferredSize(new Dimension(500, 200));
-		
+
 		bppAlgorithms.add(new FirstFit());
 		bppAlgorithms.add(new BestFit());
 		bppAlgorithms.add(new NextFit());
 		bppAlgorithms.add(new WorstFit());
 		bppAlgorithms.add(new AlmostWorstFit());
-		
+
 		tspAlgorithms.add(new BruteForce());
 		tspAlgorithms.add(new Greedy());
 		tspAlgorithms.add(new TwoOpt());
-		
+
 		buildUI();
 	}
-	
+
+	/**
+	 * Voegt een listener toe, wordt getriggerd als er een nieuw bestand wordt
+	 * geupload
+	 * 
+	 * @param xul
+	 */
+	public void addExecutionListener(ExecuteButtonPressedListener el) {
+		executeButtonPressedListeners.add(el);
+	}
+
+	/**
+	 * Triggert het simulate button press event
+	 * 
+	 * @param xmlFileLocation
+	 */
+	private void simulateButtonPressed(BPPAlgorithm bpp, TSPAlgorithm tsp) {
+		// trigger elk event
+		for (ExecuteButtonPressedListener ebpl : executeButtonPressedListeners)
+			ebpl.simulatePressed(bpp, tsp);
+	}
+
+	/**
+	 * Triggert het button press uploaded event
+	 * 
+	 * @param xmlFileLocation
+	 */
+	private void executeButtonPressed(BPPAlgorithm bpp, TSPAlgorithm tsp,
+			String com1, String com2) {
+		// trigger elk event
+		for (ExecuteButtonPressedListener ebpl : executeButtonPressedListeners)
+			ebpl.executePressed(bpp, tsp, com1, com2);
+	}
+
 	/**
 	 * Bouwt de ui
 	 * 
@@ -58,32 +114,110 @@ public class ExecutionPanel extends JPanel {
 	 * 
 	 * @return void
 	 */
-	private void buildUI()
-	{
+	private void buildUI() {
 		// hoofdlabel
 		add(new JLabel("BPP algoritme"));
-		// bpp algoritme button group, zorgt ervoor dat radio button auto worden uitgezet
-		ButtonGroup bppBtnGrp = new ButtonGroup();
-		
+
 		// loop de bpp algoritmes en plaats de namen in radiobuttons
-		for(BPPAlgorithm bppAlgorithm : bppAlgorithms)
-		{
+		for (BPPAlgorithm bppAlgorithm : bppAlgorithms) {
 			JRadioButton rdBtn = new JRadioButton(bppAlgorithm.getName());
 			bppBtnGrp.add(rdBtn);
 			add(rdBtn);
 		}
-		
+
 		// hoofdlabel
 		add(new JLabel("TSP algoritme"));
-		// tsp algoritme button group, zorgt ervoor dat radio button auto worden uitgezet
-		ButtonGroup tspBtnGrp = new ButtonGroup();
-		
+
 		// loop de tsp algoritmes en plaats de namen in radiobuttons
-		for(TSPAlgorithm tspAlgorithm : tspAlgorithms)
-		{
+		for (TSPAlgorithm tspAlgorithm : tspAlgorithms) {
 			JRadioButton rdBtn = new JRadioButton(tspAlgorithm.getName());
 			tspBtnGrp.add(rdBtn);
 			add(rdBtn);
 		}
+
+		add(simulateBtn);
+		add(executeBtn);
+
+		simulateBtn.addActionListener(this);
+		executeBtn.addActionListener(this);
+	}
+
+	/**
+	 * Action performed
+	 * 
+	 * @author Luuk
+	 */
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource() == simulateBtn || e.getSource() == executeBtn) {
+			getBPPAlgorithmFromRadioButtons();
+			getTSPAlgorithmFromRadioButtons();
+		}
+		
+		if(e.getSource() == simulateBtn)
+			simulateButtonPressed(bppAlgorithm, tspAlgorithm);
+		
+		if(e.getSource() == executeBtn) {
+			executeButtonPressed(bppAlgorithm, tspAlgorithm, "com 1", "com 2");
+		}		
+	}
+
+	/**
+	 * Bepaal het gekozen tsp algoritme op basis van de radio buttons
+	 * 
+	 * @author Luuk
+	 * 
+	 * @return bppAlgorithm
+	 */
+	private BPPAlgorithm getBPPAlgorithmFromRadioButtons() {
+		/**
+		 * we moeten de buttongroups aflopen op de geselecteerde het
+		 * geselecteerde object wordt in bbpAlgorithm geplaatst
+		 */
+		Enumeration<AbstractButton> allRadioButtons = bppBtnGrp.getElements();
+
+		// loop de elementen
+		while (allRadioButtons.hasMoreElements()) {
+			// cast het element naar een radio button
+			JRadioButton temp = (JRadioButton) allRadioButtons.nextElement();
+
+			// is hij gekozen? loop de algoritmes en zoek op een naam
+			// overeenkomst, gevonden? zet dit als het gekozen object
+			if (temp.isSelected())
+				for (BPPAlgorithm bppAlgorithm : bppAlgorithms)
+					if (bppAlgorithm.getName().equals(temp.getText()))
+						this.bppAlgorithm = bppAlgorithm;
+		}
+
+		return bppAlgorithm;
+	}
+
+	/**
+	 * Bepaal het gekozen tsp algoritme op basis van de radio buttons
+	 * 
+	 * @author Luuk
+	 * 
+	 * @return TSPAlgorithm
+	 */
+	private TSPAlgorithm getTSPAlgorithmFromRadioButtons() {
+		/**
+		 * we moeten de buttongroups aflopen op de geselecteerde het
+		 * geselecteerde object wordt in bbpAlgorithm geplaatst
+		 */
+		Enumeration<AbstractButton> allRadioButtons = tspBtnGrp.getElements();
+
+		// loop de elementen
+		while (allRadioButtons.hasMoreElements()) {
+			// cast het element naar een radio button
+			JRadioButton temp = (JRadioButton) allRadioButtons.nextElement();
+
+			// is hij gekozen? loop de algoritmes en zoek op een naam
+			// overeenkomst, gevonden? zet dit als het gekozen object
+			if (temp.isSelected())
+				for (TSPAlgorithm tspAlgorithm : tspAlgorithms)
+					if (tspAlgorithm.getName().equals(temp.getText()))
+						this.tspAlgorithm = tspAlgorithm;
+		}
+
+		return tspAlgorithm;
 	}
 }
