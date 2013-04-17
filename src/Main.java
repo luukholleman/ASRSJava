@@ -20,10 +20,10 @@ public class Main extends JFrame implements XMLUploadedListener {
 	/**
 	 * Panels voor elke fieldset
 	 */
-	private JPanel xmlPanel = new XMLPanel();
-	private JPanel executionPanel = new ExecutionPanel();
-	private JPanel customerPanel = new CustomerPanel();
-	private JPanel orderPanel = new OrderPanel();
+	private XMLPanel xmlPanel = new XMLPanel();
+	private ExecutionPanel executionPanel = new ExecutionPanel();
+	private CustomerPanel customerPanel = new CustomerPanel();
+	private OrderPanel orderPanel = new OrderPanel();
 
 	/**
 	 * @param args
@@ -59,6 +59,7 @@ public class Main extends JFrame implements XMLUploadedListener {
 		setLayout(new BorderLayout());
 		
 		buildUI();
+		bindListeners();
 		
 		// als laatste, maak hem zichtbaar
 		setVisible(true);
@@ -86,6 +87,12 @@ public class Main extends JFrame implements XMLUploadedListener {
 		// plaats de panels
 		add(leftPanel, BorderLayout.WEST);
 		add(rightPanel, BorderLayout.CENTER);
+	}
+	
+	private void bindListeners()
+	{
+		// voeg listeners toe
+		xmlPanel.addXMLUploadListener(this);
 	}
 
 	@Override
