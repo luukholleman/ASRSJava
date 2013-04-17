@@ -5,6 +5,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 
+import listener.XMLUploadedListener;
+
+
 /**
  * 
  */
@@ -13,7 +16,7 @@ import javax.swing.UIManager;
  * @author Luuk
  *
  */
-public class Main extends JFrame {
+public class Main extends JFrame implements XMLUploadedListener {
 	/**
 	 * Panels voor elke fieldset
 	 */
@@ -21,13 +24,6 @@ public class Main extends JFrame {
 	private JPanel executionPanel = new ExecutionPanel();
 	private JPanel customerPanel = new CustomerPanel();
 	private JPanel orderPanel = new OrderPanel();
-	
-	/**
-	 * de linker en rechterkant van het scherm
-	 * zie ctor voor gebruik
-	 */
-	JPanel leftPanel = new JPanel();
-	JPanel rightPanel = new JPanel();
 
 	/**
 	 * @param args
@@ -70,6 +66,12 @@ public class Main extends JFrame {
 	
 	private void buildUI()
 	{
+		/**
+		 * Linker en rechterkant van het scherm
+		 */
+		JPanel leftPanel = new JPanel();
+		JPanel rightPanel = new JPanel();
+		
 		/** 
 		 * zet de leftpanel op een breedte
 		 * de rechter heeft dit niet nodig omdat daar maar 1 panel in zit
@@ -84,6 +86,11 @@ public class Main extends JFrame {
 		// plaats de panels
 		add(leftPanel, BorderLayout.WEST);
 		add(rightPanel, BorderLayout.CENTER);
+	}
+
+	@Override
+	public void xmlUploaded(Void xmlFileLocation) {
+		System.out.println(xmlFileLocation);
 	}
 
 }
