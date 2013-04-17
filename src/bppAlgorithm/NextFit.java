@@ -5,7 +5,7 @@
 package bppAlgorithm;
 
 public class NextFit implements BPPAlgorithm {
-	public final String name = "Next Fit";
+	public static String name = "Next Fit";
 
 	@Override
 	public String getName() {
