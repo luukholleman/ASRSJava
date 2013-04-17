@@ -1,15 +1,20 @@
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import listener.XMLUploadedListener;
 
 
-public class XMLPanel extends JPanel {
+public class XMLPanel extends JPanel implements ActionListener {
 	private JButton xmlBtn = new JButton("XML Inlezen");
 	private JLabel fileLbl = new JLabel("Geen bestand gekozen");
 
@@ -52,5 +57,38 @@ public class XMLPanel extends JPanel {
 		xmlBtn.setPreferredSize(new Dimension(480, 100));
 		add(xmlBtn);
 		add(fileLbl);
+		
+		xmlBtn.addActionListener(this);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// laat een file choose melding zien
+		if(e.getSource() == xmlBtn)
+		{
+			JFileChooser fc = new JFileChooser();
+			
+			// is de ok knop ingedrukt? of dubbelklik op een file
+	        if (fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+	        	// file opalen
+	            File file = fc.getSelectedFile();
+	            
+	            // extentie controleren
+	            String filename = file.getName();
+	            String extension = filename.substring(filename.lastIndexOf(".") + 1, filename.length());
+	            
+	            // als het een xml file is triggeren we het event
+	            if(extension.equals("xml"))
+	            {
+	            	xmlUploaded(file.getAbsolutePath());
+	            	
+	            	return;
+	            }
+	            // geen xml file, laat een melding zien
+	            JOptionPane.showMessageDialog(null, "Geen xml bestand");
+	        }
+		}
+		// TODO Auto-generated method stub
+		
 	}
 }
