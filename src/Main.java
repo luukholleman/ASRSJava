@@ -89,7 +89,7 @@ public class Main extends JFrame implements XMLUploadedListener {
 	}
 
 	@Override
-	public void xmlUploaded(Void xmlFileLocation) {
+	public void xmlUploaded(String xmlFileLocation) {
 		System.out.println(xmlFileLocation);
 	}
 
