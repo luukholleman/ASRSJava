@@ -2,6 +2,7 @@
  * @author Luuk
  * @date 15 april
  */
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,8 +11,10 @@ import java.util.Enumeration;
 
 import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -59,7 +62,7 @@ public class ExecutionPanel extends JPanel implements ActionListener {
 	public ExecutionPanel() {
 		setBorder(BorderFactory.createTitledBorder("Uitvoeren"));
 
-		setPreferredSize(new Dimension(500, 200));
+		setPreferredSize(new Dimension(500, 220));
 
 		bppAlgorithms.add(new FirstFit());
 		bppAlgorithms.add(new BestFit());
@@ -115,31 +118,60 @@ public class ExecutionPanel extends JPanel implements ActionListener {
 	 * @return void
 	 */
 	private void buildUI() {
+		// 3 panels, 1 voor bpp, tsp en coms
+		JPanel bppPanel = new JPanel();
+		JPanel tspPanel = new JPanel();
+		JPanel comPanel = new JPanel();
+
+		bppPanel.setPreferredSize(new Dimension(150, 130));
+		tspPanel.setPreferredSize(new Dimension(150, 130));
+		comPanel.setPreferredSize(new Dimension(170, 130));
+
+		// de boxlayout laat de elementen stapelen
+		bppPanel.setLayout(new BoxLayout(bppPanel, BoxLayout.PAGE_AXIS));
+		tspPanel.setLayout(new BoxLayout(tspPanel, BoxLayout.PAGE_AXIS));
+				
 		// hoofdlabel
-		add(new JLabel("BPP algoritme"));
+		bppPanel.add(new JLabel("BPP algoritme"));
 
 		// loop de bpp algoritmes en plaats de namen in radiobuttons
 		for (BPPAlgorithm bppAlgorithm : bppAlgorithms) {
 			JRadioButton rdBtn = new JRadioButton(bppAlgorithm.getName());
 			bppBtnGrp.add(rdBtn);
-			add(rdBtn);
+			bppPanel.add(rdBtn);
 		}
 
 		// hoofdlabel
-		add(new JLabel("TSP algoritme"));
+		tspPanel.add(new JLabel("TSP algoritme"));
 
 		// loop de tsp algoritmes en plaats de namen in radiobuttons
 		for (TSPAlgorithm tspAlgorithm : tspAlgorithms) {
 			JRadioButton rdBtn = new JRadioButton(tspAlgorithm.getName());
 			tspBtnGrp.add(rdBtn);
-			add(rdBtn);
+			tspPanel.add(rdBtn);
 		}
+		
+		String[] petStrings = { "Bird", "Cat", "Dog", "Rabbit", "Pig" };
 
-		add(simulateBtn);
-		add(executeBtn);
+		//Create the combo box, select item at index 4.
+		//Indices start at 0, so 4 specifies the pig.
+		JComboBox petList = new JComboBox(petStrings);
+		petList.setSelectedIndex(4);
+		petList.addActionListener(this);
+		
+		comPanel.add(petList);
 
 		simulateBtn.addActionListener(this);
 		executeBtn.addActionListener(this);
+
+		simulateBtn.setPreferredSize(new Dimension(235, 50));
+		executeBtn.setPreferredSize(new Dimension(235, 50));
+		
+		add(bppPanel);
+		add(tspPanel);
+		add(comPanel);
+		add(simulateBtn);
+		add(executeBtn);
 	}
 
 	/**
