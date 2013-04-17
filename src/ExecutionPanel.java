@@ -1,5 +1,5 @@
 /**
- * @author Luuk Holleman
+ * @author Luuk
  * @date 15 april
  */
 import java.awt.Dimension;
@@ -11,18 +11,16 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
-import bppAlgorithm.BPPAlgorithm;
-import bppAlgorithm.AlmostWorstFit;
-import bppAlgorithm.BestFit;
-import bppAlgorithm.FirstFit;
-import bppAlgorithm.FullBin;
-import bppAlgorithm.NextFit;
-import bppAlgorithm.WorstFit;
-
 import tspAlgorithm.BruteForce;
 import tspAlgorithm.Greedy;
 import tspAlgorithm.TSPAlgorithm;
 import tspAlgorithm.TwoOpt;
+import bppAlgorithm.AlmostWorstFit;
+import bppAlgorithm.BPPAlgorithm;
+import bppAlgorithm.BestFit;
+import bppAlgorithm.FirstFit;
+import bppAlgorithm.NextFit;
+import bppAlgorithm.WorstFit;
 
 public class ExecutionPanel extends JPanel {
 	// bpp algoritmes
@@ -42,7 +40,6 @@ public class ExecutionPanel extends JPanel {
 		
 		bppAlgorithms.add(new FirstFit());
 		bppAlgorithms.add(new BestFit());
-		bppAlgorithms.add(new FullBin());
 		bppAlgorithms.add(new NextFit());
 		bppAlgorithms.add(new WorstFit());
 		bppAlgorithms.add(new AlmostWorstFit());
