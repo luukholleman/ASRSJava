@@ -5,10 +5,10 @@
 package bppAlgorithm;
 
 public class BestFit implements BPPAlgorithm {
+	public final String name = "Best Fit";
 
 	@Override
 	public String getName() {
-		return "Best Fit";
+		return name;
 	}
-
 }
