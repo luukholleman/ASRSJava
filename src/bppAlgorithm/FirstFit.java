@@ -4,12 +4,11 @@
  */
 package bppAlgorithm;
 
-
 public class FirstFit implements BPPAlgorithm {
+	public final String name = "First Fit";
 
 	@Override
 	public String getName() {
-		return "First Fit";
+		return name;
 	}
-
 }
