@@ -16,25 +16,26 @@ public class OrderPanel extends JPanel {
 	}
 	
 	private void buildUI() {
-		String[] columnNames = {"First Name",
-                "Last Name",
-                "Sport",
-                "# of Years",
-                "Vegetarian"};
+		String[] columnNames = {"Artikelnummer",
+                "Omschrijving",
+                "Prijs",
+                "Grootte",
+                "Bedrag",
+                "Status"};
 		
 		Integer intie = new Integer(5);
 		
 		Object[][] data = {
-		{"Kathy", "Smith",
-		"Snowboarding", intie, new Boolean(false)},
-		{"John", "Doe",
-		"Rowing", new Integer(3), new Boolean(true)},
-		{"Sue", "Black",
-		"Knitting", new Integer(2), new Boolean(false)},
-		{"Jane", "White",
-		"Speed reading", new Integer(20), new Boolean(true)},
-		{"Joe", "Brown",
-		"Pool", new Integer(10), new Boolean(false)}
+				{123, "Artikel", 100, 3, 300, ""},
+				{123, "Artikel", 100, 3, 300, ""},
+				{123, "Artikel", 100, 3, 300, ""},
+				{123, "Artikel", 100, 3, 300, ""},
+				{123, "Artikel", 100, 3, 300, ""},
+				{123, "Artikel", 100, 3, 300, ""},
+				{123, "Artikel", 100, 3, 300, ""},
+				{123, "Artikel", 100, 3, 300, ""},
+				{123, "Artikel", 100, 3, 300, ""},
+				{123, "Artikel", 100, 3, 300, ""},
 		};
 
 		JTable table = new JTable(data, columnNames);
