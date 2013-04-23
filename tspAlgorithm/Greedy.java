@@ -5,8 +5,11 @@
 package tspAlgorithm;
 
 import java.util.ArrayList;
+import asrs.Product;
+import asrs.Location;
 
 public class Greedy implements TSPAlgorithm {
+	public static String name = "Greedy";
 	/**
 	 *  de gegeven product, alleen de producten die nog niet in de route staatn
 	 *  dus aan het eind is deze arraylist leeg
@@ -23,10 +26,9 @@ public class Greedy implements TSPAlgorithm {
 	
 	@Override
 	public String getName() {
-		return "Greedy";
+		return name;
 	}
 	
-	@Override
 	public ArrayList<Product> calculateRoute(ArrayList<Product> products) {
 		this.products = products;
 		
@@ -42,16 +44,16 @@ public class Greedy implements TSPAlgorithm {
 	 * @param products
 	 * @return product
 	 */
-	private Product nextNode(ArrayList<Product> products)
+	private boolean nextNode(ArrayList<Product> products)
 	{
 		// de arraylist is leeg, niks te berekenen. return false
 		if(products.size() == 0) return false;
-		int minDistance = 0;
+		float minDistance = 0;
 		Product minProduct = null;
 		
 		// we lopen nu elk product af en berekenen de afstand. de kortste wordt opgeslagen
 		for(Product product : products) {
-			int distance = location.getDistanceTo(product.getLocation());
+			float distance = location.getDistanceTo(product.getLocation());
 			
 			// als minDistance is de eerste keer, dan moet hij altijd geset worden.
 			// de andere statement is als de net berekende distance korter is dan de vorige

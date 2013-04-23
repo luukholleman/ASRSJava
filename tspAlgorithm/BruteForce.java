@@ -4,11 +4,12 @@
  */
 package tspAlgorithm;
 
-public class TwoOpt implements TSPAlgorithm {
-
+public class BruteForce implements TSPAlgorithm {
+	public static String name = "Brute Force";
+	
 	@Override
 	public String getName() {
-		return "2-Opt";
+		return name;
 	}
 
 }
