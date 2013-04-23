@@ -7,6 +7,7 @@ package tspAlgorithm;
 import java.util.ArrayList;
 
 public class Greedy implements TSPAlgorithm {
+	public static String name = "Greedy";
 	/**
 	 *  de gegeven product, alleen de producten die nog niet in de route staatn
 	 *  dus aan het eind is deze arraylist leeg
@@ -23,7 +24,7 @@ public class Greedy implements TSPAlgorithm {
 	
 	@Override
 	public String getName() {
-		return "Greedy";
+		return name;
 	}
 	
 	@Override
