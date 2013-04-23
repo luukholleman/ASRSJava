@@ -15,4 +15,32 @@ public class Product {
 		this.size = size;
 		this.location = location;
 	}
+
+	public int getId() {
+		return id;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public Float getPrice() {
+		return price;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public int getSize() {
+		return size;
+	}
+
+	public Location getLocation() {
+		return location;
+	}
 }
