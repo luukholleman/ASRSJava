@@ -1,3 +1,4 @@
+package asrs;
 public class Product {
 	private int id;
 	private String description;
