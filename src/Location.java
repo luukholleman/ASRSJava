@@ -9,7 +9,6 @@ public class Location {
 	
 	public Float getDistanceTo(Location toLocation)
 	{
-		//TODO
-		return null;
+		return (float)Math.sqrt(Math.pow(Math.abs(toLocation.x-x),2) + Math.pow(Math.abs(toLocation.y-y),2));
 	}
 }
