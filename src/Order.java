@@ -3,11 +3,11 @@ import java.util.Date;
 
 public class Order {
 	private Date date;
-	private Float totalPrice;
+	private float totalPrice;
 	private ArrayList<Product> products;
 	private Customer customer;
 
-	public Order(Date date, Float totalPrice, Customer customer) {
+	public Order(Date date, float totalPrice, Customer customer) {
 		this.date = date;
 		this.totalPrice = totalPrice;
 		this.products = new ArrayList<Product>();
@@ -18,7 +18,7 @@ public class Order {
 		return date;
 	}
 
-	public Float getTotalPrice() {
+	public float getTotalPrice() {
 		return totalPrice;
 	}
 

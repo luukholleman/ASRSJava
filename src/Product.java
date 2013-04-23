@@ -1,12 +1,12 @@
 public class Product {
 	private int id;
 	private String description;
-	private Float price;
+	private float price;
 	private String status;
 	private int size;
 	private Location location;
 
-	public Product(int id, String description, Float price, int size,
+	public Product(int id, String description, float price, int size,
 			Location location) {
 		this.id = id;
 		this.description = description;
@@ -24,7 +24,7 @@ public class Product {
 		return description;
 	}
 
-	public Float getPrice() {
+	public float getPrice() {
 		return price;
 	}
 
