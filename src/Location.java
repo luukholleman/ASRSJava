@@ -6,4 +6,10 @@ public class Location {
 		this.x = x;
 		this.y = y;
 	}
+	
+	public Float getDistanceTo(Location toLocation)
+	{
+		//TODO
+		return null;
+	}
 }
