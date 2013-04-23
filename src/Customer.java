@@ -3,15 +3,15 @@ public class Customer {
 	private String name;
 
 	public Customer(int id, String name) {
-		this.setId(id);
-		this.setName(name);
+		this.id=id;
+		this.name=name;
 	}
 
-	private int getId() {
+	public int getId() {
 		return id;
 	}
 
-	private String getName() {
+	public String getName() {
 		return name;
 	}
 }
