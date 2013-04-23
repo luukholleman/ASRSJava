@@ -3,8 +3,8 @@ public class Customer {
 	private String name;
 
 	public Customer(int id, String name) {
-		this.id=id;
-		this.name=name;
+		this.id = id;
+		this.name = name;
 	}
 
 	public int getId() {
