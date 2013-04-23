@@ -5,10 +5,11 @@
 package tspAlgorithm;
 
 public class TwoOpt implements TSPAlgorithm {
-
+	public static String name = "2-Opt";
+	
 	@Override
 	public String getName() {
-		return "2-Opt";
+		return name;
 	}
 
 }
