@@ -6,7 +6,8 @@ package tspAlgorithm;
 
 import java.util.ArrayList;
 
-import asrs.Product;
+import order.Product;
+
 
 public class BruteForce implements TSPAlgorithm {
 	public static String name = "Brute Force";
