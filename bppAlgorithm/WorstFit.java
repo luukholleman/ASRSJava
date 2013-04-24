@@ -6,8 +6,9 @@ package bppAlgorithm;
 
 import java.util.ArrayList;
 
+
+import order.Product;
 import asrs.Bin;
-import asrs.Product;
 
 public class WorstFit implements BPPAlgorithm {
 	public static String name = "Worst Fit";
