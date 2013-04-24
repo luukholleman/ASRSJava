@@ -29,8 +29,8 @@ public class CustomerPanel extends JPanel {
 		JPanel columnPanel = new JPanel();
 		JPanel valuePanel = new JPanel();
 
-		columnPanel.setPreferredSize(new Dimension(100, 200));
-		valuePanel.setPreferredSize(new Dimension(360, 200));
+		columnPanel.setPreferredSize(new Dimension(100, 150));
+		valuePanel.setPreferredSize(new Dimension(360, 150));
 		
 		// de boxlayout laat de elementen stapelen
 		columnPanel.setLayout(new BoxLayout(columnPanel, BoxLayout.PAGE_AXIS));
