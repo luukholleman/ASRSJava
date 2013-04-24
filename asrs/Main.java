@@ -104,7 +104,12 @@ public class Main extends JFrame implements XMLUploadedListener, ExecuteButtonPr
 
 	@Override
 	public void xmlUploaded(String xmlFileLocation) {
-		System.out.println(xmlFileLocation);
+		Order order = XMLLoader.readOrder(xmlFileLocation);
+		
+		customerPanel.setCustomerId(order.getCustomer().getId());
+		customerPanel.setCustomerName(order.getCustomer().getName());
+		customerPanel.setDate(order.getDate());
+		customerPanel.setTotalPrice(order.getTotalPrice());
 	}
 
 	@Override
