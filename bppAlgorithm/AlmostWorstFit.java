@@ -15,9 +15,12 @@ public class AlmostWorstFit implements BPPAlgorithm {
 	}
 	
 	public void calculateBin(Product product){
-		/* Controleer welke bin het op 1 na volst zit
+		/**
+		 *  Controleer welke bin het op 1 na volst zit
 		 * stuur het product die als input komt naar die bin
 		 */
+		
+		//if (product.getSize()  
 		
 	}
 	
