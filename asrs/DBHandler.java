@@ -27,12 +27,16 @@ public class DBHandler {
 			return conn = DriverManager
 					.getConnection(url, "asrs", "w1nd3sh31m");
 		} catch (InstantiationException e) {
+			System.out.println("Initialisation error");
 			// TODO: Handle error
 		} catch (IllegalAccessException e) {
+			System.out.println("IlligalAccess error");
 			// TODO: Handle error
 		} catch (ClassNotFoundException e) {
+			System.out.println("ClassNotFound error");
 			// TODO: Handle error
 		} catch (SQLException e) {
+			System.out.println("SQL error");
 			// TODO: Handle error
 		}
 		return conn;
