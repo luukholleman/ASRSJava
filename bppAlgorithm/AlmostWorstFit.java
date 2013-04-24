@@ -13,7 +13,7 @@ import asrs.Bin;
 
 public class AlmostWorstFit implements BPPAlgorithm {
 	public static String name = "Almost Worst Fit";
-	
+
 	@Override
 	public String getName() {
 		return name;
@@ -21,15 +21,15 @@ public class AlmostWorstFit implements BPPAlgorithm {
 
 	@Override
 	public Bin calculateBin(Product product, ArrayList<Bin> bins) {
-//		for(Bin bin : bins){
-//			
-//		}
+
 		Collections.sort(bins, new Comparator<Bin>() {
-		    public int compare(Bin one, Bin two) {
-		        return ((Integer)(one.getSize() - one.getFilled())).compareTo(two.getSize() - two.getFilled());
-		    }
-		}); 
-		
+			public int compare(Bin one, Bin two) {
+				return ((Integer) (one.getSize() - one.getFilled()))
+						.compareTo(two.getSize() - two.getFilled());
+			}
+		});
+
+		return null;
 	}
 
 }
