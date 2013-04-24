@@ -11,7 +11,7 @@ public class Column implements TSPAlgorithm {
 	private ArrayList<Product> column1 = new ArrayList<Product>(); 
 	private ArrayList<Product> column2 = new ArrayList<Product>();
 	Location location;
-	public static String name = "Column";
+	private static String name = "Column";
 	int columnsize;
 	
 	
