@@ -6,29 +6,39 @@ import asrs.Location;
 
 
 public class Column implements TSPAlgorithm {
-	ArrayList<Product> route, column1, column2, column3, column4 = new ArrayList<Product>();
+	//visibility modifiers + opsomming mag niet
+	private ArrayList<Product> route = new ArrayList<Product>();
+	private ArrayList<Product> column1 = new ArrayList<Product>(); 
+	private ArrayList<Product> column2 = new ArrayList<Product>();
 	Location location;
-	int xmax = 0;
-	int ymin = 0;
-	int ymax = 0;
+	public static String name = "Column";
 	int columnsize;
 	
 	
 	@Override
 	public String getName() {
-		return "Column";
+		return name;
 	}
 	
-	public ArrayList calculateRoute(ArrayList<Product> products){
+	
+	/**
+	 * Berekend een efficiente route op basis van het (zelf bedachte) Column algoritme.
+	 * 
+	 * @param ArrayList<Product>
+	 * @return ArrayList<Product>
+	 */
+	public ArrayList<Product> calculateRoute(ArrayList<Product> products){
 		//Opzoeken van het horizontale verste product
+		int xmax = 0;
 		for (Product product : products){
 			location = product.getLocation();
 			if (location.x > xmax){
 				xmax = location.x;
 			}
 		}
-		//Het magazijn  wordt verticaal verdeelt in 2 kolommen 
-		//en daarin worden de producten verdeelt.
+		/** Het magazijn  wordt verticaal verdeelt in 2 kolommen
+		 *  en daarin worden de producten verdeelt.
+		*/  
 		columnsize = xmax/2;
 		for (Product product : products){
 			location = product.getLocation();
@@ -54,21 +64,23 @@ public class Column implements TSPAlgorithm {
 	 * @param products
 	 * @return product
 	 */
-	private ArrayList<Product> sortColumn(ArrayList<Product> products, boolean dir)
-	{
-		// de arraylist is leeg, niks te berekenen. return false
-		if(products.size() == 0) return products;
+	private void sortColumn(ArrayList<Product> products, boolean dir){
+		// de arraylist is leeg, niks te berekenen. return zonder iets te doen
+		if(products.size() == 0) return;
 		Product minProduct = null;
 		
 		// we lopen nu elk product af en berekenen de hoogte. de laagste wordt opgeslagen
 		while(products.size() != 0){
+			int ymax = 0;
+			int ymin = 0;
 			for(Product product : products) {
 				location = product.getLocation();
 				int yloc = location.y;
 				
 				if(dir){
-					// als ymin is de eerste keer, dan moet hij altijd geset worden.
-					// de andere statement is als de net berekende hoogte korter is dan de vorige
+					/* als ymin is de eerste keer, dan moet hij altijd geset worden.
+					* de andere statement is als de net berekende hoogte korter is dan de vorige
+					*/
 					if(ymin == 0 || ymin > yloc) {
 						ymin = yloc;
 						minProduct = product;
@@ -84,11 +96,11 @@ public class Column implements TSPAlgorithm {
 			}
 		
 		
-		// we hebben het dichtsbijzijnde product, voeg hem toe aan de route, verwijderen van de nog te berekenen producten
+		/* we hebben het dichtsbijzijnde product, voeg hem toe aan de route, 
+		*  verwijderen van de nog te berekenen producten
+		*/
 		route.add(minProduct);
 		products.remove(minProduct);
 		}
-		// we hebben een node! return true
-		return products;
 	}
 }
