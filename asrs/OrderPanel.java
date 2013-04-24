@@ -11,7 +11,7 @@ public class OrderPanel extends JPanel {
 	{
 		setBorder(BorderFactory.createTitledBorder("Order"));
 		
-		setPreferredSize(new Dimension(970, 850));
+		setPreferredSize(new Dimension(670, 650));
 		
 		buildUI();
 	}
@@ -40,12 +40,10 @@ public class OrderPanel extends JPanel {
 		};
 
 		JTable table = new JTable(data, columnNames);
-		table.getTableHeader().setPreferredSize(new Dimension(920, 20));
-		table.setPreferredSize(new Dimension(920, 830));
-		table.setPreferredScrollableViewportSize(new Dimension(950, 830));
-		
-		intie = 897;
-		
+		table.getTableHeader().setPreferredSize(new Dimension(620, 20));
+		table.setPreferredSize(new Dimension(620, 580));
+		table.setPreferredScrollableViewportSize(new Dimension(650, 580));
+				
 		table.updateUI();
 		
 		table.firePropertyChange("# of Years", 5, 15);
