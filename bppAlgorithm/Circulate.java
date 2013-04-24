@@ -7,7 +7,7 @@ package bppAlgorithm;
 import java.util.ArrayList;
 
 import asrs.Bin;
-import asrs.Product;
+import order.Product;
 
 public class Circulate implements BPPAlgorithm {
 	private static String name = "Circulate";
@@ -16,11 +16,30 @@ public class Circulate implements BPPAlgorithm {
 	public String getName() {
 		return name;
 	}
-
+	/**
+	 * Berekend waar het product nog in past
+	 * 
+	 * @param Product, ArrayList<Bin>
+	 * @return Bin
+	 */
 	@Override
 	public Bin calculateBin(Product product, ArrayList<Bin> bins) {
-		
-		return null;
+		//Kijken of er nog lege bins in. Zoja, doe het product in deze bin.
+		for (Bin bin : bins){
+			if(bin.getFilled() != 0 && (bin.getSize()-bin.getFilled()) >= product.getSize()){
+				return bin;
+			}
+		}
+		/* Kijken welke bin het minst vol is en het product daar in stoppen.
+		 * Als ze allemaal vol zijn, return null.
+		*/
+		Bin binmin = null;
+		for (Bin bin : bins){
+			if(binmin == null && (bin.getSize()-bin.getFilled()) >= product.getSize() || bin.getFilled() < binmin.getFilled() && (bin.getSize()-bin.getFilled()) >= product.getSize()){
+				binmin = bin;
+			}
+		}		
+		return binmin;
 	}
 	
 }

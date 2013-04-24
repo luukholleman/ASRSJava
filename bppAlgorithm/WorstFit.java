@@ -4,6 +4,9 @@
  */
 package bppAlgorithm;
 
+import java.util.ArrayList;
+
+import order.Product;
 import asrs.Bin;
 
 public class WorstFit implements BPPAlgorithm {
@@ -15,7 +18,7 @@ public class WorstFit implements BPPAlgorithm {
 	}
 
 	@Override
-	public Bin calculateBin() {
+	public Bin calculateBin(Product product, ArrayList<Bin> bins) {
 		// TODO Auto-generated method stub
 		return null;
 	}
