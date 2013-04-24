@@ -104,12 +104,12 @@ public class Main extends JFrame implements XMLUploadedListener, ExecuteButtonPr
 
 	@Override
 	public void xmlUploaded(String xmlFileLocation) {
-		Order order = XMLLoader.readOrder(xmlFileLocation);
-		
-		customerPanel.setCustomerId(order.getCustomer().getId());
-		customerPanel.setCustomerName(order.getCustomer().getName());
-		customerPanel.setDate(order.getDate());
-		customerPanel.setTotalPrice(order.getTotalPrice());
+//		Order order = XMLLoader.readOrder(xmlFileLocation);
+//		
+//		customerPanel.setCustomerId(order.getCustomer().getId());
+//		customerPanel.setCustomerName(order.getCustomer().getName());
+//		customerPanel.setDate(order.getDate());
+//		customerPanel.setTotalPrice(order.getTotalPrice());
 	}
 
 	@Override
@@ -117,7 +117,7 @@ public class Main extends JFrame implements XMLUploadedListener, ExecuteButtonPr
 		//JOptionPane.showMessageDialog(this, "Simulatie wordt gestart met bpp " + bpp.getName() + " en tsp " + tsp.getName());
 		
 		System.out.println("Open simulation");
-		SimulatorFrame frame = new SimulatorFrame();
+		SimulatorFrame frame = new SimulatorFrame(bpp, tsp);
 		frame.setVisible(true);
 	}
 

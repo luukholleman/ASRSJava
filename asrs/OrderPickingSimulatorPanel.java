@@ -1,16 +1,19 @@
 package asrs;
 
 import java.awt.*;
-
 import javax.swing.JPanel;
 
+import simulation.WarehouseSimulatorManager;
+import tspAlgorithm.TSPAlgorithm;
+
 public class OrderPickingSimulatorPanel extends JPanel {
-	private WarehouseSimulatorManager WMan;
+	private WarehouseSimulatorManager WMan = new WarehouseSimulatorManager();
 	int[][] magazijn = new int[20][10];
 	
-	public OrderPickingSimulatorPanel(){
+	public OrderPickingSimulatorPanel(TSPAlgorithm tsp){
 		super();
 		setSize(300,500);
+		WMan.run(tsp);
 	}
 	@Override
 	public void paintComponent(Graphics g){
