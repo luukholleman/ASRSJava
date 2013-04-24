@@ -1,7 +1,8 @@
 package tspAlgorithm;
 
 import java.util.ArrayList;
-import asrs.Product;
+
+import order.Product;
 import asrs.Location;
 
 
