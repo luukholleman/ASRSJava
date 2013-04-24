@@ -4,7 +4,10 @@
  */
 package bppAlgorithm;
 
+import java.util.ArrayList;
+
 import asrs.Bin;
+import asrs.Product;
 
 public class FirstFit implements BPPAlgorithm {
 	public static String name = "First Fit";
@@ -15,7 +18,7 @@ public class FirstFit implements BPPAlgorithm {
 	}
 
 	@Override
-	public Bin calculateBin() {
+	public Bin calculateBin(Product product, ArrayList<Bin> bins) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -19,7 +19,6 @@ public class AlmostWorstFit implements BPPAlgorithm {
 
 	@Override
 	public Bin calculateBin(Product product, ArrayList<Bin> bins) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
