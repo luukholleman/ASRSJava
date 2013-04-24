@@ -6,7 +6,8 @@ package tspAlgorithm;
 
 import java.util.ArrayList;
 
-import asrs.Product;
+import order.Product;
+
 
 public interface TSPAlgorithm {
 	public abstract String getName();
