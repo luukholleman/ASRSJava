@@ -4,6 +4,10 @@
  */
 package bppAlgorithm;
 
+import asrs.Bin;
+
 public interface BPPAlgorithm {
 	public abstract String getName();
+	
+	public abstract Bin calculateBin();
 }
