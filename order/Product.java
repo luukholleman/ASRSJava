@@ -1,6 +1,5 @@
 package order;
 
-import asrs.Location;
 
 public class Product {
 	private int id;
