@@ -4,7 +4,10 @@
  */
 package bppAlgorithm;
 
+import java.util.ArrayList;
+
 import asrs.Product;
+import asrs.Bin;
 
 public class AlmostWorstFit implements BPPAlgorithm {
 	public static String name = "Almost Worst Fit";
@@ -13,15 +16,11 @@ public class AlmostWorstFit implements BPPAlgorithm {
 	public String getName() {
 		return name;
 	}
-	
-	public void calculateBin(Product product){
-		/**
-		 *  Controleer welke bin het op 1 na volst zit
-		 * stuur het product die als input komt naar die bin
-		 */
-		
-		//if (product.getSize()  
-		
+
+	@Override
+	public Bin calculateBin(Product product, ArrayList<Bin> bins) {
+		// TODO Auto-generated method stub
+		return null;
 	}
-	
+
 }

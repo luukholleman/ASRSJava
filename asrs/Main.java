@@ -42,7 +42,7 @@ public class Main extends JFrame implements XMLUploadedListener, ExecuteButtonPr
 		}
 		catch (Exception e)
 		{
-			System.out.println("Unable to load Windows look and feel");
+			System.out.println("Unable to load look and feel");
 		}
 		
 		// creeer het scherm
@@ -52,7 +52,7 @@ public class Main extends JFrame implements XMLUploadedListener, ExecuteButtonPr
 	
 	public Main()
 	{
-		setSize(1500, 900);
+		setSize(1200, 700);
 		
 		// sluit het proces als je op kruisje drukt
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -83,7 +83,7 @@ public class Main extends JFrame implements XMLUploadedListener, ExecuteButtonPr
 		 * zet de leftpanel op een breedte
 		 * de rechter heeft dit niet nodig omdat daar maar 1 panel in zit
 		 */
-		leftPanel.setPreferredSize(new Dimension(500, 900));
+		leftPanel.setPreferredSize(new Dimension(500, 700));
 
 		leftPanel.add(xmlPanel);
 		leftPanel.add(executionPanel);

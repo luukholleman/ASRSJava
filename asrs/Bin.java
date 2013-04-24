@@ -4,7 +4,7 @@ public class Bin {
 	private int size;
 	private int filled;
 	
-	public void Bin(int size, int filled){
+	public Bin(int size, int filled){
 		this.size = size;
 		this.filled = filled;
 	}
