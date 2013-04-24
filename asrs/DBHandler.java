@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import javax.swing.JOptionPane;
+
 /**
  * Class om met de database te verbinden
  * 
@@ -27,42 +29,14 @@ public class DBHandler {
 			return conn = DriverManager
 					.getConnection(url, "asrs", "w1nd3sh31m");
 		} catch (InstantiationException e) {
-			System.out.println("Initialisation error");
-			// TODO: Handle error
+			JOptionPane.showMessageDialog(null, "Kan niet met de database verbinden.\n\nStackTrace:\n" + e.getStackTrace());
 		} catch (IllegalAccessException e) {
-			System.out.println("IlligalAccess error");
-			// TODO: Handle error
+			JOptionPane.showMessageDialog(null, "Kan niet met de database verbinden.\n\nStackTrace:\n" + e.getStackTrace());
 		} catch (ClassNotFoundException e) {
-			System.out.println("ClassNotFound error");
-			// TODO: Handle error
+			JOptionPane.showMessageDialog(null, "Kan niet met de database verbinden.\n\nStackTrace:\n" + e.getStackTrace());
 		} catch (SQLException e) {
-			System.out.println("SQL error");
-			// TODO: Handle error
+			JOptionPane.showMessageDialog(null, "Kan niet met de database verbinden.\n\nStackTrace:\n" + e.getStackTrace());
 		}
 		return conn;
-	}
-	
-	public static void test()
-	{
-		Connection conn = connect();
-		
-		System.out.println("[OUTPUT FROM SELECT]");
-	    String query = "SELECT * FROM products";
-	    try
-	    {
-	      Statement st = conn.createStatement();
-	      ResultSet rs = st.executeQuery(query);
-	      while (rs.next())
-	      {
-	    	  String x = rs.getString("x");
-	    	  String y = rs.getString("y");
-		        
-	        System.out.println(x + "   " + y);
-	      }
-	    }
-	    catch (SQLException ex)
-	    {
-	      System.err.println(ex.getMessage());
-	    }
 	}
 }
