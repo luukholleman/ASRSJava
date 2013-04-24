@@ -1,6 +1,6 @@
 /**
- * @author Luuk Holleman
- * @date 16 april
+ * @author Bas van Koesveld
+ * @date 24 april
  */
 package bppAlgorithm;
 
@@ -9,9 +9,9 @@ import java.util.ArrayList;
 import asrs.Bin;
 import asrs.Product;
 
-public class BestFit implements BPPAlgorithm {
-	public static String name = "Best Fit";
-
+public class Circulate implements BPPAlgorithm {
+	private static String name = "Circulate";
+	
 	@Override
 	public String getName() {
 		return name;
@@ -19,7 +19,8 @@ public class BestFit implements BPPAlgorithm {
 
 	@Override
 	public Bin calculateBin(Product product, ArrayList<Bin> bins) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
+	
 }

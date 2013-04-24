@@ -5,7 +5,8 @@
 package tspAlgorithm;
 
 import java.util.ArrayList;
-import asrs.Product;
+
+import order.Product;
 import asrs.Location;
 
 public class Greedy implements TSPAlgorithm {
@@ -29,6 +30,7 @@ public class Greedy implements TSPAlgorithm {
 		return name;
 	}
 	
+	@Override
 	public ArrayList<Product> calculateRoute(ArrayList<Product> products) {
 		this.products = products;
 		
