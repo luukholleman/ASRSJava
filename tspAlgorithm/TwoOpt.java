@@ -6,7 +6,8 @@ package tspAlgorithm;
 
 import java.util.ArrayList;
 
-import asrs.Product;
+import order.Product;
+
 
 public class TwoOpt implements TSPAlgorithm {
 	public static String name = "2-Opt";
