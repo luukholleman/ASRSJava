@@ -117,7 +117,7 @@ public class Main extends JFrame implements XMLUploadedListener, ExecuteButtonPr
 		//JOptionPane.showMessageDialog(this, "Simulatie wordt gestart met bpp " + bpp.getName() + " en tsp " + tsp.getName());
 		
 		System.out.println("Open simulation");
-		SimulatorFrame frame = new SimulatorFrame();
+		SimulatorFrame frame = new SimulatorFrame(bpp, tsp);
 		frame.setVisible(true);
 	}
 
