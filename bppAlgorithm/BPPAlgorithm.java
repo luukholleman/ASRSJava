@@ -7,7 +7,7 @@ package bppAlgorithm;
 import java.util.ArrayList;
 
 import asrs.Bin;
-import asrs.Product;
+import order.Product;
 
 public interface BPPAlgorithm {
 	public abstract String getName();

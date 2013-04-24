@@ -15,10 +15,10 @@ public class Bin {
 	public void setSize(int size) {
 		this.size = size;
 	}
-	private int getFilled() {
+	public int getFilled() {
 		return filled;
 	}
-	private void setFilled(int filled) {
+	public void setFilled(int filled) {
 		this.filled = filled;
 	}
 }
