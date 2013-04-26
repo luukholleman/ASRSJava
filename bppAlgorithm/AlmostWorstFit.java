@@ -21,15 +21,18 @@ public class AlmostWorstFit implements BPPAlgorithm {
 	@Override
 	public Bin calculateBin(Product product, ArrayList<Bin> bins) {
 		
+		//Sorteer de bins in op volgorde van veel inhoud naar weinig inhoud
 		Collections.sort(bins, new Comparator<Bin>() {
 			public int compare(Bin one, Bin two) {
 				return ((Integer) (one.getSize() - one.getFilled()))
 						.compareTo(two.getSize() - two.getFilled());
 			}
 		});
-		
-		
-		return bins;
+		//Verwijder de bin met de meeste ruimte
+		bins.remove(bins.size()-1);
+		//Return de bin die daarna de meeste ruimte heeft
+		Bin bin = bins.get(bins.size()-1);
+		return bin;
 	}
 
 }
