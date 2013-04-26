@@ -27,7 +27,7 @@ public class AlmostWorstFit implements BPPAlgorithm {
 						.compareTo(two.getSize() - two.getFilled());
 			}
 		});
-
+		
 		
 		return null;
 	}
