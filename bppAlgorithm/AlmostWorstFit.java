@@ -5,11 +5,8 @@
 package bppAlgorithm;
 
 import java.util.ArrayList;
-<<<<<<< HEAD
 import java.util.Collections;
 import java.util.Comparator;
-=======
->>>>>>> 36ee10996a2cb7230dd6f051e7da795ae1a76e07
 
 import order.Product;
 import asrs.Bin;
