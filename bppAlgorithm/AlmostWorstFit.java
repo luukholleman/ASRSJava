@@ -29,7 +29,7 @@ public class AlmostWorstFit implements BPPAlgorithm {
 		});
 		
 		
-		return null;
+		return bins;
 	}
 
 }
