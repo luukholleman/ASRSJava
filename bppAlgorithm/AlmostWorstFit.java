@@ -7,7 +7,6 @@ package bppAlgorithm;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-
 import order.Product;
 import asrs.Bin;
 
