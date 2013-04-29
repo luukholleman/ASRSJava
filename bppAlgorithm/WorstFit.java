@@ -29,7 +29,7 @@ public class WorstFit implements BPPAlgorithm {
 						.compareTo(two.getSize() - two.getFilled());
 			}
 		});
-		//Return de bin die daarna de meeste ruimte heeft
+		//Return de bin die de meeste ruimte heeft
 		Bin bin = bins.get(bins.size()-1);
 		return bin;
 	}
