@@ -16,10 +16,10 @@ public class SimulationFrame extends JFrame {
 		setLayout( new FlowLayout() );
 		setTitle( "Simulation" );
 		setVisible( true );
-		setSize(600,500);
+		setSize(800,500);
 		
 		OPPanel = new OrderPickingPanel(tsp);
-		OPPanel.setPreferredSize(new Dimension(300, 500));
+		OPPanel.setPreferredSize(new Dimension(400, 500));
 		add(OPPanel);
 		
 		revalidate();
