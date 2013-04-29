@@ -3,14 +3,15 @@ package asrs;
 import java.awt.*;
 import javax.swing.JPanel;
 
-import simulation.WarehouseSimulatorManager;
+import asrsController.ExecutionManager;
+
 import tspAlgorithm.TSPAlgorithm;
 
-public class OrderPickingSimulatorPanel extends JPanel {
-	private WarehouseSimulatorManager WMan = new WarehouseSimulatorManager();
+public class OrderPickingPanel extends JPanel {
+	private ExecutionManager WMan = new ExecutionManager();
 	int[][] magazijn = new int[20][10];
 	
-	public OrderPickingSimulatorPanel(TSPAlgorithm tsp){
+	public OrderPickingPanel(TSPAlgorithm tsp){
 		super();
 		setSize(300,500);
 		WMan.run(tsp);
