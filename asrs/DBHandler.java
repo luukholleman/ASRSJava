@@ -33,13 +33,13 @@ public class DBHandler {
 			return conn = DriverManager
 					.getConnection(url, "asrs", "w1nd3sh31m");
 		} catch (InstantiationException e) {
-			JOptionPane.showMessageDialog(null, "Kan niet met de database verbinden.\n\nStackTrace:\n" + e.getStackTrace());
+			JOptionPane.showMessageDialog(null, "Kan niet met de database verbinden(Initalization failed).\n\nStackTrace:\n" + e.getStackTrace());
 		} catch (IllegalAccessException e) {
-			JOptionPane.showMessageDialog(null, "Kan niet met de database verbinden.\n\nStackTrace:\n" + e.getStackTrace());
+			JOptionPane.showMessageDialog(null, "Kan niet met de database verbinden(Illigal action performed).\n\nStackTrace:\n" + e.getStackTrace());
 		} catch (ClassNotFoundException e) {
-			JOptionPane.showMessageDialog(null, "Kan niet met de database verbinden.\n\nStackTrace:\n" + e.getStackTrace());
+			JOptionPane.showMessageDialog(null, "Kan niet met de database verbinden(Class not found).\n\nStackTrace:\n" + e.getStackTrace());
 		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(null, "Kan niet met de database verbinden.\n\nStackTrace:\n" + e.getStackTrace());
+			JOptionPane.showMessageDialog(null, "Kan niet met de database verbinden(SQL error).\n\nStackTrace:\n" + e.getStackTrace());
 		}
 		return conn;
 	}
