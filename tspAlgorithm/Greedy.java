@@ -6,8 +6,8 @@ package tspAlgorithm;
 
 import java.util.ArrayList;
 
+import order.Location;
 import order.Product;
-import asrs.Location;
 
 public class Greedy implements TSPAlgorithm {
 	public static String name = "Greedy";

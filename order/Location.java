@@ -1,4 +1,4 @@
-package asrs;
+package order;
 public class Location {
 	public int x;
 	public int y;
