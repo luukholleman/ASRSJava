@@ -56,11 +56,15 @@ public class OrderPickingPanel extends JPanel {
 		warenhuis.add(product3);
 		warenhuis.add(product4);
 		
+		//Tekenen van de producten in het warenhuis
+		
 		for(Product product : warenhuis){
 			Location loc = product.getLocation();
 			if(loc.x <= 20 && loc.y <= 30){
 				g.fillRect(43+(loc.x*20), (loc.y*20)-17, 15, 15);
 			}
 		}
+		
+		
 	}
 }
