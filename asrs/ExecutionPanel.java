@@ -30,8 +30,8 @@ import tspAlgorithm.TwoOpt;
 import bppAlgorithm.AlmostWorstFit;
 import bppAlgorithm.BPPAlgorithm;
 import bppAlgorithm.BestFit;
+import bppAlgorithm.Circulate;
 import bppAlgorithm.FirstFit;
-import bppAlgorithm.NextFit;
 import bppAlgorithm.WorstFit;
 
 public class ExecutionPanel extends JPanel implements ActionListener {
@@ -67,7 +67,7 @@ public class ExecutionPanel extends JPanel implements ActionListener {
 
 		bppAlgorithms.add(new FirstFit());
 		bppAlgorithms.add(new BestFit());
-		bppAlgorithms.add(new NextFit());
+		bppAlgorithms.add(new Circulate());
 		bppAlgorithms.add(new WorstFit());
 		bppAlgorithms.add(new AlmostWorstFit());
 
