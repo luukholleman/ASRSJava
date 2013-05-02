@@ -21,6 +21,7 @@ public class SimulationFrame extends JFrame {
 		OPPanel = new OrderPickingPanel(tsp);
 		OPPanel.setPreferredSize(new Dimension(400, 500));
 		add(OPPanel);
+		OPPanel.start();
 		
 		revalidate();
 	}

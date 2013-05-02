@@ -2,7 +2,7 @@ package asrsController;
 
 import java.util.ArrayList;
 
-import asrs.Location;
+import order.Location;
 
 import tspAlgorithm.TSPAlgorithm;
 import order.Product;

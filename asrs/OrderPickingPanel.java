@@ -5,13 +5,19 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
+import order.Location;
+import order.Product;
+
 import asrsController.ExecutionManager;
 
 import tspAlgorithm.TSPAlgorithm;
 
-public class OrderPickingPanel extends JPanel {
+public class OrderPickingPanel extends JPanel implements Runnable {
 	private ExecutionManager WMan = new ExecutionManager();
-	int[][] magazijn = new int[20][10];
+	private Thread runner;
+	int pause = 1000;
+	Location robotLoc;
+	Location destination = new Location (10,8);
 	
 	public OrderPickingPanel(TSPAlgorithm tsp){
 		super();
@@ -33,8 +39,8 @@ public class OrderPickingPanel extends JPanel {
 		}
 		
 		//Hier wordt de inhoud van het warehouse opgehaald.
-		//Het is mij niet duidelijk hoe ik dingen uit de database kan halen!! 
-		//TO-DO
+//		DBHandler db = new DBHandler();
+//		ArrayList<Location> locations = db.getAllOccupiedLocations();
 		
 		//Aanmaken test gegevens
 		
@@ -61,10 +67,88 @@ public class OrderPickingPanel extends JPanel {
 		for(Product product : warenhuis){
 			Location loc = product.getLocation();
 			if(loc.x <= 20 && loc.y <= 30){
-				g.fillRect(43+(loc.x*20), (loc.y*20)-17, 15, 15);
+				g.fillRect(43+(loc.x*20), (loc.y*20)+3, 15, 15);
 			}
 		}
 		
+		//Tekenen robot
 		
+		if(robotLoc != null) g.drawRect(41+(robotLoc.x*20), (robotLoc.y*20)+1, 18, 18);
+		
+		//Tekenen doel
+		g.setColor(Color.blue);
+		if(destination != null) g.drawRect(42+(destination.x*20), (destination.y*20)+2, 16, 16);
+		//Ophalen van de gegeven order
+		//TO-DO
+		
+		//Testgegevens
+		
+//		ArrayList<Product> order = new ArrayList<Product>();
+//		order.add(product1);
+//		order.add(product2);
+//		order.add(product3);
+	}
+	
+	public void start(){
+		if (runner == null){
+			runner = new Thread(this);
+			runner.start();
+		}
+	}
+	
+	@Override
+	public void run() {
+		Thread thisThread = Thread.currentThread();
+		robotLoc = new Location (0,0);
+		while (runner == thisThread) {
+			repaint();
+			
+			//Location 1 is de huidige postitie, location2 is het doel.
+			if(robotLoc.getDistanceTo(destination) > 0){
+				move();
+				System.out.println("moved");
+			}
+			try {
+				Thread.sleep(pause);
+			} catch (InterruptedException e) { }
+//			stop();
+			
+		}
+	}
+
+	public void stop(){
+		if(runner != null){
+			runner = null;
+			System.out.println("stopping");
+		}
+	}
+	
+	private void move(){
+		int distx = destination.x - robotLoc.x;
+		int disty = destination.y - robotLoc.y;
+		int compy;
+		int compx;
+		
+		if(robotLoc == destination){
+			return;
+		}
+		System.out.println("Coordinaten: " + robotLoc.x + " " + robotLoc.y + " en " + destination.x + " " + destination.y);
+		if (disty < 0) compy = disty * -1;
+		else compy = disty;
+		if (distx < 0) compx = distx * -1;
+		else compx = distx;
+		if (compy < compx) {
+			robotLoc.x = robotLoc.x + 1;
+			System.out.println("Moved right");
+		}
+		if (compy > compx) {
+			robotLoc.y = robotLoc.y + 1;
+			System.out.println("Moved down");
+		}
+		if (compy == compx){
+			robotLoc.y = robotLoc.y +1;
+			System.out.println("Moved down");
+		}
+		System.out.println("Afstanden: " + compx + " " + compy);
 	}
 }

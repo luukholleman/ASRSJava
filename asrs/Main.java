@@ -114,9 +114,6 @@ public class Main extends JFrame implements XMLUploadedListener, ExecuteButtonPr
 
 	@Override
 	public void simulatePressed(BPPAlgorithm bpp, TSPAlgorithm tsp) {
-		//JOptionPane.showMessageDialog(this, "Simulatie wordt gestart met bpp " + bpp.getName() + " en tsp " + tsp.getName());
-		
-		System.out.println("Open simulation");
 		SimulationFrame frame = new SimulationFrame(bpp, tsp);
 		frame.setVisible(true);
 	}

@@ -20,7 +20,7 @@ public class Product {
 		this.location = location;
 		
 		DBHandler db = new DBHandler();
-		db.getProductDatabaseInfo(this);
+//		db.getProductDatabaseInfo(this);
 	}
 
 	public int getId() {
