@@ -19,7 +19,15 @@ public class ExecutionManager {
 			//Warehouse warehouse, BinPacking binPacking,
 			TSPAlgorithm tspAlgorithm, BPPAlgorithm bppAlgorithm,
 			Integer width, Integer height, Boolean useDetectedSize) {
-		
+		this.main = main;
+		//this.binManager = binManager;
+		//this.warehouse = warehouse;
+		//this.binPacking = binPacking;
+		this.tspAlgorithm = tspAlgorithm;
+		this.bppAlgorithm = bppAlgorithm;
+		this.width = width;
+		this.height = height;
+		this.useDetectedSize = useDetectedSize;
 	}
 	
 	public Byte detectedProduct(Byte red, Byte green, Byte blue){
