@@ -6,9 +6,9 @@ import bppAlgorithm.BPPAlgorithm;
 public class ExecutionManager {
 	private Main main;
 	private Order order;
-	// private BinManager binManager;
-	// private Warehouse warehouse;
-	// private BinPacking binPacking;
+//	private BinManager binManager;
+//	private Warehouse warehouse;
+//	private BinPacking binPacking;
 	private TSPAlgorithm tspAlgorithm;
 	private BPPAlgorithm bppAlgorithm;
 	private Integer width;
@@ -16,18 +16,10 @@ public class ExecutionManager {
 	private Boolean useDetectedSize;
 
 	public ExecutionManager(Main main, Order order, //BinManager binManager,
-			//Warehouse warehouse, BinPacking binPacking,
+//			Warehouse warehouse, BinPacking binPacking,
 			TSPAlgorithm tspAlgorithm, BPPAlgorithm bppAlgorithm,
 			Integer width, Integer height, Boolean useDetectedSize) {
-		this.main = main;
-		//this.binManager = binManager;
-		//this.warehouse = warehouse;
-		//this.binPacking = binPacking;
-		this.tspAlgorithm = tspAlgorithm;
-		this.bppAlgorithm = bppAlgorithm;
-		this.width = width;
-		this.height = height;
-		this.useDetectedSize = useDetectedSize;
+
 	}
 	
 	public Byte detectedProduct(Byte red, Byte green, Byte blue){
