@@ -2,6 +2,7 @@ package asrs;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.swing.JPanel;
 
@@ -15,11 +16,14 @@ import tspAlgorithm.TSPAlgorithm;
 public class OrderPickingPanel extends JPanel implements Runnable {
 	private ExecutionManager WMan = new ExecutionManager();
 	private Thread runner;
-	int pause = 1000;
+	int pause = 17;
+	Random gen = new Random();
 	Location robotLoc;
 	Location robotPix;
 	//Destination wordt hier ge-set, dit mag niet en is alleen voor testen.
-	Location destination = new Location (10,8);
+	Location destination = new Location (9,13);
+	int load = 1;
+	boolean moving;
 	
 	public OrderPickingPanel(TSPAlgorithm tsp){
 		super();
@@ -78,11 +82,11 @@ public class OrderPickingPanel extends JPanel implements Runnable {
 		
 		//Tekenen robot
 		
-		if(robotLoc != null) g.drawRect(41+(robotLoc.x*20), ((19-robotLoc.y)*20)+1, 18, 18);
+		if(robotPix != null) g.drawRect(robotPix.x, robotPix.y, 18, 18);
 		
 		//Tekenen doel
 		g.setColor(Color.blue);
-		if(destination != null) g.drawRect(42+(destination.x*20), ((19-destination.y)*20)+2, 16, 16);
+		if(destination != null) g.drawRect(62+(destination.x*20), ((19-destination.y)*20)+2, 16, 16);
 		//Ophalen van de gegeven order
 		//TO-DO
 		
@@ -100,19 +104,63 @@ public class OrderPickingPanel extends JPanel implements Runnable {
 			runner.start();
 		}
 	}
-	
 	@Override
 	public void run() {
 		Thread thisThread = Thread.currentThread();
 		robotLoc = new Location (0,0);
+		robotPix.x = 61 + (robotLoc.x * 20);
+		robotPix.y = 1 + ((19 - robotLoc.y) * 20);
+		
 		while (runner == thisThread) {
-			repaint();
-			
 			//Location 1 is de huidige postitie, location2 is het doel.
 			if(robotLoc.getDistanceTo(destination) > 0){
+				int storex = robotLoc.x;
+				int storey = robotLoc.y;
 				move();
-				System.out.println("moved");
+				
+				int compix = 61 + (robotLoc.x * 20);
+				int compiy = 1 + ((19 - robotLoc.y) * 20);
+				if(storex != robotLoc.x){
+					int step = (robotLoc.x - storex) * 4;
+					while(robotPix.x != compix){
+						System.out.println("moving " + step + "...");
+						robotPix.x = robotPix.x + step;
+						repaint();
+						try {
+							Thread.sleep(pause);
+						} catch (InterruptedException e) { }
+					}
+					System.out.println("Finished moving");
+				}
+				if(storey != robotLoc.y){
+					int step = (storey - robotLoc.y) * 4;
+					while(robotPix.y != compiy){
+						System.out.println("moving...");
+						robotPix.y = robotPix.y + step;
+						repaint();
+						try {
+							Thread.sleep(pause);
+						} catch (InterruptedException e) { }
+					}
+					System.out.println("Finished moving");
+				}
+				System.out.println("Ended moving");
+				
 			}
+			else{
+				load++;
+				if(load <= 3){
+					destination.x = gen.nextInt(10);
+					destination.y = gen.nextInt(20);
+					System.out.println("Generated new destination");
+				}
+				else {
+					destination.x = -2;
+					destination.y = 3;
+					load = 0;
+				}
+			}
+			repaint();
 			try {
 				Thread.sleep(pause);
 			} catch (InterruptedException e) { }
@@ -131,29 +179,43 @@ public class OrderPickingPanel extends JPanel implements Runnable {
 	private void move(){
 		int distx = destination.x - robotLoc.x;
 		int disty = destination.y - robotLoc.y;
-		int compy;
-		int compx;
-		
-		if(robotLoc == destination){
-			return;
-		}
-		System.out.println("Coordinaten: " + robotLoc.x + " " + robotLoc.y + " en " + destination.x + " " + destination.y);
+		int compy = 0;
+		int compx = 0;
 		if (disty < 0) compy = disty * -1;
 		else compy = disty;
 		if (distx < 0) compx = distx * -1;
 		else compx = distx;
 		if (compy < compx) {
-			robotLoc.x = robotLoc.x + 1;
-			System.out.println("Moved right");
+			if (distx > 0){
+				robotLoc.x = robotLoc.x + 1;
+				System.out.println("Moved right");
+			}
+			else{
+				robotLoc.x = robotLoc.x -1;
+				System.out.println("Moved left");
+			}
 		}
 		if (compy > compx) {
-			robotLoc.y = robotLoc.y + 1;
-			System.out.println("Moved down");
+			if (disty > 0){
+				//Here, the system claims the robot moved down. This is because it DID move down. The simulation has flipped Y-axis.
+				robotLoc.y = robotLoc.y + 1;
+				System.out.println("Moved down");
+			}
+			else{
+				robotLoc.y = robotLoc.y -1;
+				System.out.println("Moved up");
+			}
 		}
 		if (compy == compx){
-			robotLoc.y = robotLoc.y +1;
-			System.out.println("Moved down");
+			if (disty > 0){
+				robotLoc.y = robotLoc.y + 1;
+				System.out.println("Moved down");
+			}
+			else{
+				robotLoc.y = robotLoc.y -1;
+				System.out.println("Moved up");
+			}
 		}
-		System.out.println("Afstanden: " + compx + " " + compy);
+		System.out.println("Coordinaten: " + robotLoc.x + " " + robotLoc.y + " en " + destination.x + " " + destination.y);
 	}
 }
