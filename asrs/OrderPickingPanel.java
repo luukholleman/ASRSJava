@@ -17,12 +17,16 @@ public class OrderPickingPanel extends JPanel implements Runnable {
 	private Thread runner;
 	int pause = 1000;
 	Location robotLoc;
+	Location robotPix;
+	//Destination wordt hier ge-set, dit mag niet en is alleen voor testen.
 	Location destination = new Location (10,8);
 	
 	public OrderPickingPanel(TSPAlgorithm tsp){
 		super();
 		setSize(300,500);
 		WMan.run(tsp);
+		robotLoc = new Location(0,0);
+		robotPix = new Location(0,0);
 	}
 	@Override
 	public void paintComponent(Graphics g){
@@ -45,7 +49,7 @@ public class OrderPickingPanel extends JPanel implements Runnable {
 		//Aanmaken test gegevens
 		
 		ArrayList<Product> warenhuis = new ArrayList<Product>();
-		Location location1 = new Location(1,1);
+		Location location1 = new Location(0,0);
 		Product product1 = new Product(1, "fiets", 1, 1, location1);
 		
 		Location location2 = new Location(6,2);
@@ -54,7 +58,7 @@ public class OrderPickingPanel extends JPanel implements Runnable {
 		Location location3 = new Location(9,11);
 		Product product3 = new Product(3, "fiets", 1, 8, location3);
 		
-		Location location4 = new Location(10,20);
+		Location location4 = new Location(9,19);
 		Product product4 = new Product(4, "fiets", 1, 10, location4);
 		
 		warenhuis.add(product1);
@@ -66,8 +70,8 @@ public class OrderPickingPanel extends JPanel implements Runnable {
 		
 		for(Product product : warenhuis){
 			Location loc = product.getLocation();
-			if(loc.x <= 20 && loc.y <= 30){
-				g.fillRect(43+(loc.x*20), (loc.y*20)+3, 15, 15);
+			if(loc.x <= 9 && loc.y <=19){
+				g.fillRect(63+(loc.x*20), (loc.y*20)+3, 15, 15);
 			}
 		}
 		
