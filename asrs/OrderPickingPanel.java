@@ -70,6 +70,7 @@ public class OrderPickingPanel extends JPanel implements Runnable {
 		
 		for(Product product : warenhuis){
 			Location loc = product.getLocation();
+			loc.y = 19 - loc.y;
 			if(loc.x <= 9 && loc.y <=19){
 				g.fillRect(63+(loc.x*20), (loc.y*20)+3, 15, 15);
 			}
@@ -77,11 +78,11 @@ public class OrderPickingPanel extends JPanel implements Runnable {
 		
 		//Tekenen robot
 		
-		if(robotLoc != null) g.drawRect(41+(robotLoc.x*20), (robotLoc.y*20)+1, 18, 18);
+		if(robotLoc != null) g.drawRect(41+(robotLoc.x*20), ((19-robotLoc.y)*20)+1, 18, 18);
 		
 		//Tekenen doel
 		g.setColor(Color.blue);
-		if(destination != null) g.drawRect(42+(destination.x*20), (destination.y*20)+2, 16, 16);
+		if(destination != null) g.drawRect(42+(destination.x*20), ((19-destination.y)*20)+2, 16, 16);
 		//Ophalen van de gegeven order
 		//TO-DO
 		
