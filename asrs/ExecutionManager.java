@@ -23,14 +23,22 @@ public class ExecutionManager {
 	}
 	
 	public Byte detectedProduct(Byte red, Byte green, Byte blue){
+		/**
+		 * Oproepen door bppArduino, kleur naar grootte omzetten.
+		 * byte wordt binnummer?
+		 */
 		return null;
 	}
 	
 	public void pickedUpProduct(Integer robotId){
-		
+		/**
+		 * Geeft volgende locatie in een byte[]
+		 */
 	}
 	
 	public void deliveredProduct(Integer robotId){
-		
+		/**
+		 * iets over het product afleveren
+		 */
 	}
 }
