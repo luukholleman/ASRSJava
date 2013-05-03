@@ -58,7 +58,15 @@ public class TwoOpt implements TSPAlgorithm {
 			}
 		}
 		
-		return products;
+		// nu we de goeie volgorde van locaties hebben moeten we weer de juiste producten erbij zoeken
+		ArrayList<Product> newProducts = new ArrayList<Product>();
+		
+		for(Location location : locations)
+			for(Product product : products)
+				if(product.getLocation() == location)
+					newProducts.add(product);
+		
+		return newProducts;
 	}
 	
 	/**
