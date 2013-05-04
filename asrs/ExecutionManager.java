@@ -46,12 +46,24 @@ public class ExecutionManager {
 		/**
 		 * Geeft volgende locatie, tenzij er geen locatie meer is, dan naar binpacker gaan
 		 */
+		if(warehouse.getRobots() == 2){
+			/**
+			 * gebruik de locatie
+			 * Kijk in welk deel van het gesplitste magazijn het ligt
+			 * geef door naar de bot die er over gaat
+			 * geen producten meer, naar binpacker
+			 */
+		} else {
+			/**
+			 * gebruik de locatie
+			 * geef door naar de bot
+			 * geen producten meer, naar binpacker
+			 */
+		}
 	}
 	
 	public void deliveredProduct(Integer robotId){
-		/**
-		 * producten afgeleverd, ga terug naar begin
-		 */
+		warehouse.moveToStart();
 	}
 	
 	
