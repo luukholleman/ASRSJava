@@ -3,7 +3,7 @@ package asrs;
 import tspAlgorithm.TSPAlgorithm;
 import bppAlgorithm.BPPAlgorithm;
 
-public class ExecutionManager {
+public class ExecutionManager implements Warehouse {
 	private Main main;
 	private Order order;
 	private BinManager binManager;
@@ -63,14 +63,11 @@ public class ExecutionManager {
 	}
 	
 	public void deliveredProduct(Integer robotId){
-		warehouse.moveToStart();
+		moveToStart();
 	}
 	
 	
-	
-	/**
-	 * Alle getters
-	 */
+//	Alle getters
 	public Main getMain() {
 		return main;
 	}
@@ -111,5 +108,22 @@ public class ExecutionManager {
 		return useDetectedSize;
 	}
 	
+//	override methods
 	
+	public void retrieveProduct(Location location, Integer robotId){
+		
+	}
+	
+	public void bringToBinPacker(){
+		
+	}
+	
+	public void moveToStart(){
+		
+	}
+	
+	public Integer getRobots(){
+		return null;
+		
+	}
 }

@@ -1,11 +1,11 @@
 package asrs;
 
 public interface Warehouse {
-	public void retrieveProduct(Location location, Integer robotId);
+	public abstract void retrieveProduct(Location location, Integer robotId);
 	
-	public void bringToBinPacker();
+	public abstract void bringToBinPacker();
 	
-	public void moveToStart();
+	public abstract void moveToStart();
 	
-	public Integer getRobots();
+	public abstract Integer getRobots();
 }
