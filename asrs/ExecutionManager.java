@@ -33,9 +33,22 @@ public class ExecutionManager implements Warehouse {
 		}
 		
 		if (getRobots() == 2) {
-			
+			/**
+			 * Split magazijn
+			 * doe de retrieveProduct/pickedUpProduct loop
+			 * bringToBinPacker
+			 * deliveredProduct
+			 * moveToStart
+			 * detectedProduct
+			 */
 		} else {
-			
+			/**
+			 * doe de retrieveProduct/pickedUpProduct loop
+			 * bringToBinPacker
+			 * deliveredProduct
+			 * moveToStart
+			 * detectedProduct
+			 */
 		}
 
 	}
