@@ -16,13 +16,18 @@ import tspAlgorithm.TSPAlgorithm;
 public class OrderPickingPanel extends JPanel implements Runnable {
 	private ExecutionManager WMan = new ExecutionManager();
 	private Thread runner;
-	int pause = 17;
+	
+	//Hier wordt de inhoud van het warehouse opgehaald.
+	private	DBHandler db;
+	private	ArrayList<Location> warenhuis;
+//	private ArrayList<Location> warenhuis = new ArrayList<Location>();
+	int pause = 50;
 	Random gen = new Random();
 	Location robotLoc;
 	Location robotPix;
 	//Destination wordt hier ge-set, dit mag niet en is alleen voor testen.
-	Location destination = new Location (9,13);
-	int load = 1;
+	Location destination;
+	int load = 0;
 	boolean moving;
 	
 	public OrderPickingPanel(TSPAlgorithm tsp){
@@ -31,6 +36,16 @@ public class OrderPickingPanel extends JPanel implements Runnable {
 		WMan.run(tsp);
 		robotLoc = new Location(0,0);
 		robotPix = new Location(0,0);
+		
+		db = new DBHandler();
+		warenhuis = db.getAllOccupiedLocations();
+		
+//		warenhuis.add(new Location(1,1));
+//		warenhuis.add(new Location(2,2));
+//		warenhuis.add(new Location(3,3));
+		
+		destination = warenhuis.get(gen.nextInt(warenhuis.size()));
+		
 	}
 	@Override
 	public void paintComponent(Graphics g){
@@ -46,35 +61,14 @@ public class OrderPickingPanel extends JPanel implements Runnable {
 			}
 		}
 		
-		//Hier wordt de inhoud van het warehouse opgehaald.
-//		DBHandler db = new DBHandler();
-//		ArrayList<Location> locations = db.getAllOccupiedLocations();
 		
-		//Aanmaken test gegevens
-		
-		ArrayList<Product> warenhuis = new ArrayList<Product>();
-		Location location1 = new Location(0,0);
-		Product product1 = new Product(1, "fiets", 1, 1, location1);
-		
-		Location location2 = new Location(6,2);
-		Product product2 = new Product(2, "fiets", 1, 5, location2);
-		
-		Location location3 = new Location(9,11);
-		Product product3 = new Product(3, "fiets", 1, 8, location3);
-		
-		Location location4 = new Location(9,19);
-		Product product4 = new Product(4, "fiets", 1, 10, location4);
-		
-		warenhuis.add(product1);
-		warenhuis.add(product2);
-		warenhuis.add(product3);
-		warenhuis.add(product4);
 		
 		//Tekenen van de producten in het warenhuis
 		
-		for(Product product : warenhuis){
-			Location loc = product.getLocation();
-			loc.y = 19 - loc.y;
+		for(Location location : warenhuis){
+			Location loc = new Location(0,0);
+			loc.y = 19 - location.y;
+			loc.x = location.x;
 			if(loc.x <= 9 && loc.y <=19){
 				g.fillRect(63+(loc.x*20), (loc.y*20)+3, 15, 15);
 			}
@@ -82,20 +76,19 @@ public class OrderPickingPanel extends JPanel implements Runnable {
 		
 		//Tekenen robot
 		
-		if(robotPix != null) g.drawRect(robotPix.x, robotPix.y, 18, 18);
+		g.drawLine(0, 420, 260, 420);
+		if(robotPix != null){
+			g.drawRect(robotPix.x, robotPix.y, 18, 18);
+			g.drawLine(robotPix.x-1, robotPix.y, robotPix.x-1, 420);
+			g.drawLine(robotPix.x+19, robotPix.y, robotPix.x+19, 420);
+		}
+		if(load == 1) g.fillRect(robotPix.x+5, robotPix.y+5, 8, 8);
+		if(load == 2) g.fillRect(robotPix.x+3, robotPix.y+3, 12, 12);
+		if(load == 3) g.fillRect(robotPix.x+1, robotPix.y+1, 17, 17);
 		
 		//Tekenen doel
 		g.setColor(Color.blue);
 		if(destination != null) g.drawRect(62+(destination.x*20), ((19-destination.y)*20)+2, 16, 16);
-		//Ophalen van de gegeven order
-		//TO-DO
-		
-		//Testgegevens
-		
-//		ArrayList<Product> order = new ArrayList<Product>();
-//		order.add(product1);
-//		order.add(product2);
-//		order.add(product3);
 	}
 	
 	public void start(){
@@ -110,61 +103,27 @@ public class OrderPickingPanel extends JPanel implements Runnable {
 		robotLoc = new Location (0,0);
 		robotPix.x = 61 + (robotLoc.x * 20);
 		robotPix.y = 1 + ((19 - robotLoc.y) * 20);
-		
 		while (runner == thisThread) {
 			//Location 1 is de huidige postitie, location2 is het doel.
-			if(robotLoc.getDistanceTo(destination) > 0){
-				int storex = robotLoc.x;
-				int storey = robotLoc.y;
+			if(robotLoc.getDistanceTo(destination) != 0){
 				move();
-				
-				int compix = 61 + (robotLoc.x * 20);
-				int compiy = 1 + ((19 - robotLoc.y) * 20);
-				if(storex != robotLoc.x){
-					int step = (robotLoc.x - storex) * 4;
-					while(robotPix.x != compix){
-						System.out.println("moving " + step + "...");
-						robotPix.x = robotPix.x + step;
-						repaint();
-						try {
-							Thread.sleep(pause);
-						} catch (InterruptedException e) { }
-					}
-					System.out.println("Finished moving");
-				}
-				if(storey != robotLoc.y){
-					int step = (storey - robotLoc.y) * 4;
-					while(robotPix.y != compiy){
-						System.out.println("moving...");
-						robotPix.y = robotPix.y + step;
-						repaint();
-						try {
-							Thread.sleep(pause);
-						} catch (InterruptedException e) { }
-					}
-					System.out.println("Finished moving");
-				}
-				System.out.println("Ended moving");
-				
-			}
-			else{
-				load++;
-				if(load <= 3){
-					destination.x = gen.nextInt(10);
-					destination.y = gen.nextInt(20);
-					System.out.println("Generated new destination");
+				if(load == 3) load = 0;
+				else load++;
+				warenhuis.remove(destination);
+				if(load < 3 && warenhuis.size() > 0){
+					frame(1000);
+					destination = warenhuis.get(gen.nextInt(warenhuis.size()));
+					repaint();
+					
 				}
 				else {
+					frame(1000);
 					destination.x = -2;
 					destination.y = 3;
-					load = 0;
 				}
+				
 			}
-			repaint();
-			try {
-				Thread.sleep(pause);
-			} catch (InterruptedException e) { }
-//			stop();
+			frame();
 			
 		}
 	}
@@ -177,45 +136,30 @@ public class OrderPickingPanel extends JPanel implements Runnable {
 	}
 	
 	private void move(){
-		int distx = destination.x - robotLoc.x;
-		int disty = destination.y - robotLoc.y;
-		int compy = 0;
-		int compx = 0;
-		if (disty < 0) compy = disty * -1;
-		else compy = disty;
-		if (distx < 0) compx = distx * -1;
-		else compx = distx;
-		if (compy < compx) {
-			if (distx > 0){
-				robotLoc.x = robotLoc.x + 1;
-				System.out.println("Moved right");
-			}
-			else{
-				robotLoc.x = robotLoc.x -1;
-				System.out.println("Moved left");
-			}
+		int stepx = destination.x - robotLoc.x;
+		int stepy = destination.y - robotLoc.y;
+		robotPix.x = 61 + (robotLoc.x * 20);
+		robotPix.y = 1 + ((19 - robotLoc.y) * 20);
+		
+		robotLoc.x = destination.x;
+		robotLoc.y = destination.y;
+		for(int i = 0 ; i < 20 ; i++){
+			robotPix.x = robotPix.x + stepx;
+			robotPix.y = robotPix.y - stepy;
+			repaint();
+			frame();
 		}
-		if (compy > compx) {
-			if (disty > 0){
-				//Here, the system claims the robot moved down. This is because it DID move down. The simulation has flipped Y-axis.
-				robotLoc.y = robotLoc.y + 1;
-				System.out.println("Moved down");
-			}
-			else{
-				robotLoc.y = robotLoc.y -1;
-				System.out.println("Moved up");
-			}
-		}
-		if (compy == compx){
-			if (disty > 0){
-				robotLoc.y = robotLoc.y + 1;
-				System.out.println("Moved down");
-			}
-			else{
-				robotLoc.y = robotLoc.y -1;
-				System.out.println("Moved up");
-			}
-		}
-		System.out.println("Coordinaten: " + robotLoc.x + " " + robotLoc.y + " en " + destination.x + " " + destination.y);
+	}
+	
+	private void frame(){
+		try {
+			Thread.sleep(pause);
+		} catch (InterruptedException e) { }
+	}
+	
+	private void frame(int pause){
+		try {
+			Thread.sleep(pause);
+		} catch (InterruptedException e) { }
 	}
 }

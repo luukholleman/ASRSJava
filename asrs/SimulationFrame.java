@@ -9,6 +9,7 @@ import bppAlgorithm.BPPAlgorithm;
 
 public class SimulationFrame extends JFrame {
 	private OrderPickingPanel OPPanel;
+	private BinPackingPanel BPPanel;
 //	private BinPackingPanel BPPanel;
 	
 	public SimulationFrame(BPPAlgorithm bpp, TSPAlgorithm tsp){
@@ -19,9 +20,16 @@ public class SimulationFrame extends JFrame {
 		setSize(800,500);
 		
 		OPPanel = new OrderPickingPanel(tsp);
-		OPPanel.setPreferredSize(new Dimension(400, 500));
+		OPPanel.setPreferredSize(new Dimension(350, 500));
 		add(OPPanel);
 		OPPanel.start();
+		
+		BPPanel = new BinPackingPanel(bpp);
+		BPPanel.setPreferredSize(new Dimension(350, 500));
+		add(BPPanel);
+		BPPanel.start();
+		
+		
 		
 		revalidate();
 	}
