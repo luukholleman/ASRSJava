@@ -13,8 +13,8 @@ public class BinPackingPanel extends JPanel implements Runnable {
 	private Thread runner;
 	private int lines[];
 	
-	
-	public BinPackingPanel(BPPAlgorithm bpp){
+	//Constructor
+	public BinPackingPanel(){
 		super();
 		setSize(300,500);
 		lines = new int[13];
@@ -33,19 +33,33 @@ public class BinPackingPanel extends JPanel implements Runnable {
 		
 		g.setColor(Color.BLACK);
 		
-		//Hier wordt de BinPacking robot (blok) en het magazijn getekend.
+		//Hier wordt de BinPacking robot en alle bins getekent
+		
+		//Dit is de lopende band
 		g.drawRect(100, 240, 100, 260);
+		
+		//Dit zijn de bins
 		g.drawRect(0, 200, 75, 75);
 		g.drawRect(225, 200, 75, 75);
-		g.drawRect(0, 0, 300, 150);
 		g.drawString("1/5", 30, 240);
 		g.drawString("1/5", 255, 240);
+		
+		//Dit is de overflow box
+		g.drawRect(0, 0, 300, 150);
 		g.drawString("1/inf", 145, 70);
+		
+		//Tekent de lijntjes van de lopende band.
 		for(int line : lines){
 			g.drawLine(100, line, 200, line);
 		}		
 	}
 	
+	/**
+	 * Begint de thread om de animatie te laten lopen
+	 * 
+	 * @param void
+	 * @return void
+	 */
 	public void start(){
 		if (runner == null){
 			runner = new Thread(this);
@@ -53,9 +67,17 @@ public class BinPackingPanel extends JPanel implements Runnable {
 		}
 	}
 	
+	/**
+	 * Laat de animatie afspelen
+	 * 
+	 * @param void
+	 * @return void
+	 */
 	@Override
 	public void run() {
 		while (runner != null){
+			
+			//Hier worden de lines per frame 1 pixel omhoog bewogen
 			for(int i = 0 ; i < 13 ; i++){
 				if(lines[i] > 240){
 					lines[i]--;
@@ -70,12 +92,24 @@ public class BinPackingPanel extends JPanel implements Runnable {
 		
 	}
 	
+	/**
+	 * Stop the animation for 25 milliseconds
+	 * 
+	 * @param void
+	 * @return void
+	 */
 	private void frame(){
 		try {
 			Thread.sleep(25);
 		} catch (InterruptedException e) { }
 	}
 	
+	/**
+	 * Stop the animation for given amount of milliseconds
+	 * 
+	 * @param ArrayList<Product>
+	 * @return ArrayList<Product>
+	 */
 	private void frame(int pause){
 		try {
 			Thread.sleep(pause);

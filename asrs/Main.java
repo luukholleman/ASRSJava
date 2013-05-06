@@ -116,6 +116,8 @@ public class Main extends JFrame implements XMLUploadedListener, ExecuteButtonPr
 	public void simulatePressed(BPPAlgorithm bpp, TSPAlgorithm tsp) {
 		SimulationFrame frame = new SimulationFrame(bpp, tsp);
 		frame.setVisible(true);
+		
+		//TO-DO create new EM
 	}
 
 	@Override
