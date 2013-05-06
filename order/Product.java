@@ -1,6 +1,6 @@
 package order;
 
-import asrs.Location;
+import asrs.DBHandler;
 
 public class Product {
 	private int id;
@@ -18,6 +18,9 @@ public class Product {
 		this.status = "";
 		this.size = size;
 		this.location = location;
+		
+		DBHandler db = new DBHandler();
+		db.getProductDatabaseInfo(this);
 	}
 
 	public int getId() {
@@ -44,7 +47,15 @@ public class Product {
 		return size;
 	}
 
+	public void setSize(int size) {
+		this.size = size;
+	}
+
 	public Location getLocation() {
 		return location;
+	}
+
+	public void setLocation(Location location) {
+		this.location = location;
 	}
 }
