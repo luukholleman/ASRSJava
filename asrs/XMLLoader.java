@@ -5,7 +5,6 @@ import order.Customer;
 import org.jdom2.*;
 import org.jdom2.input.SAXBuilder;
 
-
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
@@ -35,20 +34,27 @@ public class XMLLoader {
 			System.out.println(totalPrice);
 		   
 			// Get customer from XML
-			int customerid = Integer.parseInt(rootNode.getChildText("customernumber"));
+			int customerId = Integer.parseInt(rootNode.getChildText("customernumber"));
 			String customername = rootNode.getChildText("customername");
-			Customer customer = new Customer(customerid, customername);
+			Customer customer = new Customer(customerId, customername);
 			System.out.println(customername);
 			
-			List list = rootNode.getChildren("product");
+			// Build order
+			order = new Order(date, totalPrice, customer);
 			
+			// Get products
+			List list = rootNode.getChildren("product");
 			for (int i = 0; i < list.size(); i++) {
 				
 				Element node = (Element) list.get(i);
-				
+				int productId = Integer.parseInt(node.getChildText("productnumber"));
+				String description = node.getChildText("description");
+				float price = Float.parseFloat(node.getChildText("price"));
+				int size = 0;
+				Location location = new Location(0, 0);
+				Product product = new Product(productId, description, price, size, location);
+				order.addProduct(product);
 			}
-			
-			order = new Order(date, totalPrice, customer);
 		}
 		
 		catch (IOException io) {
