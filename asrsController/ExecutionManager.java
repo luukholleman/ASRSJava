@@ -20,21 +20,41 @@ public class ExecutionManager{
 	private int height;
 	private Boolean useDetectedSize;
 	private int load = 0;
+	private Robot[] robots;
 	
-	private ArrayList<Location> locations = new ArrayList<Location>();
-
 	public ExecutionManager(Main main, Order order, BinManager binManager,
 			Warehouse warehouse, BinPacking binPacking,
 			TSPAlgorithm tspAlgorithm, BPPAlgorithm bppAlgorithm,
 			int width, int height, Boolean useDetectedSize) {
 		
-		ArrayList<Product> products = order.getProducts();
-		products = tspAlgorithm.calculateRoute(products);
+		this.main = main;
+		this.order = order;
+		this.binManager = binManager;
+		this.warehouse = warehouse;
+		this.binPacking = binPacking;
+		this.tspAlgorithm = tspAlgorithm;
+		this.bppAlgorithm = bppAlgorithm;
+		this.width = width;
+		this.height = height;
+		this.useDetectedSize = useDetectedSize;
 		
-		for(Product product : products)
-			locations.add(product.getLocation());
-				
-		if (warehouse.getRobots() == 2) {
+		robots = new Robot[warehouse.getRobots()];
+		for(int r=0; r < warehouse.getRobots(); r++){
+			ArrayList<Product> products = new ArrayList<Product>();
+			for(Product p : order.getProducts()){
+				int cols = width / warehouse.getRobots();
+				if(p.getLocation().x >= cols * r && p.getLocation().x < cols * (r + 1)){
+					products.add(p);
+				}
+			}
+			products = tspAlgorithm.calculateRoute(products);
+			robots[r] = new Robot(warehouse.getStartLocation(r), products);
+			
+			
+		}
+		
+		
+
 			/*
 			 * Split magazijn
 			 * doe de retrieveProduct/pickedUpProduct/bringToBinPacker loop
@@ -42,14 +62,6 @@ public class ExecutionManager{
 			 * moveToStart
 			 * detectedProduct
 			 */
-		} else {
-			/*
-			 * doe de retrieveProduct/pickedUpProduct/bringToBinPacker loop
-			 * deliveredProduct
-			 * moveToStart
-			 * detectedProduct
-			 */
-		}
 
 	}
 
@@ -60,12 +72,13 @@ public class ExecutionManager{
 		 */
 		return null;
 	}
-
+	
 	public Location pickedUpProduct(int robotId) {
 		/*
 		 * Geeft volgende locatie, tenzij er geen locatie meer is, 
 		 * Dan bringToBinPacker() aanroepen
 		 */
+		
 		return null;
 	}
 
