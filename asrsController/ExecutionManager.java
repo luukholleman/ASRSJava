@@ -6,6 +6,7 @@ import order.*;
 import tspAlgorithm.TSPAlgorithm;
 import asrs.*;
 import bppAlgorithm.BPPAlgorithm;
+import bppAlgorithm.BinManager;
 
 public class ExecutionManager implements Warehouse {
 	private Main main;
