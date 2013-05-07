@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import order.Product;
-import asrs.Bin;
 
 public class AlmostWorstFit implements BPPAlgorithm {
 	public static String name = "Almost Worst Fit";

@@ -6,7 +6,6 @@ package bppAlgorithm;
 
 import java.util.ArrayList;
 
-import asrs.Bin;
 import order.Product;
 
 public class Circulate implements BPPAlgorithm {
