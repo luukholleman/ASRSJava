@@ -50,6 +50,10 @@ public class ExecutionManager{
 			products = tspAlgorithm.calculateRoute(products);
 			robots[r] = new Robot(warehouse.getStartLocation(r), products);
 			
+			Product nextProduct = robots[r].getNextProduct();
+			if(nextProduct != null)
+				warehouse.retrieveProduct(nextProduct.getLocation(), r);
+			
 			
 		}
 		
@@ -78,7 +82,9 @@ public class ExecutionManager{
 		 * Geeft volgende locatie, tenzij er geen locatie meer is, 
 		 * Dan bringToBinPacker() aanroepen
 		 */
-		
+		Product nextProduct = robots[r].getNextProduct();
+		if(nextProduct != null)
+			warehouse.retrieveProduct(nextProduct.getLocation(), r);
 		return null;
 	}
 
