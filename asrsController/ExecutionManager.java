@@ -1,13 +1,13 @@
-package simulation;
+package asrsController;
 
 import java.util.ArrayList;
 
-import asrs.Location;
+import order.Location;
 
 import tspAlgorithm.TSPAlgorithm;
 import order.Product;
 
-public class WarehouseSimulatorManager {
+public class ExecutionManager {
 	private ArrayList<Product> route;
 	
 	public void run(TSPAlgorithm algorithm){
