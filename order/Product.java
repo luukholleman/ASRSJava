@@ -1,6 +1,7 @@
 package order;
 
 import asrs.DBHandler;
+import asrs.ProductNotFoundException;
 
 public class Product {
 	private int id;
@@ -10,17 +11,13 @@ public class Product {
 	private int size;
 	private Location location;
 
-	public Product(int id, String description, float price, int size,
-			Location location) {
+	public Product(int id, String description, float price) throws ProductNotFoundException {
 		this.id = id;
 		this.description = description;
 		this.price = price;
 		this.status = "";
-		this.size = size;
-		this.location = location;
 		
-		DBHandler db = new DBHandler();
-		db.getProductDatabaseInfo(this);
+		DBHandler.getProductDatabaseInfo(this);
 	}
 
 	public int getId() {

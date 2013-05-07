@@ -13,7 +13,7 @@ import java.util.*;
 
 public class XMLLoader {
 	
-	public static Order readOrder(String path){
+	public static Order readOrder(String path) throws ProductNotFoundException{
 		
 		SAXBuilder builder = new SAXBuilder();
 		File xmlFile = new File(path);
@@ -50,9 +50,7 @@ public class XMLLoader {
 				int productId = Integer.parseInt(node.getChildText("productnumber"));
 				String description = node.getChildText("description");
 				float price = Float.parseFloat(node.getChildText("price"));
-				int size = 0;
-				Location location = new Location(0, 0);
-				Product product = new Product(productId, description, price, size, location);
+				Product product = new Product(productId, description, price);
 				order.addProduct(product);
 			}
 		}
