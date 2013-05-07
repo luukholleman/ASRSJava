@@ -35,7 +35,7 @@ public class Circulate implements BPPAlgorithm {
 		*/
 		Bin binmin = null;
 		for (Bin bin : bins){
-			if(binmin == null && (bin.getSize()-bin.getFilled()) >= product.getSize() || bin.getFilled() < binmin.getFilled() && (bin.getSize()-bin.getFilled()) >= product.getSize()){
+			if((binmin == null && (bin.getSize()-bin.getFilled()) >= product.getSize()) || (bin.getFilled() < binmin.getFilled() && (bin.getSize()-bin.getFilled()) >= product.getSize())){
 				binmin = bin;
 			}
 		}		
