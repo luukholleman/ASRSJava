@@ -8,7 +8,7 @@ import asrs.*;
 import bppAlgorithm.BPPAlgorithm;
 import bppAlgorithm.BinManager;
 
-public class ExecutionManager implements Warehouse {
+public class ExecutionManager{
 	private Main main;
 	private Order order;
 	private BinManager binManager;
@@ -16,34 +16,35 @@ public class ExecutionManager implements Warehouse {
 	private BinPacking binPacking;
 	private TSPAlgorithm tspAlgorithm;
 	private BPPAlgorithm bppAlgorithm;
-	private Integer width;
-	private Integer height;
+	private int width;
+	private int height;
 	private Boolean useDetectedSize;
+	private int load = 0;
+	
+	private ArrayList<Location> locations = new ArrayList<Location>();
 
 	public ExecutionManager(Main main, Order order, BinManager binManager,
 			Warehouse warehouse, BinPacking binPacking,
 			TSPAlgorithm tspAlgorithm, BPPAlgorithm bppAlgorithm,
-			Integer width, Integer height, Boolean useDetectedSize) {
+			int width, int height, Boolean useDetectedSize) {
 		
 		ArrayList<Product> products = order.getProducts();
+		products = tspAlgorithm.calculateRoute(products);
 		
-		for(Product product : products){
-			product.getLocation();
-		}
-		
-		if (getRobots() == 2) {
+		for(Product product : products)
+			locations.add(product.getLocation());
+				
+		if (warehouse.getRobots() == 2) {
 			/*
 			 * Split magazijn
-			 * doe de retrieveProduct/pickedUpProduct loop
-			 * bringToBinPacker
+			 * doe de retrieveProduct/pickedUpProduct/bringToBinPacker loop
 			 * deliveredProduct
 			 * moveToStart
 			 * detectedProduct
 			 */
 		} else {
 			/*
-			 * doe de retrieveProduct/pickedUpProduct loop
-			 * bringToBinPacker
+			 * doe de retrieveProduct/pickedUpProduct/bringToBinPacker loop
 			 * deliveredProduct
 			 * moveToStart
 			 * detectedProduct
@@ -60,41 +61,17 @@ public class ExecutionManager implements Warehouse {
 		return null;
 	}
 
-	public void pickedUpProduct(Integer robotId) {
+	public Location pickedUpProduct(int robotId) {
 		/*
 		 * Geeft volgende locatie, tenzij er geen locatie meer is, 
 		 * Dan bringToBinPacker() aanroepen
 		 */
+		return null;
 	}
 
 	public void deliveredProduct(Integer robotId) {
-		moveToStart(robotId);
+		warehouse.moveToStart(robotId);
 	}
-
-// Interface Methods
-	
-	public void retrieveProduct(Location location, Integer robotId) {
-		//Code die de juiste robot het product laat halen van de locatie
-	}
-
-	public void bringToBinPacker() {
-		//Code die de robot naar de binpacker stuurt
-	}
-
-	public void moveToStart(Integer robotId) {
-		//code die de robot terug stuurt naar het begin
-	}
-
-	public Integer getRobots() {
-		// Code die het aantal robots ophaalt
-		return // robotAmount
-				null;
-	}
-
-
-
-
-
 
 	// Alle getters
 	public Main getMain() {
@@ -125,15 +102,19 @@ public class ExecutionManager implements Warehouse {
 		return bppAlgorithm;
 	}
 
-	public Integer getWidth() {
+	public int getWidth() {
 		return width;
 	}
 
-	public Integer getHeight() {
+	public int getHeight() {
 		return height;
 	}
 
 	public Boolean getUseDetectedSize() {
 		return useDetectedSize;
+	}
+	
+	public int getLoad(){
+		return load;
 	}
 }
