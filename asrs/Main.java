@@ -1,11 +1,15 @@
 package asrs;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
+
+import order.Order;
+import order.Product;
 
 import tspAlgorithm.TSPAlgorithm;
 import asrsController.ExecutionManager;
@@ -31,6 +35,8 @@ public class Main extends JFrame implements XMLUploadedListener, ExecuteButtonPr
 	private ExecutionPanel executionPanel = new ExecutionPanel();
 	private CustomerPanel customerPanel = new CustomerPanel();
 	private OrderPanel orderPanel = new OrderPanel();
+	
+	private Order order;
 
 	/**
 	 * @param args
@@ -105,12 +111,14 @@ public class Main extends JFrame implements XMLUploadedListener, ExecuteButtonPr
 
 	@Override
 	public void xmlUploaded(String xmlFileLocation) {
-//		Order order = XMLLoader.readOrder(xmlFileLocation);
-//		
-//		customerPanel.setCustomerId(order.getCustomer().getId());
-//		customerPanel.setCustomerName(order.getCustomer().getName());
-//		customerPanel.setDate(order.getDate());
-//		customerPanel.setTotalPrice(order.getTotalPrice());
+		order = XMLLoader.readOrder(xmlFileLocation);
+		
+		customerPanel.setCustomerId(order.getCustomer().getId());
+		customerPanel.setCustomerName(order.getCustomer().getName());
+		customerPanel.setDate(order.getDate());
+		customerPanel.setTotalPrice(order.getTotalPrice());
+		
+		orderPanel.setOrder(order);
 	}
 
 	@Override
