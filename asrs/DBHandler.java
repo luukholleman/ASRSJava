@@ -58,7 +58,7 @@ public class DBHandler {
 			e.printStackTrace();
 		}
 	}
-	public static ArrayList<Location> getAllOccupiedLocations()
+	public static ArrayList<Location> getAllOccupiedLocations() throws DatabaseConnectionFailedException
 	{
 		//Geen verbinding? Doe niks
 		if(dbConnection == null)
@@ -81,7 +81,7 @@ public class DBHandler {
 	    }
 	    catch (SQLException ex)
 	    {
-	    	ex.printStackTrace();
+	    	throw new DatabaseConnectionFailedException("Kan niet met de database verbinden(SQL error).");
 	    }
 	    return locs;
 	}
