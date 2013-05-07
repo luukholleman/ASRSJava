@@ -1,4 +1,4 @@
-package asrs;
+package bppAlgorithm;
 
 public class Bin {
 	private int size;

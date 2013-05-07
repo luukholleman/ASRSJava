@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 
 import order.Product;
-import asrs.Bin;
 
 public class FirstFit implements BPPAlgorithm {
 	public static String name = "First Fit";
