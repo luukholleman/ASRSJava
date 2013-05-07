@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 
 import tspAlgorithm.TSPAlgorithm;
+import asrsController.ExecutionManager;
 import bppAlgorithm.BPPAlgorithm;
 
 import listener.XMLUploadedListener;
@@ -114,7 +115,8 @@ public class Main extends JFrame implements XMLUploadedListener, ExecuteButtonPr
 
 	@Override
 	public void simulatePressed(BPPAlgorithm bpp, TSPAlgorithm tsp) {
-		SimulationFrame frame = new SimulationFrame(bpp, tsp);
+		ExecutionManager EM = new ExecutionManager();
+		SimulationFrame frame = new SimulationFrame(bpp, tsp, EM);
 		frame.setVisible(true);
 		
 		//TO-DO create new EM

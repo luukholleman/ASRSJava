@@ -4,6 +4,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import order.Location;
@@ -30,10 +31,11 @@ public class OrderPickingPanel extends JPanel implements Runnable {
 		setSize(300,500);
 		robotLoc = new Location(0,0);
 		robotPix = new Location(0,0);
-		
-		DBHandler db = new DBHandler();
-		warenhuis = db.getAllOccupiedLocations();
-		
+		try {
+			warenhuis = DBHandler.getAllOccupiedLocations();
+		} catch (DatabaseConnectionFailedException e){
+			JOptionPane.showMessageDialog(this, "Kan geen verbinding maken met de database.");
+		}
 		gen = new Random();
 		destination = warenhuis.get(gen.nextInt(warenhuis.size()));
 	}
