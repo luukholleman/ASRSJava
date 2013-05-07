@@ -1,7 +1,6 @@
 package asrs;
 
 import java.awt.Dimension;
-import java.util.Date;
 import java.util.LinkedList;
 
 import javax.swing.BorderFactory;
@@ -9,8 +8,6 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
-import order.Customer;
-import order.Location;
 import order.Order;
 import order.Product;
 
