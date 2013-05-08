@@ -19,7 +19,6 @@ public class AlmostWorstFit implements BPPAlgorithm {
 
 	@Override
 	public Bin calculateBin(Product product, ArrayList<Bin> bins) {
-		
 		//Sorteer de bins in op volgorde van veel inhoud naar weinig inhoud
 		Collections.sort(bins, new Comparator<Bin>() {
 			public int compare(Bin one, Bin two) {
@@ -27,11 +26,16 @@ public class AlmostWorstFit implements BPPAlgorithm {
 						.compareTo(two.getSize() - two.getFilled());
 			}
 		});
+		ArrayList<Bin> possibleBins = new ArrayList<Bin>();
+		for(Bin bin : bins){
+			if ((bin.getSize()-bin.getFilled()) >= product.getSize())
+				possibleBins.add(bin);
+		}
 		//Verwijder de bin met de meeste ruimte
-		bins.remove(bins.size()-1);
+		possibleBins.remove(bins.size()-1);
 		//Return de bin die daarna de meeste ruimte heeft
-		Bin bin = bins.get(bins.size()-1);
-		return bin;
+		Bin fittingBin = possibleBins.get(bins.size()-1);
+		return fittingBin;
 	}
 
 }
