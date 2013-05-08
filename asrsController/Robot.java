@@ -1,15 +1,19 @@
 package asrsController;
 
+import java.util.ArrayList;
+
 import order.Location;
+import order.Product;
 
 public class Robot {
 	private Location currentLocation;
-	private Location goalLocation;
-	private int load;
+	private ArrayList<Product> products;
+	public ArrayList<Product> productsOnFork;
 	
-	public Robot(){
-		setCurrentLocation(new Location(0,0));
-		setGoalLocation(new Location(0,0));
+	public Robot(Location startLocation, ArrayList<Product> products){
+		setCurrentLocation(startLocation);		
+		this.products = products;
+		productsOnFork = new ArrayList<Product>();
 	}
 
 	public Location getCurrentLocation() {
@@ -19,20 +23,14 @@ public class Robot {
 	public void setCurrentLocation(Location currentLocation) {
 		this.currentLocation = currentLocation;
 	}
-
-	public Location getGoalLocation() {
-		return goalLocation;
-	}
-
-	public void setGoalLocation(Location goalLocation) {
-		this.goalLocation = goalLocation;
-	}
-
-	private int getLoad() {
-		return load;
-	}
-
-	private void setLoad(int load) {
-		this.load = load;
+	
+	public Product getNextProduct(){
+		if(products.size() ==0){
+			return null;
+		}
+		Product nextProduct = products.get(0);
+		products.remove(0);
+		productsOnFork.add(nextProduct);
+		return nextProduct;
 	}
 }

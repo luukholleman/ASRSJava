@@ -5,10 +5,9 @@ import java.util.ArrayList;
 import order.*;
 import tspAlgorithm.TSPAlgorithm;
 import asrs.*;
-import bppAlgorithm.BPPAlgorithm;
-import bppAlgorithm.BinManager;
+import bppAlgorithm.*;
 
-public class ExecutionManager{
+public class ExecutionManager {
 	private Main main;
 	private Order order;
 	private BinManager binManager;
@@ -20,56 +19,99 @@ public class ExecutionManager{
 	private int height;
 	private Boolean useDetectedSize;
 	private int load = 0;
-	
-	private ArrayList<Location> locations = new ArrayList<Location>();
+	private Robot[] robots;
+	private ArrayList<Product> bppProducts = new ArrayList<Product>();
 
+	/**
+	 * 
+	 * @param main
+	 * @param order
+	 * @param binManager
+	 * @param warehouse
+	 * @param binPacking
+	 * @param tspAlgorithm
+	 * @param bppAlgorithm
+	 * @param width
+	 * @param height
+	 * @param useDetectedSize
+	 */
 	public ExecutionManager(Main main, Order order, BinManager binManager,
 			Warehouse warehouse, BinPacking binPacking,
-			TSPAlgorithm tspAlgorithm, BPPAlgorithm bppAlgorithm,
-			int width, int height, Boolean useDetectedSize) {
-		
-		ArrayList<Product> products = order.getProducts();
-		products = tspAlgorithm.calculateRoute(products);
-		
-		for(Product product : products)
-			locations.add(product.getLocation());
-				
-		if (warehouse.getRobots() == 2) {
-			/*
-			 * Split magazijn
-			 * doe de retrieveProduct/pickedUpProduct/bringToBinPacker loop
-			 * deliveredProduct
-			 * moveToStart
-			 * detectedProduct
-			 */
-		} else {
-			/*
-			 * doe de retrieveProduct/pickedUpProduct/bringToBinPacker loop
-			 * deliveredProduct
-			 * moveToStart
-			 * detectedProduct
-			 */
+			TSPAlgorithm tspAlgorithm, BPPAlgorithm bppAlgorithm, int width,
+			int height, Boolean useDetectedSize) {
+
+		this.main = main;
+		this.order = order;
+		this.binManager = binManager;
+		this.warehouse = warehouse;
+		this.binPacking = binPacking;
+		this.tspAlgorithm = tspAlgorithm;
+		this.bppAlgorithm = bppAlgorithm;
+		this.width = width;
+		this.height = height;
+		this.useDetectedSize = useDetectedSize;
+
+		robots = new Robot[warehouse.getRobots()];
+		for (int r = 0; r < warehouse.getRobots(); r++) {
+			ArrayList<Product> products = new ArrayList<Product>();
+			for (Product p : order.getProducts()) {
+				int cols = width / warehouse.getRobots();
+				if (p.getLocation().x >= cols * r
+						&& p.getLocation().x < cols * (r + 1)) {
+					products.add(p);
+				}
+			}
+			products = tspAlgorithm.calculateRoute(products);
+			robots[r] = new Robot(warehouse.getStartLocation(r), products);
+
+			Product nextProduct = robots[r].getNextProduct();
+			if (nextProduct != null)
+				warehouse.retrieveProduct(nextProduct.getLocation(), r);
 		}
-
 	}
 
+	/**
+	 * Wordt opgeroepen door bppArduino, zet de kleur om naar een grootte, of gebruikt het products zijn opgeslagen grootte.
+	 * 
+	 * @param red
+	 * @param green
+	 * @param blue
+	 * @return binIndex
+	 */
 	public Byte detectedProduct(Byte red, Byte green, Byte blue) {
-		/*
-		 * Oproepen door bppArduino, kleur naar grootte omzetten. byte wordt
-		 * binnummer-1 (0 is bin 1, 1 is bin 2, etc.)
-		 */
-		return null;
+		int size;
+		if (useDetectedSize) {
+			bppProducts.remove(0);
+			return 0;
+		} else {
+			Bin bin = bppAlgorithm.calculateBin(bppProducts.get(0),
+					binManager.bins);
+			bppProducts.remove(0);
+			return (byte) binManager.bins.indexOf(bin);
+		}
 	}
 
-	public Location pickedUpProduct(int robotId) {
-		/*
-		 * Geeft volgende locatie, tenzij er geen locatie meer is, 
-		 * Dan bringToBinPacker() aanroepen
-		 */
-		return null;
+	/**
+	 * Geeft volgende locatie, tenzij er geen locatie meer is, Dan bringToBinPacker() aanroepen.
+	 * 
+	 * @param robotId
+	 */
+	public void pickedUpProduct(int robotId) {
+		Product nextProduct = robots[robotId].getNextProduct();
+		if (nextProduct != null)
+			warehouse.retrieveProduct(nextProduct.getLocation(), robotId);
+		else
+			warehouse.bringToBinPacker();
 	}
 
+	/**
+	 * Wordt aangeroepen nadat de producten af geleverd zijn door de robot.
+	 * 
+	 * @param robotId
+	 */
 	public void deliveredProduct(Integer robotId) {
+		bppProducts.addAll(robots[robotId].productsOnFork);
+		robots[robotId].productsOnFork.clear();
 		warehouse.moveToStart(robotId);
 	}
 
@@ -113,8 +155,8 @@ public class ExecutionManager{
 	public Boolean getUseDetectedSize() {
 		return useDetectedSize;
 	}
-	
-	public int getLoad(){
+
+	public int getLoad() {
 		return load;
 	}
 }
