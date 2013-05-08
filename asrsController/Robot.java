@@ -8,7 +8,7 @@ import order.Product;
 public class Robot {
 	private Location currentLocation;
 	private ArrayList<Product> products;
-	private ArrayList<Product> productsOnFork;
+	public ArrayList<Product> productsOnFork;
 	
 	public Robot(Location startLocation, ArrayList<Product> products){
 		setCurrentLocation(startLocation);		

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 
 public class BinManager {
-	private ArrayList<Bin> bins;
+	public ArrayList<Bin> bins;
 	
 	public void addBin(Bin bin){
 		this.bins.add(bin);
