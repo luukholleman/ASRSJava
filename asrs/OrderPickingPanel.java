@@ -16,8 +16,7 @@ import tspAlgorithm.TSPAlgorithm;
 
 public class OrderPickingPanel extends JPanel implements Runnable {
 	//Alle attributen die in meerdere methoden gebruiken (zullen) worden staan hier
-//	private ExecutionManager WMan; Wordt nog niet gebruikt
-	//	private ArrayList<Location> warenhuis = new ArrayList<Location>(); Deze regel wordt gehouden voor offline testen
+	private ExecutionManager eManager;
 	private Thread runner;
 	private	ArrayList<Location> warenhuis;
 	private Random gen;
@@ -28,8 +27,9 @@ public class OrderPickingPanel extends JPanel implements Runnable {
 	
 	private ArrayList<Product> products;
 	
-	public OrderPickingPanel(ArrayList<Product> products){
+	public OrderPickingPanel(ExecutionManager eM){
 		super();
+		this.eManager = eM;
 		setSize(300,500);
 		robotLoc = new Location(0,0);
 		robotPix = new Location(0,0);
