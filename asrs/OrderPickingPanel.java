@@ -116,47 +116,37 @@ public class OrderPickingPanel extends JPanel implements Runnable {
 	@Override
 	public void run() {
 		Thread thisThread = Thread.currentThread();
-		//Aan het begin van de animatie wordt de robot op de bin packing robot gezet.
-		robotLoc = new Location (-2,3);
-		//De pixel locatie wordt apart van de locatie opgeslagen zodat hij per pixel kan bewegen
+		// Aan het begin van de animatie wordt de robot op de bin packing robot
+		// gezet.
+		robotLoc = new Location(-2, 3);
+		// De pixel locatie wordt apart van de locatie opgeslagen zodat hij per
+		// pixel kan bewegen
 		robotPix.x = 61 + (robotLoc.x * 20);
 		robotPix.y = 1 + ((19 - robotLoc.y) * 20);
 		while (runner == thisThread) {
-			//Laat de robot naar de locatie bewegen
+			// Laat de robot naar de locatie bewegen
 			move();
-			
-			for(Product product : products) {
-				//1 seconden stil staan op het product
-				frame(100);
-				//Als de robot al vol zit, maak hem leeg. Zoniet, stop er 1 'product' in
-//				if(load == 3) load = 0;
-//				else load++;
-				//Haal het opgehaalde product uit het magazijn
-								
-//				for (Location loc : warenhuis) { 
-//					if(loc.x == product.getLocation().x && loc.y == product.getLocation().y) { 
-//						warenhuis.remove(loc);
-//					}
-//				}
-
-					//... Stuur hem naar een willekeurig product in het magazijn
-					destination = product.getLocation();
-				
-				move();
-					
-				repaint();
-				frame();
+			// 1 seconden stil staan op het product
+			frame(1000);
+			// Als de robot al vol zit, maak hem leeg. Zoniet, stop er 1
+			// 'product' in
+			if (load == 3)
+				load = 0;
+			else
+				load++;
+			// Haal het opgehaalde product uit het magazijn
+			warenhuis.remove(destination);
+			// Als de robot nog niet vol zit...
+			if (load < 3 && warenhuis.size() > 0) {
+				// ... Stuur hem naar een willekeurig product in het magazijn
+				destination = warenhuis.get(gen.nextInt(warenhuis.size()));
+			} else {
+				// .. Stuur hem naar de bin-packing robot
+				destination.x = -2;
+				destination.y = 3;
 			}
-			
-			destination.x = -2;
-			destination.y = 3;
-			
-			move();
-			
 			repaint();
 			frame();
-			
-			stop();
 		}
 	}
 	
