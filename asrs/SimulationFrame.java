@@ -22,11 +22,6 @@ public class SimulationFrame extends JFrame {
 		setVisible( true );
 		setSize(800,500);
 		
-		OPPanel = new OrderPickingPanel(EM);
-		OPPanel.setPreferredSize(new Dimension(350, 500));
-		add(OPPanel);
-		//Starten van de simulatie
-		OPPanel.start();
 		
 		BPPanel = new BinPackingPanel(EM);
 		BPPanel.setPreferredSize(new Dimension(350, 500));
@@ -34,6 +29,13 @@ public class SimulationFrame extends JFrame {
 		//Starten van de simulatie
 		BPPanel.start();
 		
+		
+		OPPanel = new OrderPickingPanel(EM, BPPanel);
+		OPPanel.setPreferredSize(new Dimension(350, 500));
+		add(OPPanel);
+		//Starten van de simulatie
+		OPPanel.start();
+
 		
 		
 		revalidate();

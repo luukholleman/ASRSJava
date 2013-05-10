@@ -19,7 +19,7 @@ public class ExecutionManager {
 	private int height;
 	private Boolean useDetectedSize;
 	private int load = 0;
-	private Robot[] robots;
+	private OPRobot[] robots;
 	private ArrayList<Product> bppProducts = new ArrayList<Product>();
 
 	/**
@@ -51,7 +51,7 @@ public class ExecutionManager {
 		this.height = height;
 		this.useDetectedSize = useDetectedSize;
 
-		robots = new Robot[warehouse.getRobots()];
+		robots = new OPRobot[warehouse.getRobots()];
 		for (int r = 0; r < warehouse.getRobots(); r++) {
 			ArrayList<Product> products = new ArrayList<Product>();
 			for (Product p : order.getProducts()) {
@@ -62,7 +62,7 @@ public class ExecutionManager {
 				}
 			}
 			products = tspAlgorithm.calculateRoute(products);
-			robots[r] = new Robot(warehouse.getStartLocation(r), products);
+			robots[r] = new OPRobot(warehouse.getStartLocation(r), products, r);
 
 			Product nextProduct = robots[r].getNextProduct();
 			if (nextProduct != null)
