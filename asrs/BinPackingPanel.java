@@ -5,23 +5,29 @@ import java.awt.Graphics;
 
 import javax.swing.JPanel;
 
+import asrsController.ExecutionManager;
 import bppAlgorithm.BPPAlgorithm;
 
 import order.Location;
+//Javadoc voor de class
+//Variabelen naamgeving
+//Veel voorkomende waardes van tevoren declareren.
+//Langere methods in sub-methods verdelen
+//Magic numbers
 
 public class BinPackingPanel extends JPanel implements Runnable {
 	private Thread runner;
 	private int lines[];
 	
 	//Constructor
-	public BinPackingPanel(){
+	public BinPackingPanel(ExecutionManager eM){
 		super();
 		setSize(300,500);
-		lines = new int[13];
+		setLines(new int[13]);
 		int a = 0;
 		int i = 500;
-		for(int line : lines){
-			lines[a] = i;
+		for(int line : getLines()){
+			getLines()[a] = i;
 			i = i-20;
 			a++;
 		}
@@ -49,7 +55,7 @@ public class BinPackingPanel extends JPanel implements Runnable {
 		g.drawString("1/inf", 145, 70);
 		
 		//Tekent de lijntjes van de lopende band.
-		for(int line : lines){
+		for(int line : getLines()){
 			g.drawLine(100, line, 200, line);
 		}		
 	}
@@ -79,18 +85,22 @@ public class BinPackingPanel extends JPanel implements Runnable {
 			
 			//Hier worden de lines per frame 1 pixel omhoog bewogen
 			for(int i = 0 ; i < 13 ; i++){
-				if(lines[i] > 240){
-					lines[i]--;
+				if(getLines()[i] > 240){
+					getLines()[i]--;
 				}
 				else{
-					lines[i] = 500;
+					getLines()[i] = 500;
 				}
 			}
 			repaint();
-			frame();
+			try {
+				Thread.sleep(25);
+			} catch (InterruptedException e) { }
 		}
 		
 	}
+	
+	//Noem frame sleep
 	
 	/**
 	 * Stop the animation for 25 milliseconds
@@ -114,5 +124,13 @@ public class BinPackingPanel extends JPanel implements Runnable {
 		try {
 			Thread.sleep(pause);
 		} catch (InterruptedException e) { }
+	}
+
+	public int[] getLines() {
+		return lines;
+	}
+
+	public void setLines(int lines[]) {
+		this.lines = lines;
 	}
 }

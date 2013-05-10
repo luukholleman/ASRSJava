@@ -13,8 +13,15 @@ import order.Product;
 import asrsController.ExecutionManager;
 
 import tspAlgorithm.TSPAlgorithm;
+//Javadoc voor de class
+//Variabelen naamgeving
+//Veel voorkomende waardes van tevoren declareren.
+//Langere methods in sub-methods verdelen
+//Magic numbers
 
 public class OrderPickingPanel extends JPanel implements Runnable {
+	private static final int FRAME_TIME = 25;
+	private static final int BOX = 20;
 	//Alle attributen die in meerdere methoden gebruiken (zullen) worden staan hier
 	private ExecutionManager eManager;
 	private Thread runner;
@@ -54,7 +61,7 @@ public class OrderPickingPanel extends JPanel implements Runnable {
 		//Hier wordt het magazijn getekend in 10x20
 		for(int y = 0; y < 20; y++){
 			for(int x = 0; x < 10; x++){
-				g.drawRect(60+(x*20), 0+(y*20), 20, 20);
+				g.drawRect(60+(x*20), (y*20), 20, 20);
 			}
 		}
 		
@@ -62,15 +69,7 @@ public class OrderPickingPanel extends JPanel implements Runnable {
 		
 		//Tekenen van de producten in het warenhuis
 		
-		for(Location location : warenhuis){
-			Location loc = new Location(0,0);
-			//De y location wordt hier omgedraait zodat 0,0 links onderin zit.
-			loc.y = 19 - location.y;
-			loc.x = location.x;
-			if(loc.x <= 9 && loc.y <=19){
-				g.fillRect(63+(loc.x*20), (loc.y*20)+3, 15, 15);
-			}
-		}
+		drawProducts(g);
 		
 		//Tekenen robot
 		
@@ -85,13 +84,28 @@ public class OrderPickingPanel extends JPanel implements Runnable {
 		}
 		
 		//Inhoud van de robot tekenen
-		if(load == 1) g.fillRect(robotPix.x+5, robotPix.y+5, 8, 8);
-		if(load == 2) g.fillRect(robotPix.x+3, robotPix.y+3, 12, 12);
-		if(load == 3) g.fillRect(robotPix.x+1, robotPix.y+1, 17, 17);
+		if(load == 1) 
+			g.fillRect(robotPix.x+5, robotPix.y+5, 8, 8);
+		if(load == 2) 
+			g.fillRect(robotPix.x+3, robotPix.y+3, 12, 12);
+		if(load == 3) 
+			g.fillRect(robotPix.x+1, robotPix.y+1, 17, 17);
 		
 		//Tekenen doel
 		g.setColor(Color.blue);
-		if(destination != null) g.drawRect(62+(destination.x*20), ((19-destination.y)*20)+2, 16, 16);
+		if(destination != null) 
+			g.drawRect(62+(destination.x*20), ((19-destination.y)*20)+2, 16, 16);
+	}
+
+	private void drawProducts(Graphics g) {
+		for(Location location : warenhuis){
+			Location loc = new Location(0,0);
+			//De y location wordt hier omgedraait zodat 0,0 links onderin zit.
+			loc.y = 19 - location.y;
+			loc.x = location.x;
+			if(loc.x <= 9 && loc.y <=19)
+				g.fillRect(63+(loc.x*BOX), (loc.y*20)+3, 15, 15);
+		}
 	}
 	
 	/**
@@ -127,7 +141,7 @@ public class OrderPickingPanel extends JPanel implements Runnable {
 			// Laat de robot naar de locatie bewegen
 			move();
 			// 1 seconden stil staan op het product
-			frame(1000);
+			sleep(1000);
 			// Als de robot al vol zit, maak hem leeg. Zoniet, stop er 1
 			// 'product' in
 			if (load == 3)
@@ -146,7 +160,7 @@ public class OrderPickingPanel extends JPanel implements Runnable {
 				destination.y = 3;
 			}
 			repaint();
-			frame();
+			sleep();
 		}
 	}
 	
@@ -182,20 +196,8 @@ public class OrderPickingPanel extends JPanel implements Runnable {
 			robotPix.x = robotPix.x + stepx;
 			robotPix.y = robotPix.y - stepy;
 			repaint();
-			frame();
+			sleep(FRAME_TIME);
 		}
-	}
-	
-	/**
-	 * Stop the animation for 25 milliseconds
-	 * 
-	 * @param void
-	 * @return void
-	 */
-	private void frame(){
-		try {
-			Thread.sleep(25);
-		} catch (InterruptedException e) { }
 	}
 	
 	/**
@@ -204,7 +206,7 @@ public class OrderPickingPanel extends JPanel implements Runnable {
 	 * @param ArrayList<Product>
 	 * @return ArrayList<Product>
 	 */
-	private void frame(int pause){
+	private void sleep(int pause){
 		try {
 			Thread.sleep(pause);
 		} catch (InterruptedException e) { }
