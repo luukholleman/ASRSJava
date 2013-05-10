@@ -79,7 +79,7 @@ public class ExecutionManager {
 	 * @return binIndex
 	 */
 	public Byte detectedProduct(Byte red, Byte green, Byte blue) {
-		int size;
+		//int size;
 		if (useDetectedSize) {
 			bppProducts.remove(0);
 			return 0;
@@ -101,7 +101,7 @@ public class ExecutionManager {
 		if (nextProduct != null)
 			warehouse.retrieveProduct(nextProduct.getLocation(), robotId);
 		else
-			warehouse.bringToBinPacker();
+			warehouse.bringToBinPacker(robotId);
 	}
 
 	/**
