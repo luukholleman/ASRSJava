@@ -32,7 +32,7 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 
 	private ArrayList<Product> products;
 
-	public OrderPickingPanel(ExecutionManager eM, BinPackingPanel bpPanel) {
+	public OrderPickingPanel(BinPackingPanel bpPanel) {
 		super();
 		setSize(300, 500);
 		this.bpPanel = bpPanel;
@@ -152,12 +152,27 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 				eM.pickedUpProduct(robots[0].id);
 				eM.pickedUpProduct(robots[1].id);
 				move();
+				Product product;
+				try {
+					product = new Product(0, null, 0);
+					product.setLocation(robots[0].destination);
+					robots[0].pickUp(product);
+					product.setLocation(robots[1].destination);
+					robots[1].pickUp(product);
+				} catch (ProductNotFoundException e) {
+					e.printStackTrace();
+				}
+				
+
+				warehouse.remove(warehouse.get(warehouse.indexOf(robots[0].destination)));
+
 			} else {
 				robots[0].destination = new Location(-2, 3);
 				robots[1].destination = new Location(-2, 3);
+				bpPanel.packProducts(products);
 				move();
-			}
 
+			}
 		}
 	}
 
@@ -230,12 +245,12 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 	}
 
 	@Override
-	public void retrieveProduct(Location location, Integer robotId) {
+	public void retrieveProduct(Location location, int robotId) {
 		robots[robotId].destination = location;
 	}
 
 	@Override
-	public void bringToBinPacker() {
+	public void bringToBinPacker(int robotID) {
 		robots[0].destination = new Location(0, 0);
 		robots[1].destination = new Location(9, 0);
 		move();
@@ -243,7 +258,7 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 	}
 
 	@Override
-	public void moveToStart(Integer robotId) {
+	public void moveToStart(int robotId) {
 		if (robotId == 0)
 			robots[0].destination = new Location(0, 0);
 		else if (robotId == 1)
@@ -268,5 +283,13 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 			return null;
 		}
 
+	}
+
+	/**
+	 * @param eM
+	 *            the eM to set
+	 */
+	public void setEM(ExecutionManager eM) {
+		this.eM = eM;
 	}
 }

@@ -42,4 +42,8 @@ public class OPRobot {
 			return null;
 		}
 	}
+	
+	public void pickUp(Product product){
+		productsOnFork.add(product);
+	}
 }

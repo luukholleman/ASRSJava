@@ -6,13 +6,16 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
+import asrsController.BinPacking;
+import asrsController.ExecutionManager;
 import bppAlgorithm.BPPAlgorithm;
 import bppAlgorithm.Bin;
 
 import order.Location;
 import order.Product;
 
-public class BinPackingPanel extends JPanel implements Runnable {
+public class BinPackingPanel extends JPanel implements Runnable, BinPacking {
+	private ExecutionManager eM;
 	private Thread runner;
 	private int lines[];
 	private ArrayList<Product> productLine = new ArrayList<Product>();
@@ -24,12 +27,7 @@ public class BinPackingPanel extends JPanel implements Runnable {
 	public BinPackingPanel() {
 		super();
 		setSize(300, 500);
-		
-		bins.add(new Bin(0,0));
-		bins.add(new Bin(0,0));
-		bins.add(new Bin(0,0));
-		bins.add(new Bin(0,0));
-		
+
 		lines = new int[13];
 		int a = 0;
 		int i = 500;
@@ -54,24 +52,26 @@ public class BinPackingPanel extends JPanel implements Runnable {
 
 		// Dit zijn de bins
 		int b = 0;
-		for(Bin bin : bins){
-			if(b == 1){
+		for (Bin bin : bins) {
+			if (b == 1) {
 				g.drawRect(0, 200, 75, 75);
-				g.drawString(bin.getFilled() + "/" + bin.getSize() , 30, 240);
+				g.drawString(bin.getFilled() + "/" + bin.getSize(), 30, 240);
 			}
-			if(b == 2) {
+			if (b == 2) {
 				g.drawRect(225, 200, 75, 75);
-				g.drawString(bin.getFilled() + "/" + bin.getSize() , 255, 240);
+				g.drawString(bin.getFilled() + "/" + bin.getSize(), 255, 240);
 			}
-			if(b == 3) {
+			if (b == 3) {
 				g.drawRect(0, 300, 75, 75);
-				g.drawString(bin.getFilled() + "/" + bin.getSize() , 30, 340);
+				g.drawString(bin.getFilled() + "/" + bin.getSize(), 30, 340);
 			}
-			if(b == 4){
+			if (b == 4) {
 				g.drawRect(225, 300, 75, 75);
-				g.drawString(bin.getFilled() + "/" + bin.getSize() , 255, 340);
+				g.drawString(bin.getFilled() + "/" + bin.getSize(), 255, 340);
 			}
-			if(b > 4) System.out.println("Too many bins requested! 4 bins is the maximum amount.");
+			if (b > 4)
+				System.out
+						.println("Too many bins requested! 4 bins is the maximum amount.");
 			b++;
 		}
 
@@ -117,14 +117,11 @@ public class BinPackingPanel extends JPanel implements Runnable {
 			}
 			if (!productLine.isEmpty())
 				productHeigth--;
-			if(productHeigth <= 240){
+			if (productHeigth <= 240) {
 				productHeigth = 500;
-				Bin packBin = eM.sortProduct(productLine.get(0), bins);
-				for(Bin bin : bins){
-					if(bin == packBin){
-						bin.fill(productLine.get(0));
-					}
-				}
+				byte binByte = 0;
+				bins.get(eM.detectedProduct(binByte, binByte, binByte)).fill(
+						productLine.get(0));
 				productLine.remove(0);
 			}
 			repaint();
@@ -164,5 +161,14 @@ public class BinPackingPanel extends JPanel implements Runnable {
 			Thread.sleep(pause);
 		} catch (InterruptedException e) {
 		}
+	}
+
+	/**
+	 * @param eM
+	 *            the eM to set
+	 */
+	public void setEM(ExecutionManager eM) {
+		this.eM = eM;
+		bins = eM.getBinManager().bins;
 	}
 }
