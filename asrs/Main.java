@@ -44,6 +44,16 @@ public class Main extends JFrame implements XMLUploadedListener, ExecuteButtonPr
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		
+		try
+		{
+			DBHandler.connect();
+		}
+		catch(DatabaseConnectionFailedException e)
+		{
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		}
+		
 		// zet de look and feel naar windows of osx
 		try
 		{
