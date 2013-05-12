@@ -1,12 +1,22 @@
 package asrsController;
 
-/**
- *
- * @author P60181745
- */
-
 import java.util.Random;
 
+/**
+ * startProcess()
+ * finishProcess()
+ * getNumberOfProblems()
+ * getNumberOfItems(problemNumber)
+ * int getCoordHorDigit(int probl, int item)
+ * int getCoordVertDigit(int probl, int item)
+ * char getCoordHorLetter(int probl, int item)
+ * char getCoordVertLetter(int probl, int item)
+ * void setOrder(int problem, int item, int robot, int sequence)
+ * 
+ * 
+ * @author P60181745
+ *
+ */
 public class WarehouseTask {
     
 	final int numberOfProblems = 20;

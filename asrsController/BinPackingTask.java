@@ -3,7 +3,17 @@ package asrsController;
 import java.util.Random;
 
 /**
- *
+ * BinPackingTask:
+ * startProcess()
+ * finishProcess()
+ * getBin(problemNumber, item)
+ * calculateSpaceLeftInBin(problemNumber, bin)
+ * setBin(problemNumber, item, bin)
+ * getItemSize(problemNumber, item)
+ * getBinSize()
+ * getNumberOfItems(problemNumber)
+ * getNumberOfProblems()
+ * 
  * @author Paul Veldhuijzen van Zanten, Ilja Clabbers
  */
 public class BinPackingTask {
