@@ -7,8 +7,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import javax.swing.JOptionPane;
-
 import order.Location;
 import order.Product;
 
@@ -45,6 +43,9 @@ public class DBHandler {
 			throw new DatabaseConnectionFailedException("Kan niet met de database verbinden(Class not found).");
 		} catch (SQLException e) {
 			throw new DatabaseConnectionFailedException("Kan niet met de database verbinden(SQL error).");
+		} catch (Exception e) {
+			throw new DatabaseConnectionFailedException("Kan niet met de database verbinden(Unknown error).");
+		
 		}
 	}
 	

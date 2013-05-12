@@ -48,6 +48,7 @@ public class Main extends JFrame implements XMLUploadedListener, ExecuteButtonPr
 		try
 		{
 			DBHandler.connect();
+			JOptionPane.showMessageDialog(null, "Successfully connected with the database. [debug info]");
 		}
 		catch(DatabaseConnectionFailedException e)
 		{
