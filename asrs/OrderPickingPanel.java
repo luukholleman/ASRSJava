@@ -29,6 +29,7 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 	private OPRobot robotRight;
 	private Location destination;
 	private int load = 0;
+	private int check = 0;
 
 	private ArrayList<Product> products;
 
@@ -37,7 +38,9 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 		setSize(300, 500);
 		this.bpPanel = bpPanel;
 		robotLeft = new OPRobot(new Location(0, 0), 0);
+		robotLeft.pixels = new Location(61 + (robotLeft.loc.x * 20), 1 + ((19 - robotLeft.loc.y) * 20));
 		robotRight = new OPRobot(new Location(9, 0), 1);
+		robotRight.pixels = new Location(61 + (robotRight.loc.x * 20), 1 + ((19 - robotRight.loc.y) * 20));
 		robots = new OPRobot[2];
 		robots[0] = robotLeft;
 		robots[1] = robotRight;
@@ -96,9 +99,10 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 		// bestaat
 		for (OPRobot robot : robots) {
 			if (robot != null) {
-				g.drawRect(robot.loc.x, robot.loc.y, 18, 18);
-				g.drawLine(robot.loc.x - 1, robot.loc.y, robot.loc.x - 1, 420);
-				g.drawLine(robot.loc.x + 19, robot.loc.y, robot.loc.x + 19, 420);
+				g.drawRect(robot.pixels.x, robot.pixels.y, 18, 18);
+				g.drawLine(robot.pixels.x - 1, robot.pixels.y, robot.pixels.x - 1, 420);
+				g.drawLine(robot.pixels.x + 19, robot.pixels.y, robot.pixels.x + 19, 420);
+				
 			}
 		}
 
@@ -150,21 +154,17 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 		while (runner == thisThread) {
 			if (robots[0].load <= 3 && robots[1].load <= 3) {
 				eM.pickedUpProduct(robots[0].id);
+				frame(1000);
 				eM.pickedUpProduct(robots[1].id);
+				System.out.println("New locations set");
+				frame(10000);
 				move();
-				Product product;
-				try {
-					product = new Product(0, null, 0);
-					product.setLocation(robots[0].destination);
-					robots[0].pickUp(product);
-					product.setLocation(robots[1].destination);
-					robots[1].pickUp(product);
-				} catch (ProductNotFoundException e) {
-					e.printStackTrace();
-				}
+				frame(10000);
+				System.out.println("Succesfully moved");
+				System.out.println(check);
+				check++;
 				
-
-				warehouse.remove(warehouse.get(warehouse.indexOf(robots[0].destination)));
+				warehouse.indexOf(robots[0].destination);
 
 			} else {
 				robots[0].destination = new Location(-2, 3);
@@ -199,6 +199,7 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 		// De beweging wordt verdeelt in stappen over de X en Y as.
 		int stepx0 = robots[0].destination.x - robots[0].loc.x;
 		int stepy0 = robots[0].destination.y - robots[0].loc.y;
+		System.out.println(stepx0 + " = " + robots[0].destination.x + " - "  + robots[0].loc.x);
 
 		int stepx1 = robots[1].destination.x - robots[1].loc.x;
 		int stepy1 = robots[1].destination.y - robots[1].loc.y;
@@ -247,6 +248,8 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 	@Override
 	public void retrieveProduct(Location location, int robotId) {
 		robots[robotId].destination = location;
+		System.out.println("Retrieving " + location.x + ", " + location.y + " with robot " + robotId);
+		System.out.println("The new destination is " + robots[robotId].destination.x + ", " + robots[robotId].destination.y);
 	}
 
 	@Override
@@ -254,7 +257,7 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 		robots[0].destination = new Location(0, 0);
 		robots[1].destination = new Location(9, 0);
 		move();
-		stop();
+		System.out.println("Brought robots to bin Packer");
 	}
 
 	@Override
@@ -266,6 +269,8 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 		else
 			return;
 		move();
+		System.out.println("Returning to start...");
+		stop();
 	}
 
 	@Override

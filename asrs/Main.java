@@ -48,7 +48,6 @@ public class Main extends JFrame implements XMLUploadedListener, ExecuteButtonPr
 		try
 		{
 			DBHandler.connect();
-			JOptionPane.showMessageDialog(null, "Successfully connected with the database. [debug info]");
 		}
 		catch(DatabaseConnectionFailedException e)
 		{
@@ -152,8 +151,6 @@ public class Main extends JFrame implements XMLUploadedListener, ExecuteButtonPr
 		opPanel.setEM(eM);
 		SimulationFrame frame = new SimulationFrame(bpPanel, opPanel);
 		frame.setVisible(true);
-		
-		//TO-DO create new EM
 	}
 
 	@Override

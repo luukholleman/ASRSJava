@@ -17,7 +17,7 @@ public class OPRobot {
 	
 	public OPRobot(Location loc, ArrayList<Product> products, int id){
 		this.loc = loc;
-		pixels =loc;
+		pixels = new Location(61 + (loc.x * 20), 1 + ((19 - loc.y) * 20));
 		load = 0;
 		productsOnFork = new ArrayList<Product>();
 		this.id = id;
