@@ -127,8 +127,7 @@ public class BinPackingPanel extends JPanel implements Runnable, BinPacking {
 			if (productHeigth <= 240) {
 				productHeigth = 500;
 				byte binByte = 0;
-				bins.get(eM.detectedProduct(binByte, binByte, binByte)).fill(
-						productLine.get(0));
+				bins.get(eM.detectedProduct(binByte, binByte, binByte)).fill(productLine.get(0));
 				productLine.remove(0);
 			}
 			repaint();
@@ -138,10 +137,8 @@ public class BinPackingPanel extends JPanel implements Runnable, BinPacking {
 	}
 
 	public void packProducts(ArrayList<Product> products) {
-		for (Product product : products) {
-			productLine.add(product);
-		}
-		System.out.println("Sup?");
+		productLine.addAll(products);
+		System.out.println("Bin Packer: Sorting " + productLine.size() + " products.");
 	}
 
 	/**

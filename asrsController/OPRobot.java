@@ -15,6 +15,7 @@ public class OPRobot {
 	private ArrayList<Product> products;
 	public ArrayList<Product> productsOnFork;
 	public boolean finished;
+	public ArrayList<Location> locationList = new ArrayList<Location>();
 	
 	public OPRobot(Location loc, ArrayList<Product> products, int id){
 		this.loc = loc;
