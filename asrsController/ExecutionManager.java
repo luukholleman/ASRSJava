@@ -51,19 +51,26 @@ public class ExecutionManager {
 		this.height = height;
 		this.useDetectedSize = useDetectedSize;
 
+		//Haal het aantal robots uit het warehouse
 		robots = new Robot[warehouse.getRobots()];
+		//Verdeel het magazijn over de robots
 		for (int r = 0; r < warehouse.getRobots(); r++) {
 			ArrayList<Product> products = new ArrayList<Product>();
 			for (Product p : order.getProducts()) {
+				//splits het magazijn
 				int cols = width / warehouse.getRobots();
+				//pak de producten uit het eigen deel van het magazijn
 				if (p.getLocation().x >= cols * r
 						&& p.getLocation().x < cols * (r + 1)) {
 					products.add(p);
 				}
 			}
+			//Sorteer de producten volgens het meegegeven algoritme
 			products = tspAlgorithm.calculateRoute(products);
+			//Maak de robots, geef ze hun producten en hun startlocatie 
 			robots[r] = new Robot(warehouse.getStartLocation(r), products);
 
+			//laat de robot het volgende product ophalen
 			Product nextProduct = robots[r].getNextProduct();
 			if (nextProduct != null)
 				warehouse.retrieveProduct(nextProduct.getLocation(), r);
