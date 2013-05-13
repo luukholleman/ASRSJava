@@ -109,10 +109,10 @@ public class ExecutionManager {
 	 * 
 	 * @param robotId
 	 */
-	public void deliveredProduct(Integer robotId) {
-		bppProducts.addAll(robots[robotId].productsOnFork);
-		robots[robotId].productsOnFork.clear();
-		warehouse.moveToStart(robotId);
+	public void deliveredProduct(OPRobot robot) {
+		bppProducts.addAll(robot.productsOnFork);
+		robot.productsOnFork.clear();
+		warehouse.moveToStart(robot.id);
 	}
 
 	// Alle getters

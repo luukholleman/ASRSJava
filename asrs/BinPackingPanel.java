@@ -51,7 +51,7 @@ public class BinPackingPanel extends JPanel implements Runnable, BinPacking {
 		g.drawRect(100, 240, 100, 260);
 
 		// Dit zijn de bins
-		int b = 0;
+		int b = 1;
 		for (Bin bin : bins) {
 			if (b == 1) {
 				g.drawRect(0, 200, 75, 75);
@@ -83,6 +83,13 @@ public class BinPackingPanel extends JPanel implements Runnable, BinPacking {
 		for (int line : lines) {
 			g.drawLine(100, line, 200, line);
 		}
+		
+		g.drawRect(125, productHeigth, 50, 50);
+		g.setColor(Color.WHITE);
+		g.fillRect(126, productHeigth+1, 49, 49);
+		g.setColor(Color.BLACK);
+		if(!productLine.isEmpty())
+			g.drawString(Integer.toString(productLine.get(0).getSize()), 148, productHeigth+27);
 	}
 
 	/**
@@ -134,6 +141,7 @@ public class BinPackingPanel extends JPanel implements Runnable, BinPacking {
 		for (Product product : products) {
 			productLine.add(product);
 		}
+		System.out.println("Sup?");
 	}
 
 	/**

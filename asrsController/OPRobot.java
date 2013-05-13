@@ -14,6 +14,7 @@ public class OPRobot {
 	public int load;
 	private ArrayList<Product> products;
 	public ArrayList<Product> productsOnFork;
+	public boolean finished;
 	
 	public OPRobot(Location loc, ArrayList<Product> products, int id){
 		this.loc = loc;
@@ -22,6 +23,7 @@ public class OPRobot {
 		productsOnFork = new ArrayList<Product>();
 		this.id = id;
 		this.products = products;
+		finished = false;
 	}
 	
 	public OPRobot(Location loc, int id){

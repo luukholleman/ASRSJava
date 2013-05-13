@@ -146,7 +146,7 @@ public class Main extends JFrame implements XMLUploadedListener, ExecuteButtonPr
 		binMan.addBin(new Bin(30,0));
 		BinPackingPanel bpPanel = new BinPackingPanel();
 		OrderPickingPanel opPanel = new OrderPickingPanel(bpPanel);
-		ExecutionManager eM = new ExecutionManager(this, order, binMan, opPanel, bpPanel, tsp, bpp, 10, 20, true);
+		ExecutionManager eM = new ExecutionManager(this, order, binMan, opPanel, bpPanel, tsp, bpp, 10, 20, false);
 		bpPanel.setEM(eM);
 		opPanel.setEM(eM);
 		SimulationFrame frame = new SimulationFrame(bpPanel, opPanel);
