@@ -1,5 +1,7 @@
 package bppAlgorithm;
 
+import order.Product;
+
 public class Bin {
 	private int size;
 	private int filled;
@@ -9,6 +11,12 @@ public class Bin {
 		this.filled = filled;
 	}
 	
+	public void fill(Product product) {
+		if (product.getSize() <= (size - filled)) {
+			filled = filled + product.getSize();
+		}
+	}
+
 	public int getSize() {
 		return size;
 	}

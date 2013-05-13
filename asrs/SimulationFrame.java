@@ -16,26 +16,22 @@ public class SimulationFrame extends JFrame {
 	private OrderPickingPanel OPPanel;
 	private BinPackingPanel BPPanel;
 	
-	public SimulationFrame(BPPAlgorithm bpp, TSPAlgorithm tsp, ExecutionManager EM){
+	public SimulationFrame(BinPackingPanel bpPanel, OrderPickingPanel opPanel){
 		setLayout( new FlowLayout() );
 		setTitle( "Simulatie" );
 		setVisible( true );
 		setSize(800,500);
-		
-		OPPanel = new OrderPickingPanel(EM);
-		OPPanel.setPreferredSize(new Dimension(350, 500));
-		add(OPPanel);
+
+		bpPanel.setPreferredSize(new Dimension(350, 500));
+		add(bpPanel);
 		//Starten van de simulatie
-		OPPanel.start();
-		
-		BPPanel = new BinPackingPanel(EM);
-		BPPanel.setPreferredSize(new Dimension(350, 500));
-		add(BPPanel);
+		bpPanel.start();
+
+		opPanel.setPreferredSize(new Dimension(350, 500));
+		add(opPanel);
 		//Starten van de simulatie
-		BPPanel.start();
-		
-		
-		
+		opPanel.start();
+
 		revalidate();
 	}
 }
