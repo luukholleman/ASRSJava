@@ -82,15 +82,15 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 		drawDestination(g);
 		
 		//Tekenen routes
-		Location lastLoc = null;
-		for(OPRobot robot : robots){
-			if(!robot.locationList.isEmpty())
-				for(Location location : robot.locationList)
-					if(lastLoc != null)
-						g.drawLine(lastLoc.x, lastLoc.y, location.x, location.y);
-					else
-						lastLoc = location;
-		}
+//		Location lastLoc = null;
+//		for(OPRobot robot : robots){
+//			if(!robot.locationList.isEmpty())
+//				for(Location location : robot.locationList)
+//					if(lastLoc != null)
+//						g.drawLine(lastLoc.x, lastLoc.y, location.x, location.y);
+//					else
+//						lastLoc = location;
+//		}
 	}
 
 	private void drawDestination(Graphics g) {
@@ -174,7 +174,7 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 					for(OPRobot robot : robots){
 						if (robot.finished == false){
 							eM.pickedUpProduct(robot.id);
-							robot.locationList.add(robot.destination);
+//							robot.locationList.add(robot.destination);
 						}
 						frame(1000);
 
