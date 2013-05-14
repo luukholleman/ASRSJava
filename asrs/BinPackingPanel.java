@@ -144,12 +144,6 @@ public class BinPackingPanel extends JPanel implements Runnable, BinPacking {
 				productLine.get(0).setStatus("ingepakt");
 				eM.getMain().productStatusUpdated(productLine.get(0));
 				
-//				byte methodByte = 0;
-//				byte binByte = eM.detectedProduct(methodByte, methodByte, methodByte);
-//				if(binByte != null){
-//					bins.get(eM.detectedProduct(methodByte, methodByte, methodByte)).fill(productLine.get(0));
-//				}
-				
 				productLine.remove(0);
 			}
 			repaint();
@@ -171,7 +165,7 @@ public class BinPackingPanel extends JPanel implements Runnable, BinPacking {
 	 */
 	private void frame() {
 		try {
-			Thread.sleep(25);
+			Thread.sleep(20);
 		} catch (InterruptedException e) {
 		}
 	}

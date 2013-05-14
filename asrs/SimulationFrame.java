@@ -19,7 +19,7 @@ public class SimulationFrame extends JFrame {
 	
 	public SimulationFrame(BinPackingPanel bpPanel, OrderPickingPanel opPanel){
 		setLayout( new FlowLayout() );
-		setTitle( "Simulatie" );
+		setTitle( "Virtual Auto Dropbox" );
 		setVisible( true );
 		setSize(800,500);
 		
