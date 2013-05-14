@@ -134,7 +134,12 @@ public class BinPackingPanel extends JPanel implements Runnable, BinPacking {
 					bins.get(eM.detectedProduct(binByte, binByte, binByte)).fill(productLine.get(0));
 				}
 				catch(Exception e){
-					System.out.println("FUCK, I DONT KNOW! D:<");
+//					for(Bin bin : bins){
+//						overflow = overflow + bin.getFilled();
+//						bin.setFilled(0);
+//						bin.getProducts().clear();
+//					}
+					overflow = overflow + productLine.get(0).getSize();
 				}
 				productLine.get(0).setStatus("ingepakt");
 				eM.getMain().productStatusUpdated(productLine.get(0));
