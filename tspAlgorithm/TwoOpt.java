@@ -127,7 +127,7 @@ public class TwoOpt implements TSPAlgorithm {
 		
 		public Path(Location startLocation, Location endLocation) {
 			this.startLocation = startLocation;
-			this.startLocation = endLocation;
+			this.endLocation = endLocation;
 		}
 	}
 }
