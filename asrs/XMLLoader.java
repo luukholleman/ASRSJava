@@ -27,18 +27,15 @@ public class XMLLoader {
 			// Get date from XML
 			String dateXML = rootNode.getChildText("date");
 			Date date = new SimpleDateFormat("dd-MM-yyyy").parse(dateXML);
-			System.out.println(date);
-			
+	
 			// Get totalPrice from XML
 			float totalPrice = Float.parseFloat(rootNode.getChildText("totalprice"));
-			System.out.println(totalPrice);
-		   
+	   
 			// Get customer from XML
 			int customerId = Integer.parseInt(rootNode.getChildText("customernumber"));
 			String customername = rootNode.getChildText("customername");
 			Customer customer = new Customer(customerId, customername);
-			System.out.println(customername);
-			
+
 			// Build order
 			order = new Order(date, totalPrice, customer);
 			
