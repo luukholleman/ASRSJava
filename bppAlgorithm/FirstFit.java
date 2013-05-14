@@ -35,7 +35,12 @@ public class FirstFit implements BPPAlgorithm {
 				possibleBins.add(bin);
 		}
 		//Pakt de eerste bin waar het product in past
-		Bin fittingBin = possibleBins.get(0);
+		Bin fittingBin;
+		if(possibleBins.isEmpty())
+			fittingBin = null;
+		else
+			fittingBin = possibleBins.get(0);
+		
 		return fittingBin;
 	}
 }

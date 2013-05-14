@@ -49,9 +49,14 @@ public class AlmostWorstFit implements BPPAlgorithm {
 		//Verwijder de bin met de meeste ruimte
 		if(possibleBins.size() != 1)
 			possibleBins.remove(possibleBins.get(possibleBins.size()-1));
-		//Return de bin die daarna de meeste ruimte heeft
-		Bin fittingBin = possibleBins.get(possibleBins.size()-1);
-		return fittingBin;
+		//Return de bin die daarna de meeste ruimte heeft, of als alles vol zit de overflowbin
+		Bin fittingBin;
+		if(possibleBins.isEmpty())
+			fittingBin = null;
+		else
+			fittingBin = possibleBins.get(possibleBins.size()-1);
+		
+		return fittingBin; 
 	}
 
 }

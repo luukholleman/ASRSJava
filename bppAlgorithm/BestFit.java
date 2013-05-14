@@ -47,7 +47,12 @@ public class BestFit implements BPPAlgorithm {
 				possibleBins.add(bin);
 		}
 		//Return de bin die de minste ruimte heeft
-		Bin fittingBin = possibleBins.get(0);
+		Bin fittingBin;
+		if(possibleBins.isEmpty())
+			fittingBin = null;
+		else
+			fittingBin = possibleBins.get(0);
+		
 		return fittingBin;
 	}
 }
