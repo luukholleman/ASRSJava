@@ -29,13 +29,11 @@ public class BinPackingPanel extends JPanel implements Runnable, BinPacking {
 		setSize(300, 500);
 
 		lines = new int[13];
-		int a = 0;
-		int i = 500;
-		for (int line : lines) {
-			lines[a] = i;
-			i = i - 20;
-			a++;
+		
+		for(int a = 0 ; a < lines.length ; a++){
+			lines[a] = 500 - 20 * a;
 		}
+		
 		productHeigth = 500;
 	}
 
@@ -57,7 +55,7 @@ public class BinPackingPanel extends JPanel implements Runnable, BinPacking {
 			int y = b / 2 * 100 + 200;
 			g.drawRect(x, y, 75, 75);
 			g.drawString(bin.getFilled() + "/" + bin.getSize(), x, y);	
-			int depth = 0;
+			int depth = 1;
 			boolean side = false;
 			for(Product product : bin.getProducts()){
 				float productCalc = (float) 73/bin.getSize()*product.getSize();
@@ -82,8 +80,8 @@ public class BinPackingPanel extends JPanel implements Runnable, BinPacking {
 
 		// Dit is de overflow box
 		g.drawRect(10, 0, 300, 150);
-		g.drawString(overflow + "/infinity", 145, 70);
 
+		g.drawString(overflow + "/‡", 145, 70);
 		// Tekent de lijntjes van de lopende band.
 		for (int line : lines) {
 			g.drawLine(110, line, 210, line);
@@ -132,7 +130,12 @@ public class BinPackingPanel extends JPanel implements Runnable, BinPacking {
 			if (productHeigth <= 240) {
 				productHeigth = 500;
 				byte binByte = 0;
-				bins.get(eM.detectedProduct(binByte, binByte, binByte)).fill(productLine.get(0));
+				try{
+					bins.get(eM.detectedProduct(binByte, binByte, binByte)).fill(productLine.get(0));
+				}
+				catch(Exception e){
+					System.out.println("FUCK, I DONT KNOW! D:<");
+				}
 				
 //				byte methodByte = 0;
 //				byte binByte = eM.detectedProduct(methodByte, methodByte, methodByte);
@@ -177,6 +180,13 @@ public class BinPackingPanel extends JPanel implements Runnable, BinPacking {
 		try {
 			Thread.sleep(pause);
 		} catch (InterruptedException e) {
+		}
+	}
+	
+	public void stop(){
+		if (runner != null) {
+			runner = null;
+			System.out.println("stopping Bin Packer");
 		}
 	}
 

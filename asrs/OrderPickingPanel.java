@@ -80,17 +80,6 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 
 		// Tekenen doel
 		drawDestination(g);
-		
-		//Tekenen routes
-//		Location lastLoc = null;
-//		for(OPRobot robot : robots){
-//			if(!robot.locationList.isEmpty())
-//				for(Location location : robot.locationList)
-//					if(lastLoc != null)
-//						g.drawLine(lastLoc.x, lastLoc.y, location.x, location.y);
-//					else
-//						lastLoc = location;
-//		}
 	}
 
 	private void drawDestination(Graphics g) {
@@ -170,21 +159,14 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 		Thread thisThread = Thread.currentThread();
 		while (runner == thisThread) {
 			if (robots[0].load <= 3 && robots[1].load <= 3) {
-				if (check != 0) {
-					for(OPRobot robot : robots){
-						if (robot.finished == false){
+				if (check != 0) 
+					for(OPRobot robot : robots)
+						if (robot.finished == false)
 							eM.pickedUpProduct(robot.id);
-//							robot.locationList.add(robot.destination);
-						}
-						frame(1000);
-
-					}
-				}
-				frame(1000);
 				move();
 				frame(1000);
-				
-				int i = 0;
+				warehouse.remove(robots[0].destination);
+				warehouse.remove(robots[1].destination);
 				for (OPRobot robot : robots) {
 					if (robot.loc.x == -2 && robot.loc.y == 3) {
 						bpPanel.packProducts(robot.productsOnFork);
@@ -222,7 +204,7 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 	public void stop() {
 		if (runner != null) {
 			runner = null;
-			System.out.println("stopping");
+			System.out.println("stopping Order Picker");
 		}
 	}
 
@@ -284,21 +266,18 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 	@Override
 	public void retrieveProduct(Location location, int robotId) {
 		robots[robotId].destination = location;
-		System.out.println("Retrieving...");
 	}
 
 	@Override
 	public void bringToBinPacker(int robotID) {
 		robots[robotID].destination = new Location(-2, 3);
-		System.out.println("Delivering Products...");
 	}
 
 	@Override
 	public void moveToStart(int robotId) {
 		robots[robotId].destination = new Location(0, 0);
 		move();
-		System.out.println("Returned to start...");
-		frame(1000);
+		frame();
 		robots[robotId].finished = true;
 		if (robots[0].finished == true && robots[1].finished == true) {
 			stop();
