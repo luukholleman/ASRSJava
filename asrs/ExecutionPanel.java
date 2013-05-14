@@ -3,7 +3,6 @@ package asrs;
  * @author Luuk
  * @date 15 april
  */
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,7 +21,6 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
 import listener.ExecuteButtonPressedListener;
-import listener.XMLUploadedListener;
 
 import tspAlgorithm.BruteForce;
 import tspAlgorithm.Greedy;
