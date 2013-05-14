@@ -140,6 +140,11 @@ public class Main extends JFrame implements XMLUploadedListener, ExecuteButtonPr
 
 	@Override
 	public void simulatePressed(BPPAlgorithm bpp, TSPAlgorithm tsp) {
+		if(order == null) {
+			JOptionPane.showMessageDialog(this, "Selecteer eerst een XML bestand");
+			return;
+		}
+		
 		BinManager binMan = new BinManager();
 		binMan.addBin(new Bin(10,0));
 		binMan.addBin(new Bin(20,0));
@@ -154,8 +159,13 @@ public class Main extends JFrame implements XMLUploadedListener, ExecuteButtonPr
 	}
 
 	@Override
-	public void executePressed(BPPAlgorithm bpp, TSPAlgorithm tsp,
+	public void executePressed(BPPAlgorithm bpp, TSPAlgorithm tsp,	
 			String com1, String com2) {
+		if(order == null) {
+			JOptionPane.showMessageDialog(this, "Selecteer eerst een XML bestand");
+			return;
+		}
+		
 		throw new UnsupportedOperationException();
 		// TODO Auto-generated method stub
 		
