@@ -173,8 +173,11 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 						eM.deliveredProduct(robot);
 					}	else
 							for(Product product : products)
-								if(robot.destination == product.getLocation())
+								if(robot.destination == product.getLocation()){
 									robot.productsOnFork.add(product);
+									product.setStatus("opgepakt");
+									eM.getMain().productStatusUpdated(product);
+								}
 
 				}
 				System.out.println("Loop " + check);
