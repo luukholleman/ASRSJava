@@ -48,45 +48,50 @@ public class BinPackingPanel extends JPanel implements Runnable, BinPacking {
 		// Hier wordt de BinPacking robot en alle bins getekent
 
 		// Dit is de lopende band
-		g.drawRect(100, 240, 100, 260);
+		g.drawRect(110, 240, 100, 260);
 
 		// Dit zijn de bins
-		int b = 1;
+		int b = 0;
 		for (Bin bin : bins) {
-			if (b == 1) {
-				g.drawRect(0, 200, 75, 75);
-				g.drawString(bin.getFilled() + "/" + bin.getSize(), 30, 240);
+			int x = b % 2 * 225+10;
+			int y = b / 2 * 100 + 200;
+			g.drawRect(x, y, 75, 75);
+			g.drawString(bin.getFilled() + "/" + bin.getSize(), x, y);	
+			int depth = 0;
+			boolean side = false;
+			for(Product product : bin.getProducts()){
+				float productCalc = (float) 73/bin.getSize()*product.getSize();
+				int productDiv = (int) productCalc;
+				g.setColor(Color.RED);
+				g.fillRect(x, y+depth, 75, productDiv);
+				g.setColor(Color.BLACK);
+				g.drawRect(x, y+depth, 75, productDiv);
+				depth = depth + productDiv +1;
+				if(side)
+					g.drawString(Integer.toString(product.getSize()), x+85, y+depth);
+				else
+					g.drawString(Integer.toString(product.getSize()), x-10, y+depth);
+				side = !side;
 			}
-			if (b == 2) {
-				g.drawRect(225, 200, 75, 75);
-				g.drawString(bin.getFilled() + "/" + bin.getSize(), 255, 240);
-			}
-			if (b == 3) {
-				g.drawRect(0, 300, 75, 75);
-				g.drawString(bin.getFilled() + "/" + bin.getSize(), 30, 340);
-			}
-			if (b == 4) {
-				g.drawRect(225, 300, 75, 75);
-				g.drawString(bin.getFilled() + "/" + bin.getSize(), 255, 340);
-			}
-			if (b > 4)
+			
+			if (b >= 4)
 				System.out
 						.println("Too many bins requested! 4 bins is the maximum amount.");
 			b++;
 		}
 
 		// Dit is de overflow box
-		g.drawRect(0, 0, 300, 150);
+		g.drawRect(10, 0, 300, 150);
 		g.drawString(overflow + "/infinity", 145, 70);
 
 		// Tekent de lijntjes van de lopende band.
 		for (int line : lines) {
-			g.drawLine(100, line, 200, line);
+			g.drawLine(110, line, 210, line);
 		}
 		
-		g.drawRect(125, productHeigth, 50, 50);
+		g.drawRect(135, productHeigth, 50, 50);
 		g.setColor(Color.WHITE);
-		g.fillRect(126, productHeigth+1, 49, 49);
+		g.fillRect(136, productHeigth+1, 49, 49);
 		g.setColor(Color.BLACK);
 		if(!productLine.isEmpty())
 			g.drawString(Integer.toString(productLine.get(0).getSize()), 148, productHeigth+27);
@@ -128,6 +133,13 @@ public class BinPackingPanel extends JPanel implements Runnable, BinPacking {
 				productHeigth = 500;
 				byte binByte = 0;
 				bins.get(eM.detectedProduct(binByte, binByte, binByte)).fill(productLine.get(0));
+				
+//				byte methodByte = 0;
+//				byte binByte = eM.detectedProduct(methodByte, methodByte, methodByte);
+//				if(binByte != null){
+//					bins.get(eM.detectedProduct(methodByte, methodByte, methodByte)).fill(productLine.get(0));
+//				}
+				
 				productLine.remove(0);
 			}
 			repaint();
