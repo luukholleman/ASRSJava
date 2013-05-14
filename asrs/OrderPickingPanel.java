@@ -15,8 +15,6 @@ import asrsController.ExecutionManager;
 import asrsController.OPRobot;
 import asrsController.Warehouse;
 
-import tspAlgorithm.TSPAlgorithm;
-
 public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 	// Alle attributen die in meerdere methoden gebruiken (zullen) worden staan
 	// hier
