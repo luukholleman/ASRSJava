@@ -135,22 +135,38 @@ public class ExecutionPanel extends JPanel implements ActionListener {
 				
 		// hoofdlabel
 		bppPanel.add(new JLabel("BPP algoritme"));
+		
+		boolean firstBpp = true;
 
 		// loop de bpp algoritmes en plaats de namen in radiobuttons
 		for (BPPAlgorithm bppAlgorithm : bppAlgorithms) {
 			JRadioButton rdBtn = new JRadioButton(bppAlgorithm.getName());
 			bppBtnGrp.add(rdBtn);
 			bppPanel.add(rdBtn);
+			
+			// de eerste moet altijd geselecteerd zijn
+			if(firstBpp) {
+				rdBtn.setSelected(true);
+				firstBpp = false;
+			}
 		}
 
 		// hoofdlabel
 		tspPanel.add(new JLabel("TSP algoritme"));
+		
+		boolean firstTsp = true;
 
 		// loop de tsp algoritmes en plaats de namen in radiobuttons
 		for (TSPAlgorithm tspAlgorithm : tspAlgorithms) {
 			JRadioButton rdBtn = new JRadioButton(tspAlgorithm.getName());
 			tspBtnGrp.add(rdBtn);
 			tspPanel.add(rdBtn);
+			
+			// de eerste moet altijd geselecteerd zijn
+			if(firstTsp) {
+				rdBtn.setSelected(true);
+				firstTsp = false;
+			}
 		}
 		
 		String[] petStrings = { "Bird", "Cat", "Dog", "Rabbit", "Pig" };
