@@ -58,6 +58,8 @@ public class OrderPanel extends JPanel {
 	 * @param order
 	 */
 	public void setOrder(Order order) {
+		productModel.removeAllRows();
+		
 		for (Product product : order.getProducts()) {
 			productModel.addElement(product);
 
@@ -164,5 +166,27 @@ public class OrderPanel extends JPanel {
 			return null;
 		}
 
+		/**
+		 * Verwijder regel
+		 * 
+		 * @author Tim
+		 * 
+		 * @param row
+		 */
+		public void removeRow(int row) {
+		    fireTableRowsDeleted(row, row);
+		    products.remove(row);
+		}
+		
+		/**
+		 * Verwijder alle regels
+		 * 
+		 * @author Tim
+		 */
+		public void removeAllRows()
+		{
+			fireTableRowsDeleted(0, getRowCount());
+			products.clear();
+		}
 	}
 }
