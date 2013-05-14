@@ -17,6 +17,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
@@ -186,11 +187,17 @@ public class ExecutionPanel extends JPanel implements ActionListener {
 			getTSPAlgorithmFromRadioButtons();
 		}
 		
-		if(e.getSource() == simulateBtn)
-			simulateButtonPressed(bppAlgorithm, tspAlgorithm);
-		
+		if(e.getSource() == simulateBtn) {
+			if(bppAlgorithm == null || tspAlgorithm == null)
+				JOptionPane.showMessageDialog(this, "Selecteer eerst twee algoritmes.");
+			else
+				simulateButtonPressed(bppAlgorithm, tspAlgorithm);
+		}
 		if(e.getSource() == executeBtn) {
-			executeButtonPressed(bppAlgorithm, tspAlgorithm, "com 1", "com 2");
+			if(bppAlgorithm == null || tspAlgorithm == null)
+				JOptionPane.showMessageDialog(this, "Selecteer eerst twee algoritmes.");
+			else
+				executeButtonPressed(bppAlgorithm, tspAlgorithm, "com 1", "com 2");
 		}		
 	}
 

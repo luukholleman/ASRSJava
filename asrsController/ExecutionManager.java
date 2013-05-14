@@ -19,7 +19,7 @@ public class ExecutionManager {
 	private int height;
 	private Boolean useDetectedSize;
 	private int load = 0;
-	private Robot[] robots;
+	private OPRobot[] robots;
 	private ArrayList<Product> bppProducts = new ArrayList<Product>();
 
 	/**
@@ -52,8 +52,9 @@ public class ExecutionManager {
 		this.useDetectedSize = useDetectedSize;
 
 		//Haal het aantal robots uit het warehouse
-		robots = new Robot[warehouse.getRobots()];
 		//Verdeel het magazijn over de robots
+		robots = new OPRobot[warehouse.getRobots()];
+
 		for (int r = 0; r < warehouse.getRobots(); r++) {
 			ArrayList<Product> products = new ArrayList<Product>();
 			for (Product p : order.getProducts()) {
@@ -68,7 +69,8 @@ public class ExecutionManager {
 			//Sorteer de producten volgens het meegegeven algoritme
 			products = tspAlgorithm.calculateRoute(products);
 			//Maak de robots, geef ze hun producten en hun startlocatie 
-			robots[r] = new Robot(warehouse.getStartLocation(r), products);
+
+			robots[r] = new OPRobot(warehouse.getStartLocation(r), products, r);
 
 			//laat de robot het volgende product ophalen
 			Product nextProduct = robots[r].getNextProduct();
@@ -116,10 +118,10 @@ public class ExecutionManager {
 	 * 
 	 * @param robotId
 	 */
-	public void deliveredProduct(Integer robotId) {
-		bppProducts.addAll(robots[robotId].productsOnFork);
-		robots[robotId].productsOnFork.clear();
-		warehouse.moveToStart(robotId);
+	public void deliveredProduct(OPRobot robot) {
+		bppProducts.addAll(robot.productsOnFork);
+		robot.productsOnFork.clear();
+		warehouse.moveToStart(robot.id);
 	}
 
 	// Alle getters

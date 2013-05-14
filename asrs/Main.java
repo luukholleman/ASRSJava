@@ -14,6 +14,8 @@ import order.Product;
 import tspAlgorithm.TSPAlgorithm;
 import asrsController.ExecutionManager;
 import bppAlgorithm.BPPAlgorithm;
+import bppAlgorithm.Bin;
+import bppAlgorithm.BinManager;
 
 import listener.XMLUploadedListener;
 import listener.ExecuteButtonPressedListener;;
@@ -42,6 +44,16 @@ public class Main extends JFrame implements XMLUploadedListener, ExecuteButtonPr
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		
+		try
+		{
+			DBHandler.connect();
+		}
+		catch(DatabaseConnectionFailedException e)
+		{
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		}
+		
 		// zet de look and feel naar windows of osx
 		try
 		{
@@ -111,7 +123,12 @@ public class Main extends JFrame implements XMLUploadedListener, ExecuteButtonPr
 
 	@Override
 	public void xmlUploaded(String xmlFileLocation) {
-		order = XMLLoader.readOrder(xmlFileLocation);
+		try {
+			order = XMLLoader.readOrder(xmlFileLocation);
+		} catch (ProductNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		customerPanel.setCustomerId(order.getCustomer().getId());
 		customerPanel.setCustomerName(order.getCustomer().getName());
@@ -123,19 +140,39 @@ public class Main extends JFrame implements XMLUploadedListener, ExecuteButtonPr
 
 	@Override
 	public void simulatePressed(BPPAlgorithm bpp, TSPAlgorithm tsp) {
-		ExecutionManager EM = new ExecutionManager();
-		SimulationFrame frame = new SimulationFrame(bpp, tsp, EM);
-		frame.setVisible(true);
+		if(order == null) {
+			JOptionPane.showMessageDialog(this, "Selecteer eerst een XML bestand");
+			return;
+		}
 		
-		//TO-DO create new EM
+		BinManager binMan = new BinManager();
+		binMan.addBin(new Bin(10,0));
+		binMan.addBin(new Bin(20,0));
+		binMan.addBin(new Bin(30,0));
+		BinPackingPanel bpPanel = new BinPackingPanel();
+		OrderPickingPanel opPanel = new OrderPickingPanel(bpPanel);
+		ExecutionManager eM = new ExecutionManager(this, order, binMan, opPanel, bpPanel, tsp, bpp, 10, 20, false);
+		bpPanel.setEM(eM);
+		opPanel.setEM(eM);
+		SimulationFrame frame = new SimulationFrame(bpPanel, opPanel);
+		frame.setVisible(true);
 	}
 
 	@Override
-	public void executePressed(BPPAlgorithm bpp, TSPAlgorithm tsp,
+	public void executePressed(BPPAlgorithm bpp, TSPAlgorithm tsp,	
 			String com1, String com2) {
+		if(order == null) {
+			JOptionPane.showMessageDialog(this, "Selecteer eerst een XML bestand");
+			return;
+		}
+		
 		throw new UnsupportedOperationException();
 		// TODO Auto-generated method stub
 		
 	}
 
+	public void productStatusUpdated(Product product)
+	{
+		orderPanel.updateStatus(product, product.getStatus());
+	}
 }
