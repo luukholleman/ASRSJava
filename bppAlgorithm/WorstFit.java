@@ -32,6 +32,9 @@ public class WorstFit implements BPPAlgorithm {
 	 * @return fittingBin
 	 */
 	public Bin calculateBin(Product product, ArrayList<Bin> bins) {
+		//Kopieer de arraylist
+		bins = new ArrayList<Bin>(bins);		
+
 		//Sorteer de bins in op volgorde van veel inhoud naar weinig inhoud
 		Collections.sort(bins, new Comparator<Bin>() {
 			public int compare(Bin one, Bin two) {
