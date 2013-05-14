@@ -171,4 +171,8 @@ public class Main extends JFrame implements XMLUploadedListener, ExecuteButtonPr
 		
 	}
 
+	public void productStatusUpdated(Product product)
+	{
+		orderPanel.updateStatus(product, product.getStatus());
+	}
 }
