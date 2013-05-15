@@ -1,5 +1,5 @@
 package asrsController;
 
-public class BinPackingArduino {
+public class BinPackingArduino implements BinPacking{
 
 }
