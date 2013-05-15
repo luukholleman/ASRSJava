@@ -49,7 +49,7 @@ public class Main extends JFrame implements XMLUploadedListener, ExecuteButtonPr
 	public static void main(String[] args) {
 		try
 		{
-			DBHandler.connect();
+			Database.connect();
 		}
 		catch(DatabaseConnectionFailedException e)
 		{
