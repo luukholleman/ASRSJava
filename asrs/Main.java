@@ -86,6 +86,9 @@ public class Main extends JFrame implements XMLUploadedListener, ExecuteButtonPr
 		buildUI();
 		bindListeners();
 		
+		//Title van Frame
+		setTitle("Auto Dropbox");
+		
 		// als laatste, maak hem zichtbaar
 		setVisible(true);
 	}
