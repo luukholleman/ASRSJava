@@ -47,7 +47,6 @@ public class Main extends JFrame implements XMLUploadedListener, ExecuteButtonPr
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		System.out.println("Hi");
 		try
 		{
 			DBHandler.connect();
