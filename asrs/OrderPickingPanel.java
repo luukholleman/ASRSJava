@@ -45,7 +45,7 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 		robots[0] = robotLeft;
 		robots[1] = robotRight;
 		try {
-			warehouse = DBHandler.getAllOccupiedLocations();
+			warehouse = Database.getAllOccupiedLocations();
 		} catch (DatabaseConnectionFailedException e) {
 			JOptionPane.showMessageDialog(this,
 					"Kan geen verbinding maken met de database.");
