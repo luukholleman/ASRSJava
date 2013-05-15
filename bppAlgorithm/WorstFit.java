@@ -57,4 +57,10 @@ public class WorstFit implements BPPAlgorithm {
 		
 		return fittingBin;
 	}
+
+	@Override
+	public int getBinCount() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

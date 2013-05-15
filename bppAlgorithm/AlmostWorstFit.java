@@ -59,4 +59,9 @@ public class AlmostWorstFit implements BPPAlgorithm {
 		return fittingBin; 
 	}
 
+	@Override
+	public int getBinCount() {
+		return 0;
+	}
+
 }
