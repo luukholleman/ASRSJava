@@ -29,23 +29,9 @@ public class Arduino implements SerialPortEventListener{
 	// Standaard bits per second voor de COM poort.
 	private static final int DATA_RATE = 9600;
 	
-	// Initialiseren van de verbinding
-	public void initialize() {
-        CommPortIdentifier portId = null;
-        Enumeration portEnum = CommPortIdentifier.getPortIdentifiers();
-
-        // Zoeken naar de poort
-        while (portEnum.hasMoreElements()) {
-            CommPortIdentifier currPortId = (CommPortIdentifier) portEnum.nextElement();
-            for (String portName : PORT_NAMES) {
-                if (currPortId.getName().equals(portName)) {
-                    portId = currPortId;
-                    break;
-                }
-            }
-        }
-        
-        if (portId == null) {
+	
+	public Arduino (CommPortIdentifier port){
+		if (port == null) {
             System.out.println("Kan de COM poort niet vinden");
             return;
         }else{
@@ -54,7 +40,7 @@ public class Arduino implements SerialPortEventListener{
 
         try {
             // Open seriële poort en gebruik de class naam voor de appNaam
-            serialPort = (SerialPort) portId.open(this.getClass().getName(),TIME_OUT);
+            serialPort = (SerialPort) port.open(this.getClass().getName(),TIME_OUT);
             
             // Poort parameters aanwijzen
             serialPort.setSerialPortParams(DATA_RATE,
@@ -72,10 +58,6 @@ public class Arduino implements SerialPortEventListener{
         } catch (Exception e) {
             System.err.println(e.toString());
         }
-    }
-	
-	public Arduino (String port){
-		
 	}
 	
 	
