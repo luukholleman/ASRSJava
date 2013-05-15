@@ -3,6 +3,8 @@ package asrs;
  * @author Luuk
  * @date 15 april
  */
+import gnu.io.CommPortIdentifier;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -22,7 +24,6 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
 import listener.ExecuteButtonPressedListener;
-import listener.XMLUploadedListener;
 
 import tspAlgorithm.BruteForce;
 import tspAlgorithm.Greedy;
@@ -55,6 +56,9 @@ public class ExecutionPanel extends JPanel implements ActionListener {
 	// de gekozen algoritmes, wordt gevuld na uitvoering van getXAlgorithmFromRadioButtons
 	private BPPAlgorithm bppAlgorithm;
 	private TSPAlgorithm tspAlgorithm;
+
+	private JComboBox comportsBpp;
+	private JComboBox comportsTsp;
 
 	/**
 	 * ctor
@@ -169,15 +173,35 @@ public class ExecutionPanel extends JPanel implements ActionListener {
 			}
 		}
 		
-		String[] petStrings = { "Bird", "Cat", "Dog", "Rabbit", "Pig" };
-
-		//Create the combo box, select item at index 4.
-		//Indices start at 0, so 4 specifies the pig.
-		JComboBox petList = new JComboBox(petStrings);
-		petList.setSelectedIndex(4);
-		petList.addActionListener(this);
+		// er worden 20 comports ondersteund
+		ArrayList<String> comports = new ArrayList<String>();
+//		String[] comports = new String[20]; 
+		int i = 0;
 		
-		comPanel.add(petList);
+        CommPortIdentifier portId = null;
+        Enumeration portEnum = CommPortIdentifier.getPortIdentifiers();
+        System.out.println(portEnum.hasMoreElements());
+        // Zoeken naar de poort
+        while (portEnum.hasMoreElements()) {
+            CommPortIdentifier currPortId = (CommPortIdentifier) portEnum.nextElement();
+            
+            comports.add(currPortId.getName());            
+        }
+
+		JComboBox comportBpp = new JComboBox(comports.toArray());
+		comportBpp.addActionListener(this);
+		
+		JComboBox comportTsp = new JComboBox(comports.toArray());
+		comportTsp.addActionListener(this);
+
+		JLabel bppArduino = new JLabel("Loopband Arduino");
+		JLabel tspArduino = new JLabel("Magazijn Arduino");
+		
+		comPanel.add(bppArduino);
+		comPanel.add(comportBpp);
+		
+		comPanel.add(tspArduino);
+		comPanel.add(comportTsp);
 
 		simulateBtn.addActionListener(this);
 		executeBtn.addActionListener(this);
@@ -213,7 +237,7 @@ public class ExecutionPanel extends JPanel implements ActionListener {
 			if(bppAlgorithm == null || tspAlgorithm == null)
 				JOptionPane.showMessageDialog(this, "Selecteer eerst twee algoritmes.");
 			else
-				executeButtonPressed(bppAlgorithm, tspAlgorithm, "com 1", "com 2");
+				executeButtonPressed(bppAlgorithm, tspAlgorithm, comportsBpp.getName(), comportsTsp.getName());
 		}		
 	}
 

@@ -2,16 +2,8 @@ package asrs;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
 
 import javax.swing.JFrame;
-
-import tspAlgorithm.TSPAlgorithm;
-
-import asrsController.ExecutionManager;
-import bppAlgorithm.BPPAlgorithm;
-
-import order.Product;
 
 public class SimulationFrame extends JFrame {
 	private OrderPickingPanel opPanel;
@@ -19,7 +11,7 @@ public class SimulationFrame extends JFrame {
 	
 	public SimulationFrame(BinPackingPanel bpPanel, OrderPickingPanel opPanel){
 		setLayout( new FlowLayout() );
-		setTitle( "Simulatie" );
+		setTitle( "Virtual Auto Dropbox" );
 		setVisible( true );
 		setSize(800,500);
 		

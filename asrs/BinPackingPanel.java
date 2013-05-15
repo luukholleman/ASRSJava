@@ -8,10 +8,8 @@ import javax.swing.JPanel;
 
 import asrsController.BinPacking;
 import asrsController.ExecutionManager;
-import bppAlgorithm.BPPAlgorithm;
 import bppAlgorithm.Bin;
 
-import order.Location;
 import order.Product;
 
 public class BinPackingPanel extends JPanel implements Runnable, BinPacking {
@@ -81,7 +79,7 @@ public class BinPackingPanel extends JPanel implements Runnable, BinPacking {
 		// Dit is de overflow box
 		g.drawRect(10, 0, 300, 150);
 
-		g.drawString(overflow + "/Åá", 145, 70);
+		g.drawString(overflow + "/INFINITY", 145, 70);
 		// Tekent de lijntjes van de lopende band.
 		for (int line : lines) {
 			g.drawLine(110, line, 210, line);
@@ -144,12 +142,6 @@ public class BinPackingPanel extends JPanel implements Runnable, BinPacking {
 				productLine.get(0).setStatus("ingepakt");
 				eM.getMain().productStatusUpdated(productLine.get(0));
 				
-//				byte methodByte = 0;
-//				byte binByte = eM.detectedProduct(methodByte, methodByte, methodByte);
-//				if(binByte != null){
-//					bins.get(eM.detectedProduct(methodByte, methodByte, methodByte)).fill(productLine.get(0));
-//				}
-				
 				productLine.remove(0);
 			}
 			repaint();
@@ -171,7 +163,7 @@ public class BinPackingPanel extends JPanel implements Runnable, BinPacking {
 	 */
 	private void frame() {
 		try {
-			Thread.sleep(25);
+			Thread.sleep(20);
 		} catch (InterruptedException e) {
 		}
 	}

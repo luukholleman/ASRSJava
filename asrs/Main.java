@@ -1,7 +1,10 @@
 package asrs;
+import gnu.io.CommPortIdentifier;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.util.ArrayList;
+import java.util.Enumeration;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -44,7 +47,6 @@ public class Main extends JFrame implements XMLUploadedListener, ExecuteButtonPr
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		
 		try
 		{
 			DBHandler.connect();
@@ -85,6 +87,9 @@ public class Main extends JFrame implements XMLUploadedListener, ExecuteButtonPr
 		
 		buildUI();
 		bindListeners();
+		
+		//Title van Frame
+		setTitle("Auto Dropbox");
 		
 		// als laatste, maak hem zichtbaar
 		setVisible(true);

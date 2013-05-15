@@ -15,8 +15,6 @@ import asrsController.ExecutionManager;
 import asrsController.OPRobot;
 import asrsController.Warehouse;
 
-import tspAlgorithm.TSPAlgorithm;
-
 public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 	// Alle attributen die in meerdere methoden gebruiken (zullen) worden staan
 	// hier
@@ -278,7 +276,7 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 
 	@Override
 	public void moveToStart(int robotId) {
-		robots[robotId].destination = new Location(0, 0);
+		robots[robotId].destination = getStartLocation(robotId);
 		move();
 		frame();
 		robots[robotId].finished = true;
@@ -295,9 +293,9 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 	@Override
 	public Location getStartLocation(int r) {
 		if (r == 0) {
-			return new Location(-2, 3);
+			return new Location(0, 0);
 		} else if (r == 1) {
-			return new Location(11, 3);
+			return new Location(9, 0);
 		} else {
 			return null;
 		}
