@@ -19,6 +19,16 @@ public class Product {
 		
 		DBHandler.getProductDatabaseInfo(this);
 	}
+	
+	public Product(Location location, int id){
+		this.location = location;
+		this.id = id;
+	}
+	
+	public Product(int size, int id){
+		this.size = size;
+		this.id = id;
+	}
 
 	public int getId() {
 		return id;
