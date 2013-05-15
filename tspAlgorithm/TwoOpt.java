@@ -5,6 +5,7 @@
 package tspAlgorithm;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import order.Product;
 import order.Location;
@@ -47,13 +48,7 @@ public class TwoOpt implements TSPAlgorithm {
 					int path1Index = locations.indexOf(path1.endLocation);
 					int path2Index = locations.indexOf(path2.startLocation);
 					
-					if(path1Index < path2Index) {
-						locations.set(path2Index, path1.endLocation);
-						locations.set(path1Index, path2.startLocation);
-					} else {
-						locations.set(path2Index, path1.startLocation);
-						locations.set(path1Index, path2.endLocation);
-					}
+					Collections.swap(locations, path1Index, path2Index);
 				}
 			}
 		}

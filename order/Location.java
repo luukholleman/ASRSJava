@@ -62,4 +62,9 @@ public class Location {
 		return (float) Math.sqrt(Math.pow(Math.abs(toLocation.x - x), 2)
 				+ Math.pow(Math.abs(toLocation.y - y), 2));
 	}
+	
+	@Override
+	public String toString() {
+		return x + ", " + y;
+	}
 }
