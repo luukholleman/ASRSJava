@@ -10,6 +10,7 @@ import order.Product;
 
 public class Circulate implements BPPAlgorithm {
 	private static String name = "Circulate";
+	private Bin lastBin = null;
 	
 	@Override
 	public String getName() {
@@ -23,22 +24,30 @@ public class Circulate implements BPPAlgorithm {
 	 */
 	@Override
 	public Bin calculateBin(Product product, ArrayList<Bin> bins) {
-		//Kijken of er nog lege bins in. Zoja, doe het product in deze bin.
-		for (Bin bin : bins){
-			if(bin.getFilled() != 0 && (bin.getSize()-bin.getFilled()) >= product.getSize()){
-				return bin;
+		if(lastBin == null){
+			lastBin = bins.get(0);
+			if(lastBin.getSize() >= product.getSize()){
+				System.out.println(Integer.toString(bins.indexOf(lastBin)));
+				return lastBin;
 			}
 		}
-		/* Kijken welke bin het minst vol is en het product daar in stoppen.
-		 * Als ze allemaal vol zijn, return null.
-		*/
-		Bin binmin = null;
-		for (Bin bin : bins){
-			if((binmin == null && (bin.getSize()-bin.getFilled()) >= product.getSize()) || (bin.getFilled() < binmin.getFilled() && (bin.getSize()-bin.getFilled()) >= product.getSize())){
-				binmin = bin;
+		for(Bin bin : bins){
+			if(bins.indexOf(lastBin) < bins.size()-1){
+				lastBin = bins.get(bins.indexOf(lastBin)+1);
+				if(lastBin.getSize()-lastBin.getFilled() >= product.getSize()){
+					System.out.println(Integer.toString(bins.indexOf(lastBin)));
+					return lastBin;
+				}
 			}
-		}		
-		return binmin;
+			else{
+				lastBin = bins.get(0);
+				if(lastBin.getSize()-lastBin.getFilled() >= product.getSize()){
+					System.out.println(Integer.toString(bins.indexOf(lastBin)));
+					return lastBin;
+				}
+			}
+			
+		}
+		return null;
 	}
-	
 }
