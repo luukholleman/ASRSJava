@@ -1,36 +1,47 @@
 package asrs;
 
 import java.awt.*;
+import java.awt.event.*;
+
 import javax.swing.JFrame;
 
-import tspAlgorithm.TSPAlgorithm;
-
-import bppAlgorithm.BPPAlgorithm;
-
 public class SimulationFrame extends JFrame {
-	private OrderPickingPanel OPPanel;
-	private BinPackingPanel BPPanel;
-//	private BinPackingPanel BPPanel;
+	private OrderPickingPanel opPanel;
+	private BinPackingPanel bpPanel;
 	
-	public SimulationFrame(BPPAlgorithm bpp, TSPAlgorithm tsp){
-		//setDefaultCloseOperation( EXIT_ON_CLOSE );
+	public SimulationFrame(BinPackingPanel bpPanel, OrderPickingPanel opPanel){
 		setLayout( new FlowLayout() );
-		setTitle( "Simulation" );
+		setTitle( "Virtual Auto Dropbox" );
 		setVisible( true );
 		setSize(800,500);
 		
-		OPPanel = new OrderPickingPanel(tsp);
-		OPPanel.setPreferredSize(new Dimension(350, 500));
-		add(OPPanel);
-		OPPanel.start();
+		this.bpPanel = bpPanel;
+		this.opPanel = opPanel;
 		
-		BPPanel = new BinPackingPanel(bpp);
-		BPPanel.setPreferredSize(new Dimension(350, 500));
-		add(BPPanel);
-		BPPanel.start();
+
+		bpPanel.setPreferredSize(new Dimension(350, 500));
+		add(bpPanel);
+		//Starten van de simulatie
+		bpPanel.start();
+
+		opPanel.setPreferredSize(new Dimension(350, 500));
+		add(opPanel);
+		//Starten van de simulatie
+		opPanel.start();
 		
-		
+		this.addWindowListener(new WindowAdapter()
+		{
+			public void windowClosing(WindowEvent e)
+			{
+				close();
+			}
+		});
 		
 		revalidate();
 	}
+	private void close(){
+		bpPanel.stop();
+		opPanel.stop();
+	}
+	
 }

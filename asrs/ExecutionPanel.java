@@ -3,7 +3,6 @@ package asrs;
  * @author Luuk
  * @date 15 april
  */
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,11 +16,11 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
 import listener.ExecuteButtonPressedListener;
-import listener.XMLUploadedListener;
 
 import tspAlgorithm.BruteForce;
 import tspAlgorithm.Greedy;
@@ -134,22 +133,38 @@ public class ExecutionPanel extends JPanel implements ActionListener {
 				
 		// hoofdlabel
 		bppPanel.add(new JLabel("BPP algoritme"));
+		
+		boolean firstBpp = true;
 
 		// loop de bpp algoritmes en plaats de namen in radiobuttons
 		for (BPPAlgorithm bppAlgorithm : bppAlgorithms) {
 			JRadioButton rdBtn = new JRadioButton(bppAlgorithm.getName());
 			bppBtnGrp.add(rdBtn);
 			bppPanel.add(rdBtn);
+			
+			// de eerste moet altijd geselecteerd zijn
+			if(firstBpp) {
+				rdBtn.setSelected(true);
+				firstBpp = false;
+			}
 		}
 
 		// hoofdlabel
 		tspPanel.add(new JLabel("TSP algoritme"));
+		
+		boolean firstTsp = true;
 
 		// loop de tsp algoritmes en plaats de namen in radiobuttons
 		for (TSPAlgorithm tspAlgorithm : tspAlgorithms) {
 			JRadioButton rdBtn = new JRadioButton(tspAlgorithm.getName());
 			tspBtnGrp.add(rdBtn);
 			tspPanel.add(rdBtn);
+			
+			// de eerste moet altijd geselecteerd zijn
+			if(firstTsp) {
+				rdBtn.setSelected(true);
+				firstTsp = false;
+			}
 		}
 		
 		String[] petStrings = { "Bird", "Cat", "Dog", "Rabbit", "Pig" };
@@ -186,11 +201,17 @@ public class ExecutionPanel extends JPanel implements ActionListener {
 			getTSPAlgorithmFromRadioButtons();
 		}
 		
-		if(e.getSource() == simulateBtn)
-			simulateButtonPressed(bppAlgorithm, tspAlgorithm);
-		
+		if(e.getSource() == simulateBtn) {
+			if(bppAlgorithm == null || tspAlgorithm == null)
+				JOptionPane.showMessageDialog(this, "Selecteer eerst twee algoritmes.");
+			else
+				simulateButtonPressed(bppAlgorithm, tspAlgorithm);
+		}
 		if(e.getSource() == executeBtn) {
-			executeButtonPressed(bppAlgorithm, tspAlgorithm, "com 1", "com 2");
+			if(bppAlgorithm == null || tspAlgorithm == null)
+				JOptionPane.showMessageDialog(this, "Selecteer eerst twee algoritmes.");
+			else
+				executeButtonPressed(bppAlgorithm, tspAlgorithm, "com 1", "com 2");
 		}		
 	}
 

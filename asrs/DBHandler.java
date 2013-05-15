@@ -7,8 +7,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import javax.swing.JOptionPane;
-
 import order.Location;
 import order.Product;
 
@@ -19,68 +17,85 @@ import order.Product;
  * 
  */
 public class DBHandler {
-	// User details:
-	// 209.105.248.9
-	// asrs
-	// w1nd3sh31m
-
-	private Connection connect() {
-		Connection conn = null;
+	
+	/**
+	 * Database connection
+	 */
+	private static Connection dbConnection;
+	
+	/**
+	 * Maakt de connectie met de database
+	 * @throws DatabaseConnectionFailedException
+	 */
+	public static void connect() throws DatabaseConnectionFailedException {
 		try {
+			//Start de mysql driver (?)
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
 
-			String url = "jdbc:mysql://209.105.248.9/asrs";
-			return conn = DriverManager
-					.getConnection(url, "asrs", "w1nd3sh31m");
+			//Maak database connectie aan
+			dbConnection = DriverManager.getConnection("jdbc:mysql://209.105.248.9/asrs", "asrs", "w1nd3sh31m");
+			
 		} catch (InstantiationException e) {
-			JOptionPane.showMessageDialog(null, "Kan niet met de database verbinden(Initalization failed).\n\nStackTrace:\n" + e.getStackTrace());
+			throw new DatabaseConnectionFailedException("Kan niet met de database verbinden(Initalization failed).");
 		} catch (IllegalAccessException e) {
-			JOptionPane.showMessageDialog(null, "Kan niet met de database verbinden(Illigal action performed).\n\nStackTrace:\n" + e.getStackTrace());
+			throw new DatabaseConnectionFailedException("Kan niet met de database verbinden(Illigal action performed).");
 		} catch (ClassNotFoundException e) {
-			JOptionPane.showMessageDialog(null, "Kan niet met de database verbinden(Class not found).\n\nStackTrace:\n" + e.getStackTrace());
+			throw new DatabaseConnectionFailedException("Kan niet met de database verbinden(Class not found).");
 		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(null, "Kan niet met de database verbinden(SQL error).\n\nStackTrace:\n" + e.getStackTrace());
+			throw new DatabaseConnectionFailedException("Kan niet met de database verbinden(SQL error).");
+		} catch (Exception e) {
+			throw new DatabaseConnectionFailedException("Kan niet met de database verbinden(Unknown error).");
+		
 		}
-		return conn;
 	}
 	
-	public ArrayList<Location> getAllOccupiedLocations()
+	public static void disconnect()
 	{
-		String query = "SELECT * FROM products";
+		try {
+			//Sluit de verbinding
+			dbConnection.close();
+			dbConnection = null;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	public static ArrayList<Location> getAllOccupiedLocations() throws DatabaseConnectionFailedException
+	{
+		//Geen verbinding? Doe niks
+		if(dbConnection == null)
+			return null;
+		
+		//List om de locaties in op te slaan
 		ArrayList<Location> locs = new ArrayList<Location>();
 		
 	    try
 	    {
-	    	Connection conn = connect();
-	    	Statement st = conn.createStatement();
-	    	ResultSet rs = st.executeQuery(query);
+	    	//Haal alle locaties op uit database en voeg toe aan lijst
+	    	Statement st = dbConnection.createStatement();
+	    	ResultSet rs = st.executeQuery("SELECT * FROM products");
 	    	while (rs.next())
 	    	{
 	    		int x = rs.getInt("x");
 	    		int y = rs.getInt("y");
 	    		locs.add(new Location(x,y));
 	    	}
-	    	
-	    	conn.close();
 	    }
 	    catch (SQLException ex)
 	    {
-	    	ex.printStackTrace();
+	    	throw new DatabaseConnectionFailedException("Kan niet met de database verbinden(SQL error).");
 	    }
 	    return locs;
 	}
 	
-	public void getProductDatabaseInfo(Product product)
+	public static void getProductDatabaseInfo(Product product) throws ProductNotFoundException
 	{
-		String query = "SELECT * FROM products WHERE artnr=" + product.getId() + " ORDER BY y ASC LIMIT 1";
 	    try
 	    {
-	    	Connection conn = connect();
-	    	Statement st = conn.createStatement();
-	    	ResultSet rs = st.executeQuery(query);
-	    	boolean found = rs.next();
+	    	//Haal de informatie over dit product op en 
+	    	Statement st = dbConnection.createStatement();
+	    	ResultSet rs = st.executeQuery("SELECT * FROM products WHERE artnr=" + product.getId() + " ORDER BY y ASC LIMIT 1");
 	    	
-	    	if(found){
+	    	if(rs.next()){
 	    		int x = rs.getInt("x");
 	    		int y = rs.getInt("y");
 	    		int size = rs.getInt("size");
@@ -88,12 +103,16 @@ public class DBHandler {
 	    		product.setLocation(new Location(x,y));
 	    		product.setSize(size);
 	    	}
+	    	else
+	    	{
+	    		throw new ProductNotFoundException("Product niet gevonden");
+	    	}
 	    	
-	    	conn.close();
 	    }
 	    catch (SQLException ex)
 	    {
 	    	ex.printStackTrace();
+	    	throw new ProductNotFoundException("Er kwam een probleem voor tijdens het verbinden met de database");
 	    }
 	}
 }

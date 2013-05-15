@@ -1,14 +1,21 @@
 package asrs;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 
+import order.Order;
+import order.Product;
+
 import tspAlgorithm.TSPAlgorithm;
+import asrsController.ExecutionManager;
 import bppAlgorithm.BPPAlgorithm;
+import bppAlgorithm.Bin;
+import bppAlgorithm.BinManager;
 
 import listener.XMLUploadedListener;
 import listener.ExecuteButtonPressedListener;;
@@ -30,11 +37,23 @@ public class Main extends JFrame implements XMLUploadedListener, ExecuteButtonPr
 	private ExecutionPanel executionPanel = new ExecutionPanel();
 	private CustomerPanel customerPanel = new CustomerPanel();
 	private OrderPanel orderPanel = new OrderPanel();
+	
+	private Order order;
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		
+		try
+		{
+			DBHandler.connect();
+		}
+		catch(DatabaseConnectionFailedException e)
+		{
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		}
+		
 		// zet de look and feel naar windows of osx
 		try
 		{
@@ -66,6 +85,9 @@ public class Main extends JFrame implements XMLUploadedListener, ExecuteButtonPr
 		
 		buildUI();
 		bindListeners();
+		
+		//Title van Frame
+		setTitle("Auto Dropbox");
 		
 		// als laatste, maak hem zichtbaar
 		setVisible(true);
@@ -104,26 +126,56 @@ public class Main extends JFrame implements XMLUploadedListener, ExecuteButtonPr
 
 	@Override
 	public void xmlUploaded(String xmlFileLocation) {
-//		Order order = XMLLoader.readOrder(xmlFileLocation);
-//		
-//		customerPanel.setCustomerId(order.getCustomer().getId());
-//		customerPanel.setCustomerName(order.getCustomer().getName());
-//		customerPanel.setDate(order.getDate());
-//		customerPanel.setTotalPrice(order.getTotalPrice());
+		try {
+			order = XMLLoader.readOrder(xmlFileLocation);
+		} catch (ProductNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		customerPanel.setCustomerId(order.getCustomer().getId());
+		customerPanel.setCustomerName(order.getCustomer().getName());
+		customerPanel.setDate(order.getDate());
+		customerPanel.setTotalPrice(order.getTotalPrice());
+		
+		orderPanel.setOrder(order);
 	}
 
 	@Override
 	public void simulatePressed(BPPAlgorithm bpp, TSPAlgorithm tsp) {
-		SimulationFrame frame = new SimulationFrame(bpp, tsp);
+		if(order == null) {
+			JOptionPane.showMessageDialog(this, "Selecteer eerst een XML bestand");
+			return;
+		}
+		
+		BinManager binMan = new BinManager();
+		binMan.addBin(new Bin(10,0));
+		binMan.addBin(new Bin(20,0));
+		binMan.addBin(new Bin(30,0));
+		BinPackingPanel bpPanel = new BinPackingPanel();
+		OrderPickingPanel opPanel = new OrderPickingPanel(bpPanel);
+		ExecutionManager eM = new ExecutionManager(this, order, binMan, opPanel, bpPanel, tsp, bpp, 10, 20, false);
+		bpPanel.setEM(eM);
+		opPanel.setEM(eM);
+		SimulationFrame frame = new SimulationFrame(bpPanel, opPanel);
 		frame.setVisible(true);
 	}
 
 	@Override
-	public void executePressed(BPPAlgorithm bpp, TSPAlgorithm tsp,
+	public void executePressed(BPPAlgorithm bpp, TSPAlgorithm tsp,	
 			String com1, String com2) {
+		if(order == null) {
+			JOptionPane.showMessageDialog(this, "Selecteer eerst een XML bestand");
+			return;
+		}
+		
 		throw new UnsupportedOperationException();
 		// TODO Auto-generated method stub
 		
 	}
 
+	public void productStatusUpdated(Product product)
+	{
+		orderPanel.updateStatus(product, product.getStatus());
+	}
 }
