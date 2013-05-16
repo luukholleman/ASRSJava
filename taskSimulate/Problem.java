@@ -19,4 +19,10 @@ public class Problem {
 			
 		return string;
 	}
+	public ArrayList<ArrayList<Product>> getProducts() {
+		return products;
+	}
+	public void setProducts(ArrayList<ArrayList<Product>> products) {
+		this.products = products;
+	}
 }
