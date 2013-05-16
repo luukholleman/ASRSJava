@@ -16,6 +16,11 @@ import asrsController.OPRobot;
 import asrsController.Warehouse;
 
 public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
+	private static final int CELL_SIZE = 20;
+	private static final int WAREHOUSE_MAX_Y = 10;
+	private static final int WAREHOUSE_MAX_X = 20;
+	private static final int BINPACKER_SIZE = 60;
+	private static final int BINPACKER_DEPTH = 340;
 	// Alle attributen die in meerdere methoden gebruiken (zullen) worden staan
 	// hier
 	private BinPackingPanel bpPanel;
@@ -23,13 +28,9 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 	private Thread runner;
 	private ArrayList<Location> warehouse;
 	private ArrayList<Product> products;
-	private Random gen;
 	private OPRobot robots[];
 	private OPRobot robotLeft;
 	private OPRobot robotRight;
-	private Location destination;
-	private int load = 0;
-	private int check = 0;
 	
 	public OrderPickingPanel(BinPackingPanel bpPanel) {
 		super();
@@ -50,8 +51,6 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 			JOptionPane.showMessageDialog(this,
 					"Kan geen verbinding maken met de database.");
 		}
-		gen = new Random();
-		destination = warehouse.get(gen.nextInt(warehouse.size()));
 	}
 
 	@Override
@@ -61,12 +60,12 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 		g.setColor(Color.BLACK);
 
 		// Hier wordt de BinPacking robot getekend (een blok).
-		g.drawRect(0, 340, 60, 60);
+		g.drawRect(0, BINPACKER_DEPTH, BINPACKER_SIZE, BINPACKER_SIZE);
 
 		// Hier wordt het magazijn getekend in 10x20
-		for (int y = 0; y < 20; y++) {
-			for (int x = 0; x < 10; x++) {
-				g.drawRect(60 + (x * 20), 0 + (y * 20), 20, 20);
+		for (int y = 0; y < WAREHOUSE_MAX_X; y++) {
+			for (int x = 0; x < WAREHOUSE_MAX_Y; x++) {
+				g.drawRect(BINPACKER_SIZE + (x * CELL_SIZE), (y * CELL_SIZE), CELL_SIZE, CELL_SIZE);
 			}
 		}
 
@@ -157,10 +156,9 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 		Thread thisThread = Thread.currentThread();
 		while (runner == thisThread) {
 			if (robots[0].load <= 3 && robots[1].load <= 3) {
-				if (check != 0) 
-					for(OPRobot robot : robots)
-						if (robot.finished == false)
-							eM.pickedUpProduct(robot.id);
+				for(OPRobot robot : robots)
+					if (robot.finished == false)
+						eM.pickedUpProduct(robot.id);
 				move();
 				frame(1000);
 				warehouse.remove(robots[0].destination);
@@ -178,8 +176,6 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 								}
 
 				}
-				System.out.println("Loop " + check);
-				check++;
 
 				warehouse.indexOf(robots[0].destination);
 
@@ -253,9 +249,9 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 	/**
 	 * Stop the animation for given amount of milliseconds
 	 * 
-	 * @param ArrayList
-	 *            <Product>
-	 * @return ArrayList<Product>
+	 * @param int
+	 * 
+	 * @return void
 	 */
 	private void frame(int pause) {
 		try {
@@ -264,6 +260,9 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 		}
 	}
 
+	/**
+	 * @see asrsController.Warehouse#retrieveProduct(order.Location, int)
+	 */
 	@Override
 	public void retrieveProduct(Location location, int robotId) {
 		robots[robotId].destination = location;
