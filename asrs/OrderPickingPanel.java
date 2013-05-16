@@ -34,10 +34,12 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 	private static final int WAREHOUSE_MAX_X = 9;
 	private static final int BINPACKER_SIZE = 60;
 	private static final int BINPACKER_DEPTH = 340;
-	// Alle attributen die in meerdere methoden gebruiken (zullen) worden staan
-	// hier
-	private BinPackingPanel bpPanel;
-	private ExecutionManager eM;
+	/*
+	 * Alle attributen die in meerdere methoden gebruiken (zullen) worden staan
+	 * hier
+	 */
+	private BinPackingPanel binPackingPanel;
+	private ExecutionManager executionManger;
 	private Thread runner;
 	private ArrayList<Location> warehouse;
 	private ArrayList<Product> products;
@@ -60,7 +62,7 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 		 * het Order Picker kan zeggen wanneer er producten naar de Bin Packer
 		 * moeten worden gestuurd.
 		 */
-		this.bpPanel = bpPanel;
+		this.binPackingPanel = bpPanel;
 		// Beide robots worden aangemaakt en op hun begin plek gezet.
 		robotLeft = new OPRobot(getStartLocation(0), 0);
 		robotLeft.pixels = new Location(BINPACKER_SIZE + ROBOT_INDENT
@@ -74,8 +76,10 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 		robots = new OPRobot[2];
 		robots[0] = robotLeft;
 		robots[1] = robotRight;
-		// Alle producten worden uit het warenhuis gehaald zodat ze kunnen
-		// getoont worden.
+		/*
+		 * Alle producten worden uit het warenhuis gehaald zodat ze kunnen
+		 * getoont worden.
+		 */
 		try {
 			warehouse = DBHandler.getAllOccupiedLocations();
 		} catch (DatabaseConnectionFailedException e) {
@@ -210,7 +214,7 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 	@Override
 	public void run() {
 		// De producten die onderdeel zijn worden uit de order gehaald
-		Order order = eM.getOrder();
+		Order order = executionManger.getOrder();
 		products = order.getProducts();
 
 		// Deze regel komt van het internet. Ik begrijp nog steeds threads niet
@@ -222,7 +226,7 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 			if (robots[0].load <= LOAD_MAX || robots[1].load <= LOAD_MAX) {
 				for (OPRobot robot : robots)
 					if (robot.finished == false)
-						eM.pickedUpProduct(robot.id);
+						executionManger.pickedUpProduct(robot.id);
 				move();
 				sleep(PAUSE_TIME_ON_PICKUP);
 
@@ -232,19 +236,21 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 				warehouse.remove(robots[1].destination);
 				for (OPRobot robot : robots) {
 					if (robot.loc.x == BINPACKER_X && robot.loc.y == LOAD_MAX) {
-						bpPanel.packProducts(robot.productsOnFork);
-						eM.deliveredProduct(robot);
+						binPackingPanel.packProducts(robot.productsOnFork);
+						executionManger.deliveredProduct(robot);
 					} else
 						for (Product product : products)
 							if (robot.destination == product.getLocation()) {
 								robot.productsOnFork.add(product);
 								product.setStatus("opgepakt");
-								eM.getMain().productStatusUpdated(product);
+								executionManger.getMain().productStatusUpdated(
+										product);
 							}
 
 				}
-				
-			//Als een van de robotten vol is, laat deze robot dan naar de bin packer bewegen.
+
+				// Als een van de robotten vol is, laat deze robot dan naar de
+				// bin packer bewegen.
 			} else {
 				if (robots[0].load <= LOAD_MAX)
 					robots[0].destination = new Location(BINPACKER_X,
@@ -253,7 +259,7 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 					robots[1].destination = new Location(BINPACKER_X,
 							BINPACKER_Y);
 				move();
-				//Leg zijn producten daarna op de bin packer.
+				// Leg zijn producten daarna op de bin packer.
 				for (OPRobot robot : robots)
 					for (Product product : products)
 						if (robot.destination == product.getLocation())
@@ -296,7 +302,7 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 		robots[1].loc = robots[1].destination;
 		// Hier wordt in 20 frames de animatie van de verplaatsing getekent
 		for (int i = 0; i < CELL_SIZE; i++) {
-			for(OPRobot robot : robots){
+			for (OPRobot robot : robots) {
 				robot.pixels.x = robot.pixels.x + stepx0;
 				robot.pixels.y = robot.pixels.y - stepy0;
 			}
@@ -393,6 +399,6 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 	 * @author Bas
 	 */
 	public void setEM(ExecutionManager eM) {
-		this.eM = eM;
+		this.executionManger = eM;
 	}
 }
