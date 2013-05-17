@@ -56,6 +56,16 @@ public class Product {
 		//Haal toevoegende informatie op uit de database
 		Database.getProductDatabaseInfo(this);
 	}
+	
+	public Product(Location location, int id){
+		this.location = location;
+		this.id = id;
+	}
+	
+	public Product(int size, int id){
+		this.size = size;
+		this.id = id;
+	}
 
 	/**
 	 * Het artikelnummer van het product
