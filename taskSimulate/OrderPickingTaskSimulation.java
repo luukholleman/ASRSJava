@@ -12,9 +12,9 @@ public class OrderPickingTaskSimulation extends JPanel {
 	
 	
 	private int currentProblem = 0;
-	private ArrayList<Problem> problems;
+	private ArrayList<TravelingSalesmanProblem> problems;
 	
-	public OrderPickingTaskSimulation(ArrayList<Problem> problems){
+	public OrderPickingTaskSimulation(ArrayList<TravelingSalesmanProblem> problems){
 		
 		setPreferredSize(new Dimension(300, 500));
 		
