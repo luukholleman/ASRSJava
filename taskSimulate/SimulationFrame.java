@@ -12,10 +12,11 @@ import order.Product;
 
 import tspAlgorithm.TSPAlgorithm;
 import bppAlgorithm.BPPAlgorithm;
+import bppAlgorithm.Bin;
 
 public class SimulationFrame extends JFrame {
 	private static final int NUMBER_ROBOTS = 2;
-	
+
 	private JButton lastBtnOrderPicker = new JButton("<-");
 	private JButton nextBtnOrderPicker = new JButton("->");
 	private JButton lastBtnBinPacker = new JButton("<-");
@@ -37,73 +38,83 @@ public class SimulationFrame extends JFrame {
 		BinPackingTask binPackingTask = new BinPackingTask(seed);
 		binPackingTask.startProcess();
 		
-		//Bla
-		ArrayList<Product> products = ArrayList<Product>();
+		//Arraylist met alle problemen
+		ArrayList<BinPackingProblem> problems = ArrayList<BinPackingProblem>();
 		
 		//Loop door alle problemen heen
 		for(int p = 0; p < binPackingTask.getNumberOfProblems(); p++)
 		{
+			//Haal alle producten uit de task classe
+			ArrayList<Product> products = ArrayList<Product>();
 			
+			for(int i=0;i<binPackingTask.getNumberOfItems(p);i++)
+			{
+				products.add(new Product(binPackingTask.getItemSize(p,  i), i));
+			}
+			
+			//Maak arraylist met een bin aan
+			ArrayList<Bin> bins = new ArrayList<Bin>();
+			bins.add(new Bin(binPackingTask.getBinSize(), 0));
+			
+			BinPackingProblem binPackingProblem = new BinPackingProblem(bins);
 		}
 		
 		
 		binPackingTask.finishProcess();
 		
 	}
-	
-	private void buildUI()
-	{
+
+	private void buildUI() {
 		GridBagConstraints c = new GridBagConstraints();
-        //natural height, maximum width
+		// natural height, maximum width
 		/**
 		 * Linker en rechterkant van het scherm
 		 */
 		JPanel selectionPanel = new JPanel();
-		
+
 		selectionPanel.setPreferredSize(new Dimension(500, 100));
-		
+
 		c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 0;
-        c.gridy = 0;
-        c.weightx = 0.5;
-		
+		c.gridx = 0;
+		c.gridy = 0;
+		c.weightx = 0.5;
+
 		selectionPanel.add(lastBtnOrderPicker, c);
 		c.gridx = 1;
-        c.gridy = 0;
-        c.weightx = 0.5;
+		c.gridy = 0;
+		c.weightx = 0.5;
 		selectionPanel.add(nextBtnOrderPicker, c);
 		c.gridx = 2;
-        c.gridy = 0;
-        c.weightx = 0.5;
+		c.gridy = 0;
+		c.weightx = 0.5;
 		selectionPanel.add(lastBtnBinPacker, c);
 		c.gridx = 3;
-        c.gridy = 0;
-        c.weightx = 0.5;
+		c.gridy = 0;
+		c.weightx = 0.5;
 		selectionPanel.add(nextBtnBinPacker);
-		
+
 		// plaats de panels
 		add(selectionPanel);
 		c.gridy = 1;
-		c.gridx = 0 ;
+		c.gridx = 0;
 		c.weighty = 5.0;
 		add(new OrderPickingTaskSimulation(problemsOrderPicking));
-		
+
 		c.gridy = 1;
-		c.gridx = 0 ;
+		c.gridx = 0;
 		c.weighty = 5.0;
 		add(new OrderPickingTaskSimulation(problemsOrderPicking));
-		
+
 		c.gridy = 1;
-		c.gridx = 0 ;
+		c.gridx = 0;
 		c.weighty = 5.0;
 		add(new BinPackingTaskSimulation(problemsBinPacking));
 	}
-	
 
 	private void executeWarehouseTask(long seed, TSPAlgorithm tsp) {
-		ArrayList<Problem> problems = new ArrayList<Problem>();
+		ArrayList<TravelingSalesmanProblem> problems = new ArrayList<TravelingSalesmanProblem>();
 		WarehouseTask warehouseTask = new WarehouseTask(seed);
-		
+
 		// Start timer
 		warehouseTask.startProcess();
 
@@ -132,15 +143,15 @@ public class SimulationFrame extends JFrame {
 				// Voeg toe aan lijst
 				products.get(robotId).add(product);
 			}
-			for (int r = 0; r < NUMBER_ROBOTS; r++){
-				//Oplossen volgons algoritme
+			for (int r = 0; r < NUMBER_ROBOTS; r++) {
+				// Oplossen volgons algoritme
 				products.set(r, tsp.calculateRoute(products.get(r), 19, 9));
-				for(int i = 0 ; i < warehouseTask.getNumberOfItems(p) ; i++){
-					warehouseTask.setOrder(p, products.get(r).get(i).getId(), r, i);
+				for (int i = 0; i < warehouseTask.getNumberOfItems(p); i++) {
+					warehouseTask.setOrder(p, products.get(r).get(i).getId(),
+							r, i);
 				}
 			}
-				
-			
+
 			problems.add(new Problem(products));
 		}
 		warehouseTask.finishProcess();

@@ -28,4 +28,6 @@ public class TravelingSalesmanProblem {
 	public void setProducts(ArrayList<ArrayList<Product>> products) {
 		this.products = products;
 	}
+	
+	
 }
