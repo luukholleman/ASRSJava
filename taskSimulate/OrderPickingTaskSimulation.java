@@ -10,8 +10,7 @@ import order.Product;
 
 public class OrderPickingTaskSimulation extends JPanel {
 	
-	private JButton lastBtn = new JButton("<-");
-	private JButton nextBtn = new JButton("->");
+	
 	private int currentProblem = 0;
 	private ArrayList<Problem> problems;
 	
@@ -37,9 +36,9 @@ public class OrderPickingTaskSimulation extends JPanel {
 		g2D.setStroke(new BasicStroke(3));
 		for(Product product : problems.get(0).getProducts().get(0)){
 			Location productLocation = product.getLocation();
-			g.drawRect(productLocation.x+3, productLocation.y+3, 15, 15);
+			g.drawRect(productLocation.x*20+3, productLocation.y*20+3, 15, 15);
 			if(lastLocation != null)	
-				g2D.drawLine(lastLocation.x, lastLocation.y, productLocation.x, productLocation.y);
+				g2D.drawLine(lastLocation.x*20+10, lastLocation.y+10*20+10, productLocation.x*20+10, productLocation.y*20+10);
 			lastLocation = productLocation;
 		}
 	}
