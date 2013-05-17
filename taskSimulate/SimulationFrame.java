@@ -20,6 +20,8 @@ public class SimulationFrame extends JFrame {
 	private JButton nextBtnOrderPicker = new JButton("->");
 	private JButton lastBtnBinPacker = new JButton("<-");
 	private JButton nextBtnBinPacker = new JButton("->");
+	ArrayList<Problem> problemsOrderPicking;
+	ArrayList<Problem> problemsBinPacking;
 
 	public SimulationFrame(long seed, BPPAlgorithm bpp, TSPAlgorithm tsp) {
 		setSize(1200, 700);
@@ -42,35 +44,48 @@ public class SimulationFrame extends JFrame {
 	{
 		GridBagConstraints c = new GridBagConstraints();
         //natural height, maximum width
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 0;
-        c.gridy = 0;
-        c.weightx = 0.5;
 		/**
 		 * Linker en rechterkant van het scherm
 		 */
-		JPanel leftSelectionPanel = new JPanel();
-		JPanel rightSelectionPanel = new JPanel();
+		JPanel selectionPanel = new JPanel();
 		
-		/** 
-		 * zet de leftpanel op een breedte
-		 * de rechter heeft dit niet nodig omdat daar maar 1 panel in zit
-		 */
-		leftSelectionPanel.setPreferredSize(new Dimension(500, 100));
+		selectionPanel.setPreferredSize(new Dimension(500, 100));
 		
-		 c.fill = GridBagConstraints.HORIZONTAL;
+		c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0;
         c.gridy = 0;
         c.weightx = 0.5;
 		
-		leftSelectionPanel.add(lastBtnOrderPicker, c);
-		leftSelectionPanel.add(nextBtnOrderPicker);
-		rightSelectionPanel.add(lastBtnBinPacker);
-		rightSelectionPanel.add(nextBtnBinPacker);
-	
+		selectionPanel.add(lastBtnOrderPicker, c);
+		c.gridx = 1;
+        c.gridy = 0;
+        c.weightx = 0.5;
+		selectionPanel.add(nextBtnOrderPicker, c);
+		c.gridx = 2;
+        c.gridy = 0;
+        c.weightx = 0.5;
+		selectionPanel.add(lastBtnBinPacker, c);
+		c.gridx = 3;
+        c.gridy = 0;
+        c.weightx = 0.5;
+		selectionPanel.add(nextBtnBinPacker);
+		
 		// plaats de panels
-		add(leftSelectionPanel, GridBagLayout.);
-		add(rightSelectionPanel, BorderLayout.CENTER);
+		add(selectionPanel);
+		c.gridy = 1;
+		c.gridx = 0 ;
+		c.weighty = 5.0;
+		add(new OrderPickingTaskSimulation(problemsOrderPicking));
+		
+		c.gridy = 1;
+		c.gridx = 0 ;
+		c.weighty = 5.0;
+		add(new OrderPickingTaskSimulation(problemsOrderPicking));
+		
+		c.gridy = 1;
+		c.gridx = 0 ;
+		c.weighty = 5.0;
+		add(new BinPackingTaskSimulation(problemsBinPacking));
 	}
 	
 
@@ -108,7 +123,7 @@ public class SimulationFrame extends JFrame {
 			}
 			for (int r = 0; r < NUMBER_ROBOTS; r++){
 				//Oplossen volgons algoritme
-				products.set(r, tsp.calculateRoute(products.get(r)));
+				products.set(r, tsp.calculateRoute(products.get(r), 19, 9));
 				for(int i = 0 ; i < warehouseTask.getNumberOfItems(p) ; i++){
 					warehouseTask.setOrder(p, products.get(r).get(i).getId(), r, i);
 				}
