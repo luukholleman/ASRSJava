@@ -9,7 +9,7 @@ public interface Warehouse {
 	
 	public abstract void moveToStart(int robotId);
 	
-	public abstract Integer getRobots();
+	public abstract Integer getNumberOfRobots();
 
 	public abstract Location getStartLocation(int r);
 

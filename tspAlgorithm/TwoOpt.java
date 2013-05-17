@@ -5,6 +5,7 @@
 package tspAlgorithm;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import order.Product;
 import order.Location;
@@ -19,12 +20,12 @@ public class TwoOpt implements TSPAlgorithm {
 	}
 
 	@Override
-	public ArrayList<Product> calculateRoute(ArrayList<Product> products) {
+	public ArrayList<Product> calculateRoute(ArrayList<Product> products, int numberOfRobots, int currentRobot) {
 		// dit algoritme gaat verder op greedy
 		Greedy greedy = new Greedy();
 		
 		// we hebben greedy als basis nodig en dus laten we greedy ook de initele route bepalen
-		products = greedy.calculateRoute(products);
+		products = greedy.calculateRoute(products, numberOfRobots, currentRobot);
 
 		// de uiteindelijke route
 		ArrayList<Location> locations = getLocations(products);
@@ -47,13 +48,7 @@ public class TwoOpt implements TSPAlgorithm {
 					int path1Index = locations.indexOf(path1.endLocation);
 					int path2Index = locations.indexOf(path2.startLocation);
 					
-					if(path1Index < path2Index) {
-						locations.set(path2Index, path1.endLocation);
-						locations.set(path1Index, path2.startLocation);
-					} else {
-						locations.set(path2Index, path1.startLocation);
-						locations.set(path1Index, path2.endLocation);
-					}
+					Collections.swap(locations, path1Index, path2Index);
 				}
 			}
 		}

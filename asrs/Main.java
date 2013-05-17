@@ -1,7 +1,10 @@
 package asrs;
+import gnu.io.CommPortIdentifier;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.util.ArrayList;
+import java.util.Enumeration;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -44,10 +47,9 @@ public class Main extends JFrame implements XMLUploadedListener, ExecuteButtonPr
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		
 		try
 		{
-			DBHandler.connect();
+			Database.connect();
 		}
 		catch(DatabaseConnectionFailedException e)
 		{
@@ -155,6 +157,7 @@ public class Main extends JFrame implements XMLUploadedListener, ExecuteButtonPr
 		BinPackingPanel bpPanel = new BinPackingPanel();
 		OrderPickingPanel opPanel = new OrderPickingPanel(bpPanel);
 		ExecutionManager eM = new ExecutionManager(this, order, binMan, opPanel, bpPanel, tsp, bpp, 10, 20, false);
+		eM.start();
 		bpPanel.setEM(eM);
 		opPanel.setEM(eM);
 		SimulationFrame frame = new SimulationFrame(bpPanel, opPanel);
