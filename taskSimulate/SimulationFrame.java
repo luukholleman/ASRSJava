@@ -24,7 +24,7 @@ public class SimulationFrame extends JFrame {
 	ArrayList<Problem> problemsOrderPicking;
 	ArrayList<Problem> problemsBinPacking;
 
-	public SimulationFrame(long seed, BPPAlgorithm bpp, TSPAlgorithm tsp) {
+	public SimulationFrame(long seed, BPPAlgorithm bppAlgorithm, TSPAlgorithm tspAlgorithm) {
 		setSize(1200, 700);
 		
 		// sluit het proces als je op kruisje drukt
@@ -32,7 +32,7 @@ public class SimulationFrame extends JFrame {
 
 		setLayout(new GridBagLayout());
 		
-		executeWarehouseTask(seed, tsp);
+		executeWarehouseTask(seed, tspAlgorithm);
 		
 		//Start de task classe
 		BinPackingTask binPackingTask = new BinPackingTask(seed);
@@ -41,20 +41,26 @@ public class SimulationFrame extends JFrame {
 		//Arraylist met alle problemen
 		ArrayList<BinPackingProblem> problems = ArrayList<BinPackingProblem>();
 		
-		//Loop door alle problemen heen
+		//Loop door alle problemen heen 
 		for(int p = 0; p < binPackingTask.getNumberOfProblems(); p++)
 		{
-			//Haal alle producten uit de task classe
-			ArrayList<Product> products = ArrayList<Product>();
-			
-			for(int i=0;i<binPackingTask.getNumberOfItems(p);i++)
-			{
-				products.add(new Product(binPackingTask.getItemSize(p,  i), i));
-			}
-			
 			//Maak arraylist met een bin aan
 			ArrayList<Bin> bins = new ArrayList<Bin>();
 			bins.add(new Bin(binPackingTask.getBinSize(), 0));
+			
+			//Haal alle producten uit de task classe
+			for(int i=0;i<binPackingTask.getNumberOfItems(p);i++)
+			{
+				//Maak het product aan zoals in de task staat
+				Product product = new Product(binPackingTask.getItemSize(p,  i), i);
+				
+				//Bereken in welke bin dit product moet gaan
+				Bin bin = bppAlgorithm.calculateBin(product, bins);
+				
+				
+				
+				//.fill(product)
+			}
 			
 			BinPackingProblem binPackingProblem = new BinPackingProblem(bins);
 		}
