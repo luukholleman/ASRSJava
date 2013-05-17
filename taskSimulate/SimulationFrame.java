@@ -33,10 +33,21 @@ public class SimulationFrame extends JFrame {
 		
 		executeWarehouseTask(seed, tsp);
 		
-		//Begin BinPacking algoritmes
-		
+		//Start de task classe
 		BinPackingTask binPackingTask = new BinPackingTask(seed);
 		binPackingTask.startProcess();
+		
+		//Bla
+		ArrayList<Product> products = ArrayList<Product>();
+		
+		//Loop door alle problemen heen
+		for(int p = 0; p < binPackingTask.getNumberOfProblems(); p++)
+		{
+			
+		}
+		
+		
+		binPackingTask.finishProcess();
 		
 	}
 	
