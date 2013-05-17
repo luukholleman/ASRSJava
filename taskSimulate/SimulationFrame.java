@@ -1,32 +1,19 @@
 package taskSimulate;
 
-<<<<<<< HEAD
-import java.util.ArrayList;
 
-=======
 import java.awt.*;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-
->>>>>>> simulation-task
 import order.Location;
 import order.Product;
 
 import tspAlgorithm.TSPAlgorithm;
 import bppAlgorithm.BPPAlgorithm;
 
-<<<<<<< HEAD
-public class SimulationFrame {
-	private static final int NUMBER_ROBOTS = 2;
 
-	public SimulationFrame(long seed, BPPAlgorithm bpp, TSPAlgorithm tsp) {
-		ArrayList<Problem> problems = new ArrayList<Problem>();
-		WarehouseTask warehouseTask = new WarehouseTask(seed);
-
-=======
 public class SimulationFrame extends JFrame {
 	private static final int NUMBER_ROBOTS = 2;
 	
@@ -106,8 +93,6 @@ public class SimulationFrame extends JFrame {
 	private void executeWarehouseTask(long seed, TSPAlgorithm tsp) {
 		ArrayList<Problem> problems = new ArrayList<Problem>();
 		WarehouseTask warehouseTask = new WarehouseTask(seed);
-		
->>>>>>> simulation-task
 		// Start timer
 		warehouseTask.startProcess();
 
@@ -138,11 +123,8 @@ public class SimulationFrame extends JFrame {
 			}
 			for (int r = 0; r < NUMBER_ROBOTS; r++){
 				//Oplossen volgons algoritme
-<<<<<<< HEAD
-				products.set(r, tsp.calculateRoute(products.get(r)));
-=======
+
 				products.set(r, tsp.calculateRoute(products.get(r), 19, 9));
->>>>>>> simulation-task
 				for(int i = 0 ; i < warehouseTask.getNumberOfItems(p) ; i++){
 					warehouseTask.setOrder(p, products.get(r).get(i).getId(), r, i);
 				}
@@ -152,15 +134,5 @@ public class SimulationFrame extends JFrame {
 			problems.add(new Problem(products));
 		}
 		warehouseTask.finishProcess();
-<<<<<<< HEAD
-		
-		//Begin BinPacking algoritmes
-		
-		BinPackingTask binPackingTask = new BinPackingTask(seed);
-		binPackingTask.startProcess();
-		
-		
-=======
->>>>>>> simulation-task
 	}
 }
