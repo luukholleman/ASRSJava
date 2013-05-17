@@ -23,13 +23,13 @@ public class WarehouseArduino implements Warehouse{
 	}
 
 	@Override
-	public Integer getRobots() {
-		return 1;
+	public Location getStartLocation(int r) {
+		return new Location(0,0);
 	}
 
 	@Override
-	public Location getStartLocation(int r) {
-		return new Location(0,0);
+	public Integer getNumberOfRobots() {
+		return 1;
 	}
 
 }
