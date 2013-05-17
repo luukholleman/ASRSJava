@@ -19,7 +19,7 @@ public class ExecutionManager {
 	private int height;
 	private Boolean useDetectedSize;
 	private int load = 0;
-	private OPRobot[] robots;
+	private WarehouseRobot[] robots;
 	private ArrayList<Product> bppProducts = new ArrayList<Product>();
 
 	/**
@@ -51,31 +51,38 @@ public class ExecutionManager {
 		this.height = height;
 		this.useDetectedSize = useDetectedSize;
 
-		//Haal het aantal robots uit het warehouse
-		//Verdeel het magazijn over de robots
-		robots = new OPRobot[warehouse.getRobots()];
+		// maak een array aan met een plek voor elke robot in het warehouse
+		robots = new WarehouseRobot[warehouse.getNumberOfRobots()];
 
-		for (int r = 0; r < warehouse.getRobots(); r++) {
-			ArrayList<Product> products = new ArrayList<Product>();
-			for (Product p : order.getProducts()) {
-				//splits het magazijn
-				int cols = width / warehouse.getRobots();
-				//pak de producten uit het eigen deel van het magazijn
-				if (p.getLocation().x >= cols * r
-						&& p.getLocation().x < cols * (r + 1)) {
-					products.add(p);
-				}
-			}
+		// loop de robots en bepaal de route die de robot moet volgen
+		for (int r = 0; r < warehouse.getNumberOfRobots(); r++) {
 			//Sorteer de producten volgens het meegegeven algoritme
-			products = tspAlgorithm.calculateRoute(products);
-			//Maak de robots, geef ze hun producten en hun startlocatie 
-
-			robots[r] = new OPRobot(warehouse.getStartLocation(r), products, r);
-
+			ArrayList<Product> products = tspAlgorithm.calculateRoute(order.getProducts(), warehouse.getNumberOfRobots(), r);
+			
+			// init de robot met zijn eigen startlocatie, producten en id
+			robots[r] = new WarehouseRobot(warehouse.getStartLocation(r), products, r);			
+		}
+	}
+	
+	/**
+	 * Start de robot, laat de simulatie lopen of laat de arduino bewegen
+	 * 
+	 * @return void
+	 */
+	public void start() {
+		// we moeten elke robot aanspreken en de id's zijn oplopend, de i is dus het robotid
+		int i = 0;
+		
+		for(WarehouseRobot wr : robots) { 
 			//laat de robot het volgende product ophalen
-			Product nextProduct = robots[r].getNextProduct();
+			Product nextProduct = wr.getNextProduct();
+			
+			// is er een volgende product? zo ja, haal hem op, de robot wordt aangesproken met het id
 			if (nextProduct != null)
-				warehouse.retrieveProduct(nextProduct.getLocation(), r);
+				warehouse.retrieveProduct(nextProduct.getLocation(), i);
+			
+			// klaar met deze robot, op naar de volgende
+			i++;
 		}
 	}
 
@@ -118,7 +125,7 @@ public class ExecutionManager {
 	 * 
 	 * @param robotId
 	 */
-	public void deliveredProduct(OPRobot robot) {
+	public void deliveredProduct(WarehouseRobot robot) {
 		bppProducts.addAll(robot.productsOnFork);
 		robot.productsOnFork.clear();
 		warehouse.moveToStart(robot.id);

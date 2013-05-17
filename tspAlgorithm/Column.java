@@ -28,7 +28,7 @@ public class Column implements TSPAlgorithm {
 	 * @param ArrayList<Product>
 	 * @return ArrayList<Product>
 	 */
-	public ArrayList<Product> calculateRoute(ArrayList<Product> products){
+	public ArrayList<Product> calculateRoute(ArrayList<Product> products, int numberOfRobots, int currentRobot){
 		//Opzoeken van het horizontale verste product
 		int xmax = 0;
 		for (Product product : products){

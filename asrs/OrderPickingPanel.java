@@ -12,7 +12,7 @@ import order.Order;
 import order.Product;
 
 import asrsController.ExecutionManager;
-import asrsController.OPRobot;
+import asrsController.WarehouseRobot;
 import asrsController.Warehouse;
 
 public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
@@ -43,9 +43,9 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 	private Thread runner;
 	private ArrayList<Location> warehouse;
 	private ArrayList<Product> products;
-	private OPRobot robots[];
-	private OPRobot robotLeft;
-	private OPRobot robotRight;
+	private WarehouseRobot robots[];
+	private WarehouseRobot robotLeft;
+	private WarehouseRobot robotRight;
 
 	/**
 	 * constructor
@@ -64,16 +64,16 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 		 */
 		this.binPackingPanel = bpPanel;
 		// Beide robots worden aangemaakt en op hun begin plek gezet.
-		robotLeft = new OPRobot(getStartLocation(0), 0);
+		robotLeft = new WarehouseRobot(getStartLocation(0), 0);
 		robotLeft.pixels = new Location(BINPACKER_SIZE + ROBOT_INDENT
 				+ (robotLeft.loc.x * CELL_SIZE), ROBOT_INDENT
 				+ ((WAREHOUSE_MAX_Y - robotLeft.loc.y) * CELL_SIZE));
-		robotRight = new OPRobot(getStartLocation(1), 1);
+		robotRight = new WarehouseRobot(getStartLocation(1), 1);
 		robotRight.pixels = new Location(BINPACKER_SIZE + ROBOT_INDENT
 				+ (robotRight.loc.x * CELL_SIZE), ROBOT_INDENT
 				+ ((WAREHOUSE_MAX_Y - robotRight.loc.y) * CELL_SIZE));
 		// Beide robots worden in een array gezet om makkelijk aan te roepen.
-		robots = new OPRobot[2];
+		robots = new WarehouseRobot[2];
 		robots[0] = robotLeft;
 		robots[1] = robotRight;
 		/*
@@ -81,7 +81,7 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 		 * getoont worden.
 		 */
 		try {
-			warehouse = DBHandler.getAllOccupiedLocations();
+			warehouse = Database.getAllOccupiedLocations();
 		} catch (DatabaseConnectionFailedException e) {
 			JOptionPane.showMessageDialog(this,
 					"Kan geen verbinding maken met de database.");
@@ -126,7 +126,7 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 	 */
 	private void drawDestination(Graphics g) {
 		g.setColor(Color.blue);
-		for (OPRobot robot : robots)
+		for (WarehouseRobot robot : robots)
 			if (robot.destination != null)
 				g.drawRect(
 						BINPACKER_SIZE + DESTINATION_INDENT
@@ -150,7 +150,7 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 		 * De robots en de ondersteuning worden alleen getekend als de robot
 		 * bestaat
 		 */
-		for (OPRobot robot : robots) {
+		for (WarehouseRobot robot : robots) {
 			if (robot != null) {
 				g.drawRect(robot.pixels.x, robot.pixels.y, ROBOT_SIZE,
 						ROBOT_SIZE);
@@ -163,7 +163,7 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 		}
 
 		// Inhoud van de robots tekenen
-		for (OPRobot robot : robots) {
+		for (WarehouseRobot robot : robots) {
 			g.fillRect(robot.loc.x + 7 - (robot.load * 2), robot.loc.y + 7
 					- (robot.load * 2), LOAD_MAX + (robot.load * 5), LOAD_MAX
 					+ (robot.load * 5));
@@ -224,7 +224,7 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 
 			// Als de robots niet vol zijn, haal het volgende product op.
 			if (robots[0].load <= LOAD_MAX || robots[1].load <= LOAD_MAX) {
-				for (OPRobot robot : robots)
+				for (WarehouseRobot robot : robots)
 					if (robot.finished == false)
 						executionManger.pickedUpProduct(robot.id);
 				move();
@@ -234,7 +234,7 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 				// warenhuis en leg ze op de robot of op de bin packer.
 				warehouse.remove(robots[0].destination);
 				warehouse.remove(robots[1].destination);
-				for (OPRobot robot : robots) {
+				for (WarehouseRobot robot : robots) {
 					if (robot.loc.x == BINPACKER_X && robot.loc.y == LOAD_MAX) {
 						binPackingPanel.packProducts(robot.productsOnFork);
 						executionManger.deliveredProduct(robot);
@@ -260,7 +260,7 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 							BINPACKER_Y);
 				move();
 				// Leg zijn producten daarna op de bin packer.
-				for (OPRobot robot : robots)
+				for (WarehouseRobot robot : robots)
 					for (Product product : products)
 						if (robot.destination == product.getLocation())
 							robot.productsOnFork.add(product);
@@ -302,7 +302,7 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 		robots[1].loc = robots[1].destination;
 		// Hier wordt in 20 frames de animatie van de verplaatsing getekent
 		for (int i = 0; i < CELL_SIZE; i++) {
-			for (OPRobot robot : robots) {
+			for (WarehouseRobot robot : robots) {
 				robot.pixels.x = robot.pixels.x + stepx0;
 				robot.pixels.y = robot.pixels.y - stepy0;
 			}
@@ -373,7 +373,7 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 	 * @see asrsController.Warehouse#getRobots()
 	 */
 	@Override
-	public Integer getRobots() {
+	public Integer getNumberOfRobots() {
 		return 2;
 	}
 

@@ -50,4 +50,9 @@ public class Circulate implements BPPAlgorithm {
 		}
 		return null;
 	}
+	@Override
+	public int getBinCount() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }
