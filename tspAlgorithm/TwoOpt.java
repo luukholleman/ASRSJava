@@ -20,12 +20,12 @@ public class TwoOpt implements TSPAlgorithm {
 	}
 
 	@Override
-	public ArrayList<Product> calculateRoute(ArrayList<Product> products) {
+	public ArrayList<Product> calculateRoute(ArrayList<Product> products, int numberOfRobots, int currentRobot) {
 		// dit algoritme gaat verder op greedy
 		Greedy greedy = new Greedy();
 		
 		// we hebben greedy als basis nodig en dus laten we greedy ook de initele route bepalen
-		products = greedy.calculateRoute(products);
+		products = greedy.calculateRoute(products, numberOfRobots, currentRobot);
 
 		// de uiteindelijke route
 		ArrayList<Location> locations = getLocations(products);

@@ -17,5 +17,5 @@ public interface TSPAlgorithm {
 	 * @param products the products that have to be picked up
 	 * @return list of products in the proper order
 	 */
-	public abstract ArrayList<Product> calculateRoute(ArrayList<Product> products);
+	public abstract ArrayList<Product> calculateRoute(ArrayList<Product> products, int numberOfRobots, int currentRobot);
 }

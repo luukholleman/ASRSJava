@@ -12,7 +12,7 @@ import order.Order;
 import order.Product;
 
 import asrsController.ExecutionManager;
-import asrsController.OPRobot;
+import asrsController.WarehouseRobot;
 import asrsController.Warehouse;
 
 public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
@@ -24,9 +24,9 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 	private ArrayList<Location> warehouse;
 	private ArrayList<Product> products;
 	private Random gen;
-	private OPRobot robots[];
-	private OPRobot robotLeft;
-	private OPRobot robotRight;
+	private WarehouseRobot robots[];
+	private WarehouseRobot robotLeft;
+	private WarehouseRobot robotRight;
 	private Location destination;
 	private int load = 0;
 	private int check = 0;
@@ -35,17 +35,17 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 		super();
 		setSize(300, 500);
 		this.bpPanel = bpPanel;
-		robotLeft = new OPRobot(new Location(0, 0), 0);
+		robotLeft = new WarehouseRobot(new Location(0, 0), 0);
 		robotLeft.pixels = new Location(61 + (robotLeft.loc.x * 20),
 				1 + ((19 - robotLeft.loc.y) * 20));
-		robotRight = new OPRobot(new Location(9, 0), 1);
+		robotRight = new WarehouseRobot(new Location(9, 0), 1);
 		robotRight.pixels = new Location(61 + (robotRight.loc.x * 20),
 				1 + ((19 - robotRight.loc.y) * 20));
-		robots = new OPRobot[2];
+		robots = new WarehouseRobot[2];
 		robots[0] = robotLeft;
 		robots[1] = robotRight;
 		try {
-			warehouse = DBHandler.getAllOccupiedLocations();
+			warehouse = Database.getAllOccupiedLocations();
 		} catch (DatabaseConnectionFailedException e) {
 			JOptionPane.showMessageDialog(this,
 					"Kan geen verbinding maken met de database.");
@@ -97,7 +97,7 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 
 		// De robots en de ondersteuning worden alleen getekend als de robot
 		// bestaat
-		for (OPRobot robot : robots) {
+		for (WarehouseRobot robot : robots) {
 			if (robot != null) {
 				g.drawRect(robot.pixels.x, robot.pixels.y, 18, 18);
 				g.drawLine(robot.pixels.x - 1, robot.pixels.y,
@@ -109,7 +109,7 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 		}
 
 		// Inhoud van de robots tekenen
-		for (OPRobot robot : robots) {
+		for (WarehouseRobot robot : robots) {
 			if (robot.load == 1)
 				g.fillRect(robot.loc.x + 5, robot.loc.y + 5, 8, 8);
 			if (robot.load == 2)
@@ -158,14 +158,14 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 		while (runner == thisThread) {
 			if (robots[0].load <= 3 && robots[1].load <= 3) {
 				if (check != 0) 
-					for(OPRobot robot : robots)
+					for(WarehouseRobot robot : robots)
 						if (robot.finished == false)
 							eM.pickedUpProduct(robot.id);
 				move();
 				frame(1000);
 				warehouse.remove(robots[0].destination);
 				warehouse.remove(robots[1].destination);
-				for (OPRobot robot : robots) {
+				for (WarehouseRobot robot : robots) {
 					if (robot.loc.x == -2 && robot.loc.y == 3) {
 						bpPanel.packProducts(robot.productsOnFork);
 						eM.deliveredProduct(robot);
@@ -187,7 +187,7 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 				robots[0].destination = new Location(-2, 3);
 				robots[1].destination = new Location(-2, 3);
 				move();
-				for(OPRobot robot : robots)
+				for(WarehouseRobot robot : robots)
 					for(Product product : products)
 						if(robot.destination == product.getLocation())
 							robot.productsOnFork.add(product);
@@ -286,7 +286,7 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 	}
 
 	@Override
-	public Integer getRobots() {
+	public Integer getNumberOfRobots() {
 		return 2;
 	}
 
