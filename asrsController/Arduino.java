@@ -7,18 +7,10 @@ import gnu.io.SerialPortEventListener;
  
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Enumeration;
 
-public class Arduino implements SerialPortEventListener{
+public abstract class Arduino implements SerialPortEventListener{
 	
 	SerialPort serialPort;
-
-	// Standaard poorten
-	private static final String PORT_NAMES[] = {
-	        "/dev/tty.usbserial-A9007UX1", // Mac OS X
-	        "/dev/ttyUSB0", // Linux
-	        "COM6", // Windows
-	};
 	
 	// Buffered input stream van de poort
 	private InputStream input;
@@ -28,7 +20,6 @@ public class Arduino implements SerialPortEventListener{
 	private static final int TIME_OUT = 2000;
 	// Standaard bits per second voor de COM poort.
 	private static final int DATA_RATE = 9600;
-	
 	
 	public Arduino (CommPortIdentifier port){
 		if (port == null) {
@@ -63,13 +54,20 @@ public class Arduino implements SerialPortEventListener{
 	
 	// Meerdere bytes verzenden
 	public void sendBytes(Byte[] bytes){
-		
+		try{
+			for(Byte b : bytes){
+	            output.write(b);
+	            output.flush(); // Ik weet niet of deze hier moet staan of onder de for-loop)
+	        } 
+		} catch(Exception e){
+            System.err.println(e.toString());
+        }
 	}
 	
 	
 	// …Èn byte verzenden
 	public void sendByte(Byte b){
-		try {
+		try{
             output.write(b);
             output.flush();
         } catch (Exception e) {

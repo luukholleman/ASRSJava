@@ -1,8 +1,18 @@
 package asrsController;
 
+import gnu.io.CommPortIdentifier;
+import gnu.io.SerialPort;
+
+import java.io.InputStream;
+import java.io.OutputStream;
+
 import order.Location;
 
-public class WarehouseArduino implements Warehouse{
+public class WarehouseArduino extends Arduino implements Warehouse{
+	
+	public Arduino (CommPortIdentifier port){
+		
+	}
 
 	@Override
 	public void retrieveProduct(Location location, int robotId) {
