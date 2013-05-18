@@ -115,8 +115,10 @@ public class ExecutionPanel extends JPanel implements ActionListener {
 	 */
 	private void simulateTaskButtonPressed(BPPAlgorithm bpp, TSPAlgorithm tsp, String seed) {
 		// trigger elk event
-		for (ExecuteButtonPressedListener ebpl : executeButtonPressedListeners)
-			ebpl.simulateTaskPressed(bpp, tsp, seed);
+		for (ExecuteButtonPressedListener ebpl : executeButtonPressedListeners){
+			long longSeed = Long.parseLong(seed, 36);
+			ebpl.simulateTaskPressed(bpp, tsp, longSeed);
+		}
 	}
 
 	/**

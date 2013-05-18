@@ -399,7 +399,7 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 	}
 
 	/**
-	 * @see asrsController.Warehouse#getRobots()
+	 * @see asrsController.Warehouse#getProblem()
 	 */
 	@Override
 	public Integer getNumberOfRobots() {
