@@ -11,6 +11,7 @@ import listener.ExecuteButtonPressedListener;
 import listener.XMLUploadedListener;
 import order.Order;
 import order.Product;
+import taskSimulate.TaskSimulationFrame;
 import tspAlgorithm.TSPAlgorithm;
 import asrsController.ExecutionManager;
 import bppAlgorithm.BPPAlgorithm;
@@ -239,9 +240,9 @@ public class Main extends JFrame implements XMLUploadedListener, ExecuteButtonPr
 	}
 
 	@Override
-	public void simulateTaskPressed(BPPAlgorithm bpp, TSPAlgorithm tsp, String seed) {
+	public void simulateTaskPressed(BPPAlgorithm bpp, TSPAlgorithm tsp, long seed) {
 		System.out.println(seed);
-		// TODO Auto-generated method stub
+		TaskSimulationFrame taskFrame = new TaskSimulationFrame(seed, bpp, tsp);
 		
 	}
 

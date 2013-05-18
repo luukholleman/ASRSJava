@@ -19,7 +19,7 @@ public interface ExecuteButtonPressedListener {
 	 * @param bpp
 	 * @param tsp
 	 */
-	public abstract void simulateTaskPressed(BPPAlgorithm bpp, TSPAlgorithm tsp, String seed);
+	public abstract void simulateTaskPressed(BPPAlgorithm bpp, TSPAlgorithm tsp, long seed);
 	
 	/**
 	 * Event dat de  knop is ingedrukt
