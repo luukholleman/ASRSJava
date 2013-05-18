@@ -16,7 +16,7 @@ import order.Product;
  * @author timpotze
  * 
  */
-public class DBHandler {
+public class Database {
 	
 	/**
 	 * Database connection

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import order.Location;
 import order.Product;
 
-public class OPRobot {
+public class WarehouseRobot {
 	public int id;
 	public Location loc;
 	public Location pixels;
@@ -16,7 +16,7 @@ public class OPRobot {
 	public boolean finished;
 //	public ArrayList<Location> locationList = new ArrayList<Location>();
 	
-	public OPRobot(Location loc, ArrayList<Product> products, int id){
+	public WarehouseRobot(Location loc, ArrayList<Product> products, int id){
 		this.loc = loc;
 		pixels = new Location(61 + (loc.x * 20), 1 + ((19 - loc.y) * 20));
 		load = 0;
@@ -26,7 +26,7 @@ public class OPRobot {
 		finished = false;
 	}
 	
-	public OPRobot(Location loc, int id){
+	public WarehouseRobot(Location loc, int id){
 		this.loc = loc;
 		pixels = loc;
 		load = 0;

@@ -23,7 +23,7 @@ public class BruteForce implements TSPAlgorithm {
 	}
 
 	@Override
-	public ArrayList<Product> calculateRoute(ArrayList<Product> products) {
+	public ArrayList<Product> calculateRoute(ArrayList<Product> products, int numberOfRobots, int currentRobot) {
 
 		// De berekende snelste route tot een betere is gevonden
 		ArrayList<Product> fastest = null;
