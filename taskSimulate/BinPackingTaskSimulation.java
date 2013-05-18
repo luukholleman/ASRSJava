@@ -9,17 +9,14 @@ import javax.swing.JPanel;
 import bppAlgorithm.Bin;
 
 public class BinPackingTaskSimulation extends JPanel {
-	private ArrayList<Bin> bins;
-	private ArrayList<BinPackingAnswer> answers;
+	private ArrayList<BinPackingProblem> problems;
+	private int currentProblem = 0;
 
-	public BinPackingTaskSimulation(ArrayList<Bin> bins,
-			ArrayList<BinPackingAnswer> answers) {
+	public BinPackingTaskSimulation(ArrayList<BinPackingProblem> problems) {
 		super();
 		setSize(600, 300);
 
-		this.bins = bins;
-		this.answers = answers;
-		resolveBins();
+		this.problems = problems;
 	}
 
 	public void paintComponent(Graphics g) {
@@ -28,19 +25,21 @@ public class BinPackingTaskSimulation extends JPanel {
 
 		// Teken de mee gegeven bins
 		int count = 0;
-		for (Bin bin : bins) {
+		for (Bin bin : problems.get(0).getBins()) {
 			g.drawRect((count * 30), 0, 30, 300);
 			g.drawString(bin.getFilled() + "/" + bin.getSize(),
 					15 + (count * 30), 150);
 			count++;
 		}
 	}
+	
+	public void nextProblem() {
+		currentProblem++;
+		repaint();
+	}
 
-	private void resolveBins() {
-		for (BinPackingAnswer answer : answers) {
-			if (bins.contains(answer.getBin()))
-				bins.get(bins.indexOf(answer.getBin())).fill(
-						answer.getProduct());
-		}
+	public void previousProblem() {
+		currentProblem--;
+		repaint();
 	}
 }

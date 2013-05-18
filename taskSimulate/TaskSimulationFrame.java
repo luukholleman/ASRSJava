@@ -20,14 +20,12 @@ public class TaskSimulationFrame extends JFrame implements ActionListener{
 	private static final int NUMBER_ROBOTS = 2;
 	private JButton previousBtnOrderPicker = new JButton("<-");
 	private JButton nextBtnOrderPicker = new JButton("->");
-	private JButton lastBtnBinPacker = new JButton("<-");
+	private JButton previousBtnBinPacker = new JButton("<-");
 	private JButton nextBtnBinPacker = new JButton("->");
 	private OrderPickingTaskSimulation orderPickingPanel;
 	private BinPackingTaskSimulation binPackingPanel;
 	private ArrayList<TravelingSalesmanProblem> problemsOrderPicking;
-	private ArrayList<TravelingSalesmanProblem> problemsBinPacking;
-	private ArrayList<BinPackingAnswer> answers = new ArrayList<BinPackingAnswer>();
-	private BinPackingProblem binPackingProblem;
+	private ArrayList<BinPackingProblem> problems;
 	
 
 	public TaskSimulationFrame(long seed, BPPAlgorithm bppAlgorithm, TSPAlgorithm tspAlgorithm) {
@@ -40,12 +38,18 @@ public class TaskSimulationFrame extends JFrame implements ActionListener{
 		
 		executeWarehouseTask(seed, tspAlgorithm);
 		
+		executeBinPackingTask(seed, bppAlgorithm);
+		
+		buildUI();
+	}
+
+	private void executeBinPackingTask(long seed, BPPAlgorithm bppAlgorithm) {
 		//Start de task classe
 		BinPackingTask binPackingTask = new BinPackingTask(seed);
 		binPackingTask.startProcess();
 		
 		//Arraylist met alle problemen
-		ArrayList<BinPackingProblem> problems = new ArrayList<BinPackingProblem>();
+		problems = new ArrayList<BinPackingProblem>();
 		//Loop door alle problemen heen 
 		for(int p = 0; p < binPackingTask.getNumberOfProblems(); p++)
 		{
@@ -61,16 +65,17 @@ public class TaskSimulationFrame extends JFrame implements ActionListener{
 				
 				//Bereken in welke bin dit product moet gaan
 				Bin bin = bppAlgorithm.calculateBin(product, bins);
-				
-				answers.add(new BinPackingAnswer(bin, product));
+				if (bin == null){
+					bin = new Bin(binPackingTask.getBinSize(), 0);
+					bins.add(bin);
+				}
+				bins.get(bins.indexOf(bin)).fill(product);
 			}
-			
-			binPackingProblem = new BinPackingProblem(bins);
+			problems.add(new BinPackingProblem(bins));
 		}
 		
 		
 		binPackingTask.finishProcess();
-		
 	}
 
 	private void buildUI() {
@@ -94,7 +99,7 @@ public class TaskSimulationFrame extends JFrame implements ActionListener{
 		c.gridx = 2;
 		c.gridy = 0;
 		c.weightx = 0.5;
-		add(lastBtnBinPacker, c);
+		add(previousBtnBinPacker, c);
 		c.gridx = 3;
 		c.gridy = 0;
 		c.weightx = 0.5;
@@ -109,7 +114,7 @@ public class TaskSimulationFrame extends JFrame implements ActionListener{
 		c.gridy = 1;
 		c.gridx = 1;
 		c.weighty = 5.0;
-		add(binPackingPanel = new BinPackingTaskSimulation(binPackingProblem.getBins(), answers));
+		add(binPackingPanel = new BinPackingTaskSimulation(problems));
 		
 		revalidate();
 	}
@@ -164,6 +169,10 @@ public class TaskSimulationFrame extends JFrame implements ActionListener{
 		if(event.getSource() == nextBtnOrderPicker)
 			orderPickingPanel.nextProblem();
 		if(event.getSource() == previousBtnOrderPicker)
+			orderPickingPanel.previousProblem();
+		if(event.getSource() == nextBtnBinPacker)
+			orderPickingPanel.nextProblem();
+		if(event.getSource() == previousBtnBinPacker)
 			orderPickingPanel.previousProblem();
 	}
 }
