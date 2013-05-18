@@ -6,7 +6,7 @@ import order.Location;
 import order.Product;
 
 
-public class Column implements TSPAlgorithm {
+public class Column extends TSPAlgorithm {
 	//visibility modifiers + opsomming mag niet
 	private ArrayList<Product> route = new ArrayList<Product>();
 	private ArrayList<Product> column1 = new ArrayList<Product>(); 
@@ -29,6 +29,8 @@ public class Column implements TSPAlgorithm {
 	 * @return ArrayList<Product>
 	 */
 	public ArrayList<Product> calculateRoute(ArrayList<Product> products, int numberOfRobots, int currentRobot){
+		products = splitOrder(products, numberOfRobots, currentRobot);
+		
 		//Opzoeken van het horizontale verste product
 		int xmax = 0;
 		for (Product product : products){

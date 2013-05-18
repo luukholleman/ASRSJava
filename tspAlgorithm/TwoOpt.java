@@ -11,7 +11,7 @@ import order.Product;
 import order.Location;
 
 
-public class TwoOpt implements TSPAlgorithm {
+public class TwoOpt extends TSPAlgorithm {
 	public static String name = "2-Opt";
 	
 	@Override
