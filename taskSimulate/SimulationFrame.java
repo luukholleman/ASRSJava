@@ -1,5 +1,6 @@
 package taskSimulate;
 
+
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
@@ -7,7 +8,6 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-
 import order.Location;
 import order.Product;
 
@@ -16,8 +16,8 @@ import bppAlgorithm.BPPAlgorithm;
 import bppAlgorithm.Bin;
 
 public class SimulationFrame extends JFrame implements ActionListener{
-	private static final int NUMBER_ROBOTS = 2;
 
+	private static final int NUMBER_ROBOTS = 2;
 	private JButton previousBtnOrderPicker = new JButton("<-");
 	private JButton nextBtnOrderPicker = new JButton("->");
 	private JButton lastBtnBinPacker = new JButton("<-");
@@ -117,7 +117,6 @@ public class SimulationFrame extends JFrame implements ActionListener{
 	private void executeWarehouseTask(long seed, TSPAlgorithm tsp) {
 		ArrayList<TravelingSalesmanProblem> problems = new ArrayList<TravelingSalesmanProblem>();
 		WarehouseTask warehouseTask = new WarehouseTask(seed);
-
 		// Start timer
 		warehouseTask.startProcess();
 

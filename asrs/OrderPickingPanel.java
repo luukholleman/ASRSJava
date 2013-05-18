@@ -1,3 +1,7 @@
+/** 
+ * @author Bas van Koesveld
+ */
+
 package asrs;
 
 import java.awt.*;
@@ -34,17 +38,42 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 	private static final int WAREHOUSE_MAX_X = 9;
 	private static final int BINPACKER_SIZE = 60;
 	private static final int BINPACKER_DEPTH = 340;
-	/*
-	 * Alle attributen die in meerdere methoden gebruiken (zullen) worden staan
-	 * hier
+	private static final int ROBOT_SPEED = 2;
+	
+
+	/**
+	 * De panel van de bin packer
 	 */
 	private BinPackingPanel binPackingPanel;
+	/**
+	 * De ExecutionManager die alle data opslaat en simulatie gerelateerde
+	 * berekeningen uitvoert
+	 */
 	private ExecutionManager executionManger;
+	/**
+	 * De thread die de animatie laat aflopen
+	 */
 	private Thread runner;
+	/**
+	 * In warehouse worden alle locaties van de producten in het warenhuis
+	 * opgeslagen
+	 */
 	private ArrayList<Location> warehouse;
+	/**
+	 * Alle producten die moeten worden opgehaald
+	 */
 	private ArrayList<Product> products;
+	/**
+	 * Array met beide robots
+	 */
 	private WarehouseRobot robots[];
+	/**
+	 * De linker warehouse robot
+	 */
 	private WarehouseRobot robotLeft;
+	/**
+	 * De rechter warehouse robot
+	 */
 	private WarehouseRobot robotRight;
 
 	/**
@@ -119,9 +148,9 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 	}
 
 	/**
-	 * Tekent de bestemming van elke robot
+	 * Tekent de bestemming van elke robot in de vorm van een blauw blokje
 	 * 
-	 * @param g
+	 * @param Graphics
 	 * @author Bas
 	 */
 	private void drawDestination(Graphics g) {
@@ -130,8 +159,8 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 			if (robot.destination != null)
 				g.drawRect(
 						BINPACKER_SIZE + DESTINATION_INDENT
-								+ (robots[0].destination.x * CELL_SIZE),
-						((WAREHOUSE_MAX_Y - robots[0].destination.y) * CELL_SIZE)
+								+ (robot.destination.x * CELL_SIZE),
+						((WAREHOUSE_MAX_Y - robot.destination.y) * CELL_SIZE)
 								+ DESTINATION_INDENT, DESTINATION_SIZE,
 						DESTINATION_SIZE);
 	}
@@ -139,7 +168,7 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 	/**
 	 * Tekent de robots
 	 * 
-	 * @param g
+	 * @param Graphics
 	 * @author Bas
 	 */
 	private void drawRobots(Graphics g) {
@@ -173,7 +202,7 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 	/**
 	 * Tekent alle producten in het warenhuis
 	 * 
-	 * @param g
+	 * @param Graphics
 	 * @author Bas
 	 */
 	private void drawWarehouseProducts(Graphics g) {
@@ -221,7 +250,6 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 		// volledig, sorry.
 		Thread thisThread = Thread.currentThread();
 		while (runner == thisThread) {
-
 			// Als de robots niet vol zijn, haal het volgende product op.
 			if (robots[0].load <= LOAD_MAX || robots[1].load <= LOAD_MAX) {
 				for (WarehouseRobot robot : robots)
@@ -249,7 +277,7 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 
 				}
 
-				// Als een van de robotten vol is, laat deze robot dan naar de
+				// Als een van de robots vol is, laat deze robot dan naar de
 				// bin packer bewegen.
 			} else {
 				if (robots[0].load <= LOAD_MAX)
@@ -302,10 +330,11 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 		robots[1].loc = robots[1].destination;
 		// Hier wordt in 20 frames de animatie van de verplaatsing getekent
 		for (int i = 0; i < CELL_SIZE; i++) {
-			for (WarehouseRobot robot : robots) {
-				robot.pixels.x = robot.pixels.x + stepx0;
-				robot.pixels.y = robot.pixels.y - stepy0;
-			}
+			robots[0].pixels.x = robots[0].pixels.x + stepx0;
+			robots[0].pixels.y = robots[0].pixels.y - stepy0;
+			
+			robots[1].pixels.x = robots[1].pixels.x + stepx1;
+			robots[1].pixels.y = robots[1].pixels.y - stepy1;
 			repaint();
 			sleep();
 		}
