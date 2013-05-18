@@ -5,28 +5,28 @@ import java.util.ArrayList;
 import order.Product;
 
 public class TravelingSalesmanProblem {
-	private ArrayList<ArrayList<Product>> products;
+	private ArrayList<ArrayList<Product>> problem;
 	
-	public TravelingSalesmanProblem(ArrayList<ArrayList<Product>> products){
-		this.products = products;
+	public TravelingSalesmanProblem(ArrayList<ArrayList<Product>> problem){
+		this.problem = problem;
 	}
 	
 	@Override
 	public String toString(){
 		String string = "";
-		for(ArrayList<Product> robot : products)
+		for(ArrayList<Product> robot : problem)
 			for (Product product : robot)
 				string += product.getLocation() + "\n";
 			
 		return string;
 	}
 	
-	public ArrayList<ArrayList<Product>> getProducts() {
-		return products;
+	public ArrayList<ArrayList<Product>> getProblem() {
+		return problem;
 	}
 	
-	public void setProducts(ArrayList<ArrayList<Product>> products) {
-		this.products = products;
+	public void setRobots(ArrayList<ArrayList<Product>> problem) {
+		this.problem = problem;
 	}
 	
 	

@@ -1,6 +1,7 @@
 package taskSimulate;
 
 import java.awt.*;
+import java.awt.event.*;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -14,18 +15,23 @@ import tspAlgorithm.TSPAlgorithm;
 import bppAlgorithm.BPPAlgorithm;
 import bppAlgorithm.Bin;
 
-public class SimulationFrame extends JFrame {
+public class SimulationFrame extends JFrame implements ActionListener{
 	private static final int NUMBER_ROBOTS = 2;
 
-	private JButton lastBtnOrderPicker = new JButton("<-");
+	private JButton previousBtnOrderPicker = new JButton("<-");
 	private JButton nextBtnOrderPicker = new JButton("->");
 	private JButton lastBtnBinPacker = new JButton("<-");
 	private JButton nextBtnBinPacker = new JButton("->");
-	ArrayList<Problem> problemsOrderPicking;
-	ArrayList<Problem> problemsBinPacking;
+	private OrderPickingTaskSimulation orderPickingPanel;
+	private BinPackingTaskSimulation binPackingPanel;
+	private ArrayList<TravelingSalesmanProblem> problemsOrderPicking;
+	private ArrayList<TravelingSalesmanProblem> problemsBinPacking;
+	private ArrayList<BinPackingAnswer> answers = new ArrayList<BinPackingAnswer>();
+	private BinPackingProblem binPackingProblem;
+	
 
 	public SimulationFrame(long seed, BPPAlgorithm bppAlgorithm, TSPAlgorithm tspAlgorithm) {
-		setSize(1200, 700);
+		setSize(1000, 400);
 		
 		// sluit het proces als je op kruisje drukt
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -39,8 +45,7 @@ public class SimulationFrame extends JFrame {
 		binPackingTask.startProcess();
 		
 		//Arraylist met alle problemen
-		ArrayList<BinPackingProblem> problems = ArrayList<BinPackingProblem>();
-		
+		ArrayList<BinPackingProblem> problems = new ArrayList<BinPackingProblem>();
 		//Loop door alle problemen heen 
 		for(int p = 0; p < binPackingTask.getNumberOfProblems(); p++)
 		{
@@ -57,12 +62,10 @@ public class SimulationFrame extends JFrame {
 				//Bereken in welke bin dit product moet gaan
 				Bin bin = bppAlgorithm.calculateBin(product, bins);
 				
-				
-				
-				//.fill(product)
+				answers.add(new BinPackingAnswer(bin, product));
 			}
 			
-			BinPackingProblem binPackingProblem = new BinPackingProblem(bins);
+			binPackingProblem = new BinPackingProblem(bins);
 		}
 		
 		
@@ -76,45 +79,39 @@ public class SimulationFrame extends JFrame {
 		/**
 		 * Linker en rechterkant van het scherm
 		 */
-		JPanel selectionPanel = new JPanel();
-
-		selectionPanel.setPreferredSize(new Dimension(500, 100));
-
+		
+		//Opvullen selection Panel
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridx = 0;
 		c.gridy = 0;
 		c.weightx = 0.5;
 
-		selectionPanel.add(lastBtnOrderPicker, c);
+		add(previousBtnOrderPicker, c);
 		c.gridx = 1;
 		c.gridy = 0;
 		c.weightx = 0.5;
-		selectionPanel.add(nextBtnOrderPicker, c);
+		add(nextBtnOrderPicker, c);
 		c.gridx = 2;
 		c.gridy = 0;
 		c.weightx = 0.5;
-		selectionPanel.add(lastBtnBinPacker, c);
+		add(lastBtnBinPacker, c);
 		c.gridx = 3;
 		c.gridy = 0;
 		c.weightx = 0.5;
-		selectionPanel.add(nextBtnBinPacker);
+		add(nextBtnBinPacker);
 
 		// plaats de panels
-		add(selectionPanel);
 		c.gridy = 1;
 		c.gridx = 0;
 		c.weighty = 5.0;
-		add(new OrderPickingTaskSimulation(problemsOrderPicking));
+		add(orderPickingPanel = new OrderPickingTaskSimulation(problemsOrderPicking));
 
 		c.gridy = 1;
-		c.gridx = 0;
+		c.gridx = 1;
 		c.weighty = 5.0;
-		add(new OrderPickingTaskSimulation(problemsOrderPicking));
-
-		c.gridy = 1;
-		c.gridx = 0;
-		c.weighty = 5.0;
-		add(new BinPackingTaskSimulation(problemsBinPacking));
+		add(binPackingPanel = new BinPackingTaskSimulation(binPackingProblem.getBins(), answers));
+		
+		revalidate();
 	}
 
 	private void executeWarehouseTask(long seed, TSPAlgorithm tsp) {
@@ -151,15 +148,23 @@ public class SimulationFrame extends JFrame {
 			}
 			for (int r = 0; r < NUMBER_ROBOTS; r++) {
 				// Oplossen volgons algoritme
-				products.set(r, tsp.calculateRoute(products.get(r), 19, 9));
+				products.set(r, tsp.calculateRoute(products.get(r), 10*(r+1), 10));
 				for (int i = 0; i < warehouseTask.getNumberOfItems(p); i++) {
 					warehouseTask.setOrder(p, products.get(r).get(i).getId(),
 							r, i);
 				}
 			}
 
-			problems.add(new Problem(products));
+			problems.add(new TravelingSalesmanProblem(products));
 		}
 		warehouseTask.finishProcess();
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent event) {
+		if(event.getSource() == nextBtnOrderPicker)
+			orderPickingPanel.nextProblem();
+		if(event.getSource() == previousBtnOrderPicker)
+			orderPickingPanel.previousProblem();
 	}
 }

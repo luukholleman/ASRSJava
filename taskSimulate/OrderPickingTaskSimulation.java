@@ -9,21 +9,22 @@ import order.Location;
 import order.Product;
 
 public class OrderPickingTaskSimulation extends JPanel {
-	
-	
-	private int currentProblem = 0;
 	private ArrayList<TravelingSalesmanProblem> problems;
-	
-	public OrderPickingTaskSimulation(ArrayList<TravelingSalesmanProblem> problems){
-		
-		setPreferredSize(new Dimension(300, 500));
-		
+	private int currentProblem = 0;
+
+	public OrderPickingTaskSimulation(
+			ArrayList<TravelingSalesmanProblem> problems) {
+		super();
+
+		setPreferredSize(new Dimension(400, 300));
+
 		this.problems = problems;
 	}
-	
-	public void paintComponent(Graphics g){
+
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
 		g.setColor(Color.BLACK);
-		
+
 		// Hier wordt het magazijn getekend in 20x10
 		for (int y = 0; y <= 19; y++) {
 			for (int x = 0; x <= 9; x++) {
@@ -32,14 +33,33 @@ public class OrderPickingTaskSimulation extends JPanel {
 		}
 
 		Location lastLocation = null;
+		g.setColor(Color.BLUE);
 		Graphics2D g2D = (Graphics2D) g;
 		g2D.setStroke(new BasicStroke(3));
-		for(Product product : problems.get(0).getProducts().get(0)){
-			Location productLocation = product.getLocation();
-			g.drawRect(productLocation.x*20+3, productLocation.y*20+3, 15, 15);
-			if(lastLocation != null)	
-				g2D.drawLine(lastLocation.x*20+10, lastLocation.y+10*20+10, productLocation.x*20+10, productLocation.y*20+10);
-			lastLocation = productLocation;
+		for (ArrayList<Product> robot : problems.get(currentProblem)
+				.getProblem()) {
+			for (Product product : robot) {
+				Location productLocation = product.getLocation();
+				g.fillRect(productLocation.x * 20 + 5,
+						productLocation.y * 20 + 5, 10, 10);
+				if (lastLocation != null)
+					g2D.drawLine(lastLocation.x * 20 + 10,
+							lastLocation.y + 10 * 20 + 10,
+							productLocation.x * 20 + 10,
+							productLocation.y * 20 + 10);
+				lastLocation = productLocation;
+			}
+			g.setColor(Color.RED);
 		}
+	}
+
+	public void nextProblem() {
+		currentProblem++;
+		repaint();
+	}
+
+	public void previousProblem() {
+		currentProblem--;
+		repaint();
 	}
 }
