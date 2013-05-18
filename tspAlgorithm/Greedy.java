@@ -64,10 +64,10 @@ public class Greedy extends TSPAlgorithm {
 			if(minDistance == 0 || minDistance > distance) {
 				minDistance = distance;
 				minProduct = product;
-			}
-			
-			// de robot is nu op de locatie van dit product, update de locatie
-			location = product.getLocation();			
+				
+				// de robot is nu op de locatie van dit product, update de locatie
+				location = product.getLocation();	
+			}		
 		}
 		
 		// we hebben het dichtsbijzijnde product, voeg hem toe aan de route, verwijderen van de nog te berekenen producten
