@@ -14,7 +14,7 @@ import order.Product;
  * @author timpotze
  * 
  */
-public class BruteForce implements TSPAlgorithm {
+public class BruteForce extends TSPAlgorithm {
 	public static String name = "Brute Force";
 
 	@Override
@@ -24,7 +24,8 @@ public class BruteForce implements TSPAlgorithm {
 
 	@Override
 	public ArrayList<Product> calculateRoute(ArrayList<Product> products, int numberOfRobots, int currentRobot) {
-
+		products = splitOrder(products, numberOfRobots, currentRobot);
+		
 		// De berekende snelste route tot een betere is gevonden
 		ArrayList<Product> fastest = null;
 		float length = 0.0f;
