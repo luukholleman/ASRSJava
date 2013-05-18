@@ -243,7 +243,7 @@ public class Main extends JFrame implements XMLUploadedListener, ExecuteButtonPr
 	public void simulateTaskPressed(BPPAlgorithm bpp, TSPAlgorithm tsp, long seed) {
 		System.out.println(seed);
 		TaskSimulationFrame taskFrame = new TaskSimulationFrame(seed, bpp, tsp);
-		
+		taskFrame.setVisible(true);
 	}
 
 	/**
