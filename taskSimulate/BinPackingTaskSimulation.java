@@ -14,14 +14,16 @@ public class BinPackingTaskSimulation extends JPanel {
 
 	public BinPackingTaskSimulation(ArrayList<BinPackingProblem> problems) {
 		super();
-		setSize(600, 300);
+		setSize(600, 400);
 
 		this.problems = problems;
 	}
 
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
+		
 		g.setColor(Color.BLACK);
+		g.fillRect(50, 0, 30, 300);
 
 		// Teken de mee gegeven bins
 		int count = 0;

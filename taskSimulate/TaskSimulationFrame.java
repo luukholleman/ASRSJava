@@ -30,7 +30,7 @@ public class TaskSimulationFrame extends JFrame implements ActionListener {
 
 	public TaskSimulationFrame(long seed, BPPAlgorithm bppAlgorithm,
 			TSPAlgorithm tspAlgorithm) {
-		setSize(1000, 400);
+		setSize(1000, 500);
 
 		// sluit het proces als je op kruisje drukt
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -94,30 +94,44 @@ public class TaskSimulationFrame extends JFrame implements ActionListener {
 		c.weightx = 0.5;
 
 		add(previousBtnOrderPicker, c);
+		
+		c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridx = 1;
 		c.gridy = 0;
 		c.weightx = 0.5;
 		add(nextBtnOrderPicker, c);
+		
+		c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridx = 2;
 		c.gridy = 0;
 		c.weightx = 0.5;
 		add(previousBtnBinPacker, c);
+		
+		c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridx = 3;
 		c.gridy = 0;
-		c.weightx = 0.5;
-		add(nextBtnBinPacker);
+		c.weightx = 0.25;
+		c.weighty = 0.5;
+		add(nextBtnBinPacker, c);
 
 		// plaats de panels
+		c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridy = 1;
 		c.gridx = 0;
-		c.weighty = 5.0;
+		c.gridwidth = 2;
+		c.weighty = 0.5;
+		c.weightx = 0.5;
+		c.ipady= 400;
 		add(orderPickingPanel = new OrderPickingTaskSimulation(
-				problemsOrderPicking));
+				problemsOrderPicking), c);
 
 		c.gridy = 1;
 		c.gridx = 1;
-		c.weighty = 5.0;
-		add(binPackingPanel = new BinPackingTaskSimulation(problems));
+		c.gridwidth = 2;
+		c.weighty = 0.5;
+		c.weightx = 0.5;
+		c.ipady= 400;
+		add(binPackingPanel = new BinPackingTaskSimulation(problems), c);
 		revalidate();
 	}
 
@@ -132,11 +146,11 @@ public class TaskSimulationFrame extends JFrame implements ActionListener {
 		for (int p = 0; p < warehouseTask.getNumberOfProblems(); p++) {
 
 			// Lijst van de producten per robot
-			ArrayList<ArrayList<Product>> products = new ArrayList<ArrayList<Product>>();
+			ArrayList<ArrayList<Product>> problem = new ArrayList<ArrayList<Product>>();
 
 			// Initializeren lijst
 			for (int r = 0; r < NUMBER_ROBOTS; r++)
-				products.add(new ArrayList<Product>());
+				problem.add(new ArrayList<Product>());
 
 			// Doorlopen van alle items
 			for (int i = 0; i < warehouseTask.getNumberOfItems(p); i++) {
@@ -151,20 +165,36 @@ public class TaskSimulationFrame extends JFrame implements ActionListener {
 						/ (warehouseTask.maxX / NUMBER_ROBOTS);
 
 				// Voeg toe aan lijst
-				products.get(robotId).add(product);
+				problem.get(robotId).add(product);
+
+				
 			}
+			for(Product product : problem.get(0)){
+				System.out.println(product.getLocation().x + "," + product.getLocation().y);
+			}
+			System.out.println("END OF ORIGINAL PRODUCTS");
+			problemsOrderPicking.add(new TravelingSalesmanProblem(problem));
+			System.out.println(problemsOrderPicking);
+			System.out.println("END OF PROBLEM PRODUCTS");
 			for (int r = 0; r < NUMBER_ROBOTS; r++) {
 				// Oplossen volgens algoritme
-				products.set(r,
-						tsp.calculateRoute(products.get(r), 10 * (r + 1), 10));
-
-				for (int i = 0; i < products.get(r).size(); i++) {
-					warehouseTask.setOrder(p, products.get(r).get(i).getId(),
+				problem.set(r,
+						tsp.calculateRoute(problem.get(r), 20, 10));
+				for(Product product : problem.get(0)){
+					System.out.println(product.getLocation().x + "," + product.getLocation().y);
+				}
+				System.out.println("END OF SORTED PRODUCTS");
+				for (int i = 0; i < problem.get(r).size(); i++) {
+					warehouseTask.setOrder(p, problem.get(r).get(i).getId(),
 							r, i);
 				}
+				for(Product product : problem.get(0)){
+					System.out.println(product.getLocation().x + "," + product.getLocation().y);
+				}
+				System.out.println("END OF PRODUCTS AFTER TASK GOT IT'S FILTHY HANDS ON IT");
 			}
-
-			problemsOrderPicking.add(new TravelingSalesmanProblem(products));
+			
+			
 		}
 		warehouseTask.finishProcess();
 	}

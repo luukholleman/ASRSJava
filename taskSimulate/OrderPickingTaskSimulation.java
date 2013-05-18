@@ -16,7 +16,7 @@ public class OrderPickingTaskSimulation extends JPanel {
 			ArrayList<TravelingSalesmanProblem> problems) {
 		super();
 
-		setPreferredSize(new Dimension(400, 300));
+		setPreferredSize(new Dimension(400, 400));
 
 		this.problems = problems;
 	}
@@ -26,8 +26,8 @@ public class OrderPickingTaskSimulation extends JPanel {
 		g.setColor(Color.BLACK);
 
 		// Hier wordt het magazijn getekend in 20x10
-		for (int y = 0; y <= 19; y++) {
-			for (int x = 0; x <= 9; x++) {
+		for (int y = 0; y <10; y++) {
+			for (int x = 0; x <= 20; x++) {
 				g.drawRect((x * 20), (y * 20), 20, 20);
 			}
 		}
@@ -35,7 +35,7 @@ public class OrderPickingTaskSimulation extends JPanel {
 		Location lastLocation = null;
 		g.setColor(Color.BLUE);
 		Graphics2D g2D = (Graphics2D) g;
-		g2D.setStroke(new BasicStroke(3));
+		g2D.setStroke(new BasicStroke(2));
 		
 			for (ArrayList<Product> robot : problems.get(currentProblem)
 					.getProblem()) {
@@ -49,6 +49,7 @@ public class OrderPickingTaskSimulation extends JPanel {
 								productLocation.x * 20 + 10,
 								productLocation.y * 20 + 10);
 					lastLocation = productLocation;
+					
 				}
 				g.setColor(Color.RED);
 			}
