@@ -36,7 +36,7 @@ public class OrderPickingTaskSimulation extends JPanel {
 		g.setColor(Color.BLUE);
 		Graphics2D g2D = (Graphics2D) g;
 		g2D.setStroke(new BasicStroke(3));
-		try{
+		
 			for (ArrayList<Product> robot : problems.get(currentProblem)
 					.getProblem()) {
 				for (Product product : robot) {
@@ -52,10 +52,6 @@ public class OrderPickingTaskSimulation extends JPanel {
 				}
 				g.setColor(Color.RED);
 			}
-		}
-		catch(NullPointerException e){
-			System.out.println("ERROR: Task klasse is fucking dom.");
-		}
 	}
 
 	public void nextProblem() {

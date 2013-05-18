@@ -122,7 +122,8 @@ public class TaskSimulationFrame extends JFrame implements ActionListener {
 	}
 
 	private void executeWarehouseTask(long seed, TSPAlgorithm tsp) {
-		ArrayList<TravelingSalesmanProblem> problems = new ArrayList<TravelingSalesmanProblem>();
+		
+		problemsOrderPicking = new ArrayList<TravelingSalesmanProblem>();
 		WarehouseTask warehouseTask = new WarehouseTask(seed);
 		// Start timer
 		warehouseTask.startProcess();
@@ -163,7 +164,7 @@ public class TaskSimulationFrame extends JFrame implements ActionListener {
 				}
 			}
 
-			problems.add(new TravelingSalesmanProblem(products));
+			problemsOrderPicking.add(new TravelingSalesmanProblem(products));
 		}
 		warehouseTask.finishProcess();
 	}
