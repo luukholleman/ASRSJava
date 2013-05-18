@@ -1,6 +1,5 @@
 package taskSimulate;
 
-
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
@@ -17,7 +16,7 @@ import bppAlgorithm.BPPAlgorithm;
 import bppAlgorithm.BestFit;
 import bppAlgorithm.Bin;
 
-public class TaskSimulationFrame extends JFrame implements ActionListener{
+public class TaskSimulationFrame extends JFrame implements ActionListener {
 
 	private static final int NUMBER_ROBOTS = 2;
 	private JButton previousBtnOrderPicker = new JButton("<-");
@@ -29,15 +28,15 @@ public class TaskSimulationFrame extends JFrame implements ActionListener{
 	private ArrayList<TravelingSalesmanProblem> problemsOrderPicking;
 	private ArrayList<BinPackingProblem> problems;
 
-	
-	public TaskSimulationFrame(long seed, BPPAlgorithm bppAlgorithm, TSPAlgorithm tspAlgorithm) {
+	public TaskSimulationFrame(long seed, BPPAlgorithm bppAlgorithm,
+			TSPAlgorithm tspAlgorithm) {
 		setSize(1000, 400);
-		
+
 		// sluit het proces als je op kruisje drukt
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		setLayout(new GridBagLayout());
-		
+
 		executeWarehouseTask(seed, tspAlgorithm);
 		
 		executeBinPackingTask(seed, bppAlgorithm);
@@ -58,25 +57,26 @@ public class TaskSimulationFrame extends JFrame implements ActionListener{
 			//Maak arraylist met een bin aan
 			ArrayList<Bin> bins = new ArrayList<Bin>();
 			bins.add(new Bin(binPackingTask.getBinSize(), 0));
-			
-			//Haal alle producten uit de task classe
-			for(int i=0;i<binPackingTask.getNumberOfItems(p);i++)
-			{
-				//Maak het product aan zoals in de task staat
-				Product product = new Product(binPackingTask.getItemSize(p,  i), i);
-				
-				//Bereken in welke bin dit product moet gaan
+
+			// Haal alle producten uit de task classe
+			for (int i = 0; i < binPackingTask.getNumberOfItems(p); i++) {
+				// Maak het product aan zoals in de task staat
+				Product product = new Product(binPackingTask.getItemSize(p, i),
+						i);
+
+				// Bereken in welke bin dit product moet gaan
 				Bin bin = bppAlgorithm.calculateBin(product, bins);
 				if (bin == null){
 					bin = new Bin(binPackingTask.getBinSize(), 0);
 					bins.add(bin);
 				}
 				bins.get(bins.indexOf(bin)).fill(product);
+				binPackingTask.setBin(p, i, bins.indexOf(bin));
 			}
+				
 			problems.add(new BinPackingProblem(bins));
 		}
-		
-		
+
 		binPackingTask.finishProcess();
 	}
 
@@ -86,8 +86,8 @@ public class TaskSimulationFrame extends JFrame implements ActionListener{
 		/**
 		 * Linker en rechterkant van het scherm
 		 */
-		
-		//Opvullen selection Panel
+
+		// Opvullen selection Panel
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridx = 0;
 		c.gridy = 0;
@@ -111,13 +111,13 @@ public class TaskSimulationFrame extends JFrame implements ActionListener{
 		c.gridy = 1;
 		c.gridx = 0;
 		c.weighty = 5.0;
-		add(orderPickingPanel = new OrderPickingTaskSimulation(problemsOrderPicking));
+		add(orderPickingPanel = new OrderPickingTaskSimulation(
+				problemsOrderPicking));
 
 		c.gridy = 1;
 		c.gridx = 1;
 		c.weighty = 5.0;
 		add(binPackingPanel = new BinPackingTaskSimulation(problems));
-		
 		revalidate();
 	}
 
@@ -154,10 +154,12 @@ public class TaskSimulationFrame extends JFrame implements ActionListener{
 			}
 			for (int r = 0; r < NUMBER_ROBOTS; r++) {
 				// Oplossen volgens algoritme
-				products.set(r, tsp.calculateRoute(products.get(r), 10*(r+1), 10));
-				
+				products.set(r,
+						tsp.calculateRoute(products.get(r), 10 * (r + 1), 10));
+
 				for (int i = 0; i < products.get(r).size(); i++) {
-					warehouseTask.setOrder(p, products.get(r).get(i).getId(), r, i);
+					warehouseTask.setOrder(p, products.get(r).get(i).getId(),
+							r, i);
 				}
 			}
 
@@ -168,9 +170,9 @@ public class TaskSimulationFrame extends JFrame implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		if(event.getSource() == nextBtnOrderPicker)
+		if (event.getSource() == nextBtnOrderPicker)
 			orderPickingPanel.nextProblem();
-		if(event.getSource() == previousBtnOrderPicker)
+		if (event.getSource() == previousBtnOrderPicker)
 			orderPickingPanel.previousProblem();
 		if(event.getSource() == nextBtnBinPacker)
 			orderPickingPanel.nextProblem();
