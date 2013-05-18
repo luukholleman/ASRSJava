@@ -11,8 +11,10 @@ import javax.swing.JPanel;
 import order.Location;
 import order.Product;
 
+import tspAlgorithm.BruteForce;
 import tspAlgorithm.TSPAlgorithm;
 import bppAlgorithm.BPPAlgorithm;
+import bppAlgorithm.BestFit;
 import bppAlgorithm.Bin;
 
 public class TaskSimulationFrame extends JFrame implements ActionListener{
@@ -26,8 +28,8 @@ public class TaskSimulationFrame extends JFrame implements ActionListener{
 	private BinPackingTaskSimulation binPackingPanel;
 	private ArrayList<TravelingSalesmanProblem> problemsOrderPicking;
 	private ArrayList<BinPackingProblem> problems;
-	
 
+	
 	public TaskSimulationFrame(long seed, BPPAlgorithm bppAlgorithm, TSPAlgorithm tspAlgorithm) {
 		setSize(1000, 400);
 		
@@ -151,11 +153,11 @@ public class TaskSimulationFrame extends JFrame implements ActionListener{
 				products.get(robotId).add(product);
 			}
 			for (int r = 0; r < NUMBER_ROBOTS; r++) {
-				// Oplossen volgons algoritme
+				// Oplossen volgens algoritme
 				products.set(r, tsp.calculateRoute(products.get(r), 10*(r+1), 10));
-				for (int i = 0; i < warehouseTask.getNumberOfItems(p); i++) {
-					warehouseTask.setOrder(p, products.get(r).get(i).getId(),
-							r, i);
+				
+				for (int i = 0; i < products.get(r).size(); i++) {
+					warehouseTask.setOrder(p, products.get(r).get(i).getId(), r, i);
 				}
 			}
 
