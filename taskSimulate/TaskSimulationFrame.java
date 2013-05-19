@@ -165,6 +165,14 @@ public class TaskSimulationFrame extends JFrame implements ActionListener {
 
 			}
 			
+			//DEBUG
+			System.out.println("===========================");
+			System.out.println("PRINTING ALL PRODUCTS:");
+			for(Product pr : products)
+				System.out.println(pr);
+			System.out.println("===========================");
+			//END DEBUG
+			
 			//Bereken nu de volgorde volgends het algoritme
 			for (int r = 0; r < NUMBER_ROBOTS; r++) {
 				
