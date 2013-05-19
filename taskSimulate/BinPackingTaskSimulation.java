@@ -14,34 +14,37 @@ public class BinPackingTaskSimulation extends JPanel {
 
 	public BinPackingTaskSimulation(ArrayList<BinPackingProblem> problems) {
 		super();
-		setSize(600, 400);
 
 		this.problems = problems;
 	}
 
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		
-		g.setColor(Color.BLACK);
-		g.fillRect(50, 0, 30, 300);
 
 		// Teken de mee gegeven bins
 		int count = 0;
-		for (Bin bin : problems.get(0).getBins()) {
-			g.drawRect((count * 30), 0, 30, 300);
+		for (Bin bin : problems.get(currentProblem).getBins()) {
+			g.setColor(Color.green);
+			g.fillRect((count * 40) + 1, 1, 37,
+					300 / bin.getSize() * bin.getFilled());
+			g.setColor(Color.black);
+			g.drawRect((count * 40), 0, 38, 300);
 			g.drawString(bin.getFilled() + "/" + bin.getSize(),
-					15 + (count * 30), 150);
+					5 + (count * 40), 150);
+
 			count++;
 		}
 	}
-	
+
 	public void nextProblem() {
-		currentProblem++;
+		if(currentProblem < problems.size()-1)
+			currentProblem++;
 		repaint();
 	}
 
 	public void previousProblem() {
-		currentProblem--;
+		if(currentProblem > 0)
+			currentProblem--;
 		repaint();
 	}
 }

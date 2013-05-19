@@ -32,8 +32,8 @@ public class TaskSimulationFrame extends JFrame implements ActionListener {
 			TSPAlgorithm tspAlgorithm) {
 		setSize(1000, 500);
 
-		// sluit het proces als je op kruisje drukt
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		// sluit het proces als je op kruisje drukt
+//		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		setLayout(new GridBagLayout());
 
@@ -126,12 +126,18 @@ public class TaskSimulationFrame extends JFrame implements ActionListener {
 				problemsOrderPicking), c);
 
 		c.gridy = 1;
-		c.gridx = 1;
+		c.gridx = 2;
 		c.gridwidth = 2;
 		c.weighty = 0.5;
 		c.weightx = 0.5;
 		c.ipady= 400;
 		add(binPackingPanel = new BinPackingTaskSimulation(problems), c);
+		
+		nextBtnOrderPicker.addActionListener(this);
+		previousBtnOrderPicker.addActionListener(this);
+		nextBtnBinPacker.addActionListener(this);
+		previousBtnBinPacker.addActionListener(this);
+		
 		revalidate();
 	}
 
@@ -208,8 +214,8 @@ public class TaskSimulationFrame extends JFrame implements ActionListener {
 		if (event.getSource() == previousBtnOrderPicker)
 			orderPickingPanel.previousProblem();
 		if(event.getSource() == nextBtnBinPacker)
-			orderPickingPanel.nextProblem();
+			binPackingPanel.nextProblem();
 		if(event.getSource() == previousBtnBinPacker)
-			orderPickingPanel.previousProblem();
+			binPackingPanel.previousProblem();
 	}
 }
