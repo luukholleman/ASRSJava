@@ -148,7 +148,10 @@ public class TaskSimulationFrame extends JFrame implements ActionListener {
 			// Lijst van de producten per robot
 			ArrayList<ArrayList<Product>> problem = new ArrayList<ArrayList<Product>>();
 
-			// Initializeren lijst
+			//Lijst van alle producten
+			ArrayList<Product> products = new ArrayList<Product>();
+			
+			// Initializeren robots lijst
 			for (int r = 0; r < NUMBER_ROBOTS; r++)
 				problem.add(new ArrayList<Product>());
 
@@ -156,46 +159,37 @@ public class TaskSimulationFrame extends JFrame implements ActionListener {
 			for (int i = 0; i < warehouseTask.getNumberOfItems(p); i++) {
 
 				// Sla de locatie van de items op in een product
-				Product product = new Product(new Location(
+				products.add(new Product(new Location(
 						warehouseTask.getCoordHorDigit(p, i),
-						warehouseTask.getCoordVertDigit(p, i)), i);
+						warehouseTask.getCoordVertDigit(p, i)), i));
 
-				// Bereken welke robot deze moet behandelen
-				int robotId = product.getLocation().x
-						/ (warehouseTask.maxX / NUMBER_ROBOTS);
-
-				// Voeg toe aan lijst
-				problem.get(robotId).add(product);
-
+			}
+			
+			//Bereken nu de volgorde volgends het algoritme
+			for (int r = 0; r < NUMBER_ROBOTS; r++) {
+				
+				// Oplossen volgens algoritme
+				problem.set(r, tsp.calculateRoute(products, NUMBER_ROBOTS, r));
+				
+				//Geef alles van dit probleem door aan task classe
+				for (int i = 0; i < problem.get(r).size(); i++)					
+					warehouseTask.setOrder(p, problem.get(r).get(i).getId(), r, i);
 				
 			}
-			for(Product product : problem.get(0)){
-				System.out.println(product.getLocation().x + "," + product.getLocation().y);
-			}
-			System.out.println("END OF ORIGINAL PRODUCTS");
+			
+			//Voeg dit probleem toe aan problemenlijst
 			problemsOrderPicking.add(new TravelingSalesmanProblem(problem));
-			System.out.println(problemsOrderPicking);
-			System.out.println("END OF PROBLEM PRODUCTS");
-			for (int r = 0; r < NUMBER_ROBOTS; r++) {
-				// Oplossen volgens algoritme
-				problem.set(r,
-						tsp.calculateRoute(problem.get(r), 20, 10));
-				for(Product product : problem.get(0)){
-					System.out.println(product.getLocation().x + "," + product.getLocation().y);
-				}
-				System.out.println("END OF SORTED PRODUCTS");
-				for (int i = 0; i < problem.get(r).size(); i++) {
-					warehouseTask.setOrder(p, problem.get(r).get(i).getId(),
-							r, i);
-				}
-				for(Product product : problem.get(0)){
-					System.out.println(product.getLocation().x + "," + product.getLocation().y);
-				}
-				System.out.println("END OF PRODUCTS AFTER TASK GOT IT'S FILTHY HANDS ON IT");
-			}
-			
-			
+					
 		}
+		
+		//Debug code
+		System.out.println("Pring all problems");
+		int temp_problem = 0;
+		for(TravelingSalesmanProblem t : problemsOrderPicking)
+			System.out.println("Problem " + temp_problem++ + ":\n" + t + "\n\n");
+		// END debug code
+		
+		
 		warehouseTask.finishProcess();
 	}
 
