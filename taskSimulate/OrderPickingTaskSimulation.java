@@ -9,37 +9,62 @@ import order.Location;
 import order.Product;
 
 public class OrderPickingTaskSimulation extends JPanel {
-	
-	
+	private static final int LINE_INDENT = 12;
+	private static final int DOT_INDENT = 7;
+	private static final int CELL_SIZE = 25;
+	private ArrayList<TravelingSalesmanProblem> problems;
 	private int currentProblem = 0;
-	private ArrayList<Problem> problems;
-	
-	public OrderPickingTaskSimulation(ArrayList<Problem> problems){
-		
-		setPreferredSize(new Dimension(300, 500));
-		
+
+	public OrderPickingTaskSimulation(
+			ArrayList<TravelingSalesmanProblem> problems) {
+		super();
+
 		this.problems = problems;
 	}
-	
-	public void paintComponent(Graphics g){
+
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
 		g.setColor(Color.BLACK);
-		
+
 		// Hier wordt het magazijn getekend in 20x10
-		for (int y = 0; y <= 19; y++) {
-			for (int x = 0; x <= 9; x++) {
-				g.drawRect((x * 20), (y * 20), 20, 20);
+		for (int y = 0; y < 10; y++) {
+			for (int x = 0; x < 20; x++) {
+				g.drawRect((x * CELL_SIZE), (y * CELL_SIZE), CELL_SIZE, CELL_SIZE);
 			}
 		}
 
 		Location lastLocation = null;
+		g.setColor(Color.blue);
 		Graphics2D g2D = (Graphics2D) g;
-		g2D.setStroke(new BasicStroke(3));
-		for(Product product : problems.get(0).getProducts().get(0)){
-			Location productLocation = product.getLocation();
-			g.drawRect(productLocation.x*20+3, productLocation.y*20+3, 15, 15);
-			if(lastLocation != null)	
-				g2D.drawLine(lastLocation.x*20+10, lastLocation.y+10*20+10, productLocation.x*20+10, productLocation.y*20+10);
-			lastLocation = productLocation;
-		}
+		g2D.setStroke(new BasicStroke(2));
+		
+			for (ArrayList<Product> robot : problems.get(currentProblem)
+					.getProblem()) {
+				for (Product product : robot) {
+					Location productLocation = product.getLocation();
+					g.fillRect(productLocation.x * CELL_SIZE + DOT_INDENT,
+							productLocation.y * CELL_SIZE + DOT_INDENT, 10, 10);
+					if (lastLocation != null)
+						g2D.drawLine(lastLocation.x * CELL_SIZE + LINE_INDENT,
+								lastLocation.y * CELL_SIZE + LINE_INDENT,
+								productLocation.x * CELL_SIZE + LINE_INDENT,
+								productLocation.y * CELL_SIZE + LINE_INDENT);
+						lastLocation = productLocation;
+				}
+				g.setColor(Color.red);
+				lastLocation = null;
+			}
+	}
+
+	public void nextProblem() {
+		if(currentProblem < problems.size()-1)
+			currentProblem++;
+		repaint();
+	}
+
+	public void previousProblem() {
+		if(currentProblem > 0)
+			currentProblem--;
+		repaint();
 	}
 }

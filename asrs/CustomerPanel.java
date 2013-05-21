@@ -9,25 +9,72 @@ import javax.swing.JPanel;
 
 
 public class CustomerPanel extends JPanel {
-	// de velden
-	JLabel customerIdVal = new JLabel();
-	JLabel customerNameVal = new JLabel();
-	JLabel dateVal = new JLabel();
-	JLabel totalPriceVal = new JLabel();
+	/**
+	 * Klantnummer string
+	 */
+	JLabel customerIdLbl = new JLabel("Klantnummer");
 	
+	/**
+	 * Klantnaam string
+	 */
+	JLabel customerNameLbl = new JLabel("Klantnaam");
+	
+	/**
+	 * Datum string
+	 */
+	JLabel dateLbl = new JLabel("Datum");
+	
+	/**
+	 * Totale prijs string
+	 */
+	JLabel totalPriceLbl = new JLabel("Totale prijs");
+	
+	/**
+	 * Label voor weergeven klant id
+	 */
+	JLabel customerIdVal = new JLabel("Klantnummer");
+	
+	/**
+	 * Label voor weergeven klantnaam
+	 */
+	JLabel customerNameVal = new JLabel("Klantnaam");
+	
+	/**
+	 * Label voor weergeven order datum
+	 */
+	JLabel dateVal = new JLabel("Datum");
+
+	/**
+	 * Label voor weergeven totale prijs
+	 */
+	JLabel totalPriceVal = new JLabel("Totaal");
+	
+	/**
+	 * Ctor
+	 */
 	public CustomerPanel()
 	{
+		// verander de border zodat dit gesloten wordt
 		setBorder(BorderFactory.createTitledBorder("Klantinformatie"));
 		
+		// afmetingen
 		setPreferredSize(new Dimension(500, 200));
 		
+		// ui bouwen
 		buildUI();
 	}
 
+	/**
+	 * Bouwt de ui
+	 * 
+	 * @return void
+	 */
 	private void buildUI() {
+		// panels aanmaken
 		JPanel columnPanel = new JPanel();
 		JPanel valuePanel = new JPanel();
 
+		// afmetingen bepalen van de panels
 		columnPanel.setPreferredSize(new Dimension(100, 150));
 		valuePanel.setPreferredSize(new Dimension(360, 150));
 		
@@ -35,10 +82,6 @@ public class CustomerPanel extends JPanel {
 		columnPanel.setLayout(new BoxLayout(columnPanel, BoxLayout.PAGE_AXIS));
 		valuePanel.setLayout(new BoxLayout(valuePanel, BoxLayout.PAGE_AXIS));
 
-		JLabel customerIdLbl = new JLabel("Klantnummer");
-		JLabel customerNameLbl = new JLabel("Klantnaam");
-		JLabel dateLbl = new JLabel("Datum");
-		JLabel totalPriceLbl = new JLabel("Totale prijs");
 		
 		customerIdLbl.setPreferredSize(new Dimension(100, 20));
 
