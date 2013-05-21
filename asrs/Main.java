@@ -211,9 +211,6 @@ public class Main extends JFrame implements XMLUploadedListener, ExecuteButtonPr
 		// maak de executionmanager aan me de net aangemaakte gegevens
 		ExecutionManager executionManager = new ExecutionManager(this, order, binManager, opPanel, bpPanel, tsp, bpp, 10, 20, false);
 		
-		// start hem
-		executionManager.start();
-		
 		// geef de em door aan de panels zodat ze de gegevens kunnen uitlezen
 		bpPanel.setEM(executionManager);
 		opPanel.setEM(executionManager);

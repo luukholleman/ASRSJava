@@ -38,7 +38,6 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 	private static final int WAREHOUSE_MAX_X = 9;
 	private static final int BINPACKER_SIZE = 60;
 	private static final int BINPACKER_DEPTH = 340;
-	private static final int ROBOT_SPEED = 2;
 	
 
 	/**
@@ -393,9 +392,8 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 		move();
 		sleep();
 		robots[robotId].finished = true;
-		if (robots[0].finished == true && robots[1].finished == true) {
+		if (robots[0].finished == true && robots[1].finished == true)
 			stop();
-		}
 	}
 
 	/**
