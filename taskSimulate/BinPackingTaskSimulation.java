@@ -25,8 +25,10 @@ public class BinPackingTaskSimulation extends JPanel {
 		int count = 0;
 		for (Bin bin : problems.get(currentProblem).getBins()) {
 			g.setColor(Color.green);
-			g.fillRect((count * 40) + 1, 1, 37,
-					300 / bin.getSize() * bin.getFilled());
+			float floaty = (float) 300 -  300 * ( (float) bin.getFilled() / bin.getSize() );
+			int y = (int) floaty;
+			g.fillRect((count * 40) + 1, y, 37,
+					300 - y);
 			g.setColor(Color.black);
 			g.drawRect((count * 40), 0, 38, 300);
 			g.drawString(bin.getFilled() + "/" + bin.getSize(),

@@ -34,7 +34,7 @@ public class OrderPickingTaskSimulation extends JPanel {
 		}
 
 		Location lastLocation = null;
-		g.setColor(Color.cyan);
+		g.setColor(Color.blue);
 		Graphics2D g2D = (Graphics2D) g;
 		g2D.setStroke(new BasicStroke(2));
 		
@@ -51,7 +51,7 @@ public class OrderPickingTaskSimulation extends JPanel {
 								productLocation.y * CELL_SIZE + LINE_INDENT);
 						lastLocation = productLocation;
 				}
-				g.setColor(Color.yellow);
+				g.setColor(Color.red);
 				lastLocation = null;
 			}
 	}
