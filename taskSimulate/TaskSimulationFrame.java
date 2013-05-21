@@ -92,6 +92,7 @@ public class TaskSimulationFrame extends JFrame implements ActionListener {
 		c.gridx = 0;
 		c.gridy = 0;
 		c.weightx = 0.5;
+		c.weighty = 0.5;
 
 		add(previousBtnOrderPicker, c);
 		
@@ -99,12 +100,14 @@ public class TaskSimulationFrame extends JFrame implements ActionListener {
 		c.gridx = 1;
 		c.gridy = 0;
 		c.weightx = 0.5;
+		c.weighty = 0.5;
 		add(nextBtnOrderPicker, c);
 		
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridx = 2;
 		c.gridy = 0;
 		c.weightx = 0.5;
+		c.weighty = 0.5;
 		add(previousBtnBinPacker, c);
 		
 		c.fill = GridBagConstraints.HORIZONTAL;
