@@ -412,9 +412,9 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 	@Override
 	public Location getStartLocation(int robotId) {
 		if (robotId == 0) {
-			return new Location(0, 0);
+			return new Location(-1, 0);
 		} else if (robotId == 1) {
-			return new Location(9, 0);
+			return new Location(10, 0);
 		} else {
 			return null;
 		}

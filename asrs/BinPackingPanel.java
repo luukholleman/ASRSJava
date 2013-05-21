@@ -44,12 +44,12 @@ public class BinPackingPanel extends JPanel implements Runnable, BinPacking {
 		// Hier wordt de BinPacking robot en alle bins getekent
 
 		// Dit is de lopende band
-		g.drawRect(110, 240, 100, 260);
+		g.drawRect(113, 240, 100, 260);
 
 		// Dit zijn de bins
 		int b = 0;
 		for (Bin bin : bins) {
-			int x = b % 2 * 225+10;
+			int x = b % 2 * 225+13;
 			int y = b / 2 * 100 + 200;
 			g.drawRect(x, y, 75, 75);
 			g.drawString(bin.getFilled() + "/" + bin.getSize(), x, y);	
@@ -58,15 +58,15 @@ public class BinPackingPanel extends JPanel implements Runnable, BinPacking {
 			for(Product product : bin.getProducts()){
 				float productCalc = (float) 73/bin.getSize()*product.getSize();
 				int productDiv = (int) productCalc;
-				g.setColor(Color.RED);
-				g.fillRect(x, y+depth, 75, productDiv);
+				g.setColor(Color.GREEN);
+				g.fillRect(x, y+75-depth-productDiv, 75, productDiv);
 				g.setColor(Color.BLACK);
-				g.drawRect(x, y+depth, 75, productDiv);
+				g.drawRect(x, y+75-depth-productDiv, 75, productDiv);
 				depth = depth + productDiv +1;
 				if(side)
-					g.drawString(Integer.toString(product.getSize()), x+85, y+depth);
+					g.drawString(Integer.toString(product.getSize()), x+78, y+90-depth);
 				else
-					g.drawString(Integer.toString(product.getSize()), x-10, y+depth);
+					g.drawString(Integer.toString(product.getSize()), x-13, y+90-depth);
 				side = !side;
 			}
 			
@@ -77,17 +77,17 @@ public class BinPackingPanel extends JPanel implements Runnable, BinPacking {
 		}
 
 		// Dit is de overflow box
-		g.drawRect(10, 0, 300, 150);
+		g.drawRect(13, 0, 300, 150);
 
 		g.drawString(overflow + "/INFINITY", 145, 70);
 		// Tekent de lijntjes van de lopende band.
 		for (int line : lines) {
-			g.drawLine(110, line, 210, line);
+			g.drawLine(113, line, 212, line);
 		}
 		
-		g.drawRect(135, productHeigth, 50, 50);
+		g.drawRect(138, productHeigth, 50, 50);
 		g.setColor(Color.WHITE);
-		g.fillRect(136, productHeigth+1, 49, 49);
+		g.fillRect(139, productHeigth+1, 49, 49);
 		g.setColor(Color.BLACK);
 		if(!productLine.isEmpty())
 			g.drawString(Integer.toString(productLine.get(0).getSize()), 148, productHeigth+27);
