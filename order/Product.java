@@ -138,4 +138,12 @@ public class Product {
 	public void setLocation(Location location) {
 		this.location = location;
 	}
+	
+	/**
+	 * String representatief voor dit Product
+	 */
+	@Override
+	public String toString() {
+		return "Product(" + id + ", " + description + " @ " + location + ")";
+	}
 }

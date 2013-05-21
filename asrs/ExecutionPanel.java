@@ -22,6 +22,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JTextField;
 
 import listener.ExecuteButtonPressedListener;
 
@@ -44,8 +45,9 @@ public class ExecutionPanel extends JPanel implements ActionListener {
 	// de listeners voor de simulatie en uitvoeren knoppen
 	private ArrayList<ExecuteButtonPressedListener> executeButtonPressedListeners = new ArrayList<ExecuteButtonPressedListener>();
 
-	// de 2 knoppen
+	// de 3 knoppen
 	private JButton simulateBtn = new JButton("Simulatie");
+	private JButton simulateTaskBtn = new JButton("Simulatie Task");
 	private JButton executeBtn = new JButton("Uitvoeren");
 
 	// bpp en tsp algoritme button group, zorgt ervoor dat radio button auto
@@ -59,6 +61,8 @@ public class ExecutionPanel extends JPanel implements ActionListener {
 
 	private JComboBox comportsBpp;
 	private JComboBox comportsTsp;
+	
+	private JTextField seed = new JTextField();
 
 	/**
 	 * ctor
@@ -105,6 +109,19 @@ public class ExecutionPanel extends JPanel implements ActionListener {
 	}
 
 	/**
+	 * Triggert het simulate button press event
+	 * 
+	 * @param xmlFileLocation
+	 */
+	private void simulateTaskButtonPressed(BPPAlgorithm bpp, TSPAlgorithm tsp, String seed) {
+		// trigger elk event
+		for (ExecuteButtonPressedListener ebpl : executeButtonPressedListeners){
+			long longSeed = Long.parseLong(seed, 36);
+			ebpl.simulateTaskPressed(bpp, tsp, longSeed);
+		}
+	}
+
+	/**
 	 * Triggert het button press uploaded event
 	 * 
 	 * @param xmlFileLocation
@@ -128,6 +145,7 @@ public class ExecutionPanel extends JPanel implements ActionListener {
 		JPanel bppPanel = new JPanel();
 		JPanel tspPanel = new JPanel();
 		JPanel comPanel = new JPanel();
+		JPanel seedPanel = new JPanel();
 
 		bppPanel.setPreferredSize(new Dimension(150, 130));
 		tspPanel.setPreferredSize(new Dimension(150, 130));
@@ -202,17 +220,24 @@ public class ExecutionPanel extends JPanel implements ActionListener {
 		
 		comPanel.add(tspArduino);
 		comPanel.add(comportTsp);
+		
+		comPanel.add(seed);
 
 		simulateBtn.addActionListener(this);
+		simulateTaskBtn.addActionListener(this);
 		executeBtn.addActionListener(this);
 
-		simulateBtn.setPreferredSize(new Dimension(235, 50));
-		executeBtn.setPreferredSize(new Dimension(235, 50));
+		simulateBtn.setPreferredSize(new Dimension(153, 50));
+		simulateTaskBtn.setPreferredSize(new Dimension(153, 50));
+		executeBtn.setPreferredSize(new Dimension(153, 50));
+		
+		seed.setPreferredSize(new Dimension(150, 20));
 		
 		add(bppPanel);
 		add(tspPanel);
 		add(comPanel);
 		add(simulateBtn);
+		add(simulateTaskBtn);
 		add(executeBtn);
 	}
 
@@ -222,16 +247,20 @@ public class ExecutionPanel extends JPanel implements ActionListener {
 	 * @author Luuk
 	 */
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource() == simulateBtn || e.getSource() == executeBtn) {
-			getBPPAlgorithmFromRadioButtons();
-			getTSPAlgorithmFromRadioButtons();
-		}
-		
+		getBPPAlgorithmFromRadioButtons();
+		getTSPAlgorithmFromRadioButtons();
+
 		if(e.getSource() == simulateBtn) {
 			if(bppAlgorithm == null || tspAlgorithm == null)
 				JOptionPane.showMessageDialog(this, "Selecteer eerst twee algoritmes.");
 			else
 				simulateButtonPressed(bppAlgorithm, tspAlgorithm);
+		}
+		if(e.getSource() == simulateTaskBtn) {
+			if(bppAlgorithm == null || tspAlgorithm == null)
+				JOptionPane.showMessageDialog(this, "Selecteer eerst twee algoritmes.");
+			else
+				simulateTaskButtonPressed(bppAlgorithm, tspAlgorithm, seed.getText());
 		}
 		if(e.getSource() == executeBtn) {
 			if(bppAlgorithm == null || tspAlgorithm == null)
