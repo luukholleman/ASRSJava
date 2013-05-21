@@ -15,8 +15,12 @@ public class TravelingSalesmanProblem {
 	public String toString(){
 		String string = "";
 		for(ArrayList<Product> robot : problem)
+		{
+			string += "==================================";
+			string += "ROBOT " + problem.indexOf(robot) + ":\n";
 			for (Product product : robot)
-				string += product.getLocation() + "\n";
+				string += product + "\n";
+		}
 			
 		return string;
 	}

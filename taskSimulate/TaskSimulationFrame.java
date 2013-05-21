@@ -30,10 +30,10 @@ public class TaskSimulationFrame extends JFrame implements ActionListener {
 
 	public TaskSimulationFrame(long seed, BPPAlgorithm bppAlgorithm,
 			TSPAlgorithm tspAlgorithm) {
-		setSize(1000, 400);
+		setSize(1000, 500);
 
-		// sluit het proces als je op kruisje drukt
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		// sluit het proces als je op kruisje drukt
+//		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		setLayout(new GridBagLayout());
 
@@ -92,32 +92,55 @@ public class TaskSimulationFrame extends JFrame implements ActionListener {
 		c.gridx = 0;
 		c.gridy = 0;
 		c.weightx = 0.5;
+		c.weighty = 0.5;
 
 		add(previousBtnOrderPicker, c);
+		
+		c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridx = 1;
 		c.gridy = 0;
 		c.weightx = 0.5;
+		c.weighty = 0.5;
 		add(nextBtnOrderPicker, c);
+		
+		c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridx = 2;
 		c.gridy = 0;
 		c.weightx = 0.5;
+		c.weighty = 0.5;
 		add(previousBtnBinPacker, c);
+		
+		c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridx = 3;
 		c.gridy = 0;
-		c.weightx = 0.5;
-		add(nextBtnBinPacker);
+		c.weightx = 0.25;
+		c.weighty = 0.5;
+		add(nextBtnBinPacker, c);
 
 		// plaats de panels
+		c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridy = 1;
 		c.gridx = 0;
-		c.weighty = 5.0;
+		c.gridwidth = 2;
+		c.weighty = 0.5;
+		c.weightx = 0.5;
+		c.ipady= 400;
 		add(orderPickingPanel = new OrderPickingTaskSimulation(
-				problemsOrderPicking));
+				problemsOrderPicking), c);
 
 		c.gridy = 1;
-		c.gridx = 1;
-		c.weighty = 5.0;
-		add(binPackingPanel = new BinPackingTaskSimulation(problems));
+		c.gridx = 2;
+		c.gridwidth = 2;
+		c.weighty = 0.5;
+		c.weightx = 0.5;
+		c.ipady= 400;
+		add(binPackingPanel = new BinPackingTaskSimulation(problems), c);
+		
+		nextBtnOrderPicker.addActionListener(this);
+		previousBtnOrderPicker.addActionListener(this);
+		nextBtnBinPacker.addActionListener(this);
+		previousBtnBinPacker.addActionListener(this);
+		
 		revalidate();
 	}
 
@@ -132,40 +155,58 @@ public class TaskSimulationFrame extends JFrame implements ActionListener {
 		for (int p = 0; p < warehouseTask.getNumberOfProblems(); p++) {
 
 			// Lijst van de producten per robot
-			ArrayList<ArrayList<Product>> products = new ArrayList<ArrayList<Product>>();
+			ArrayList<ArrayList<Product>> problem = new ArrayList<ArrayList<Product>>();
 
-			// Initializeren lijst
+			//Lijst van alle producten
+			ArrayList<Product> products = new ArrayList<Product>();
+			
+			// Initializeren robots lijst
 			for (int r = 0; r < NUMBER_ROBOTS; r++)
-				products.add(new ArrayList<Product>());
+				problem.add(new ArrayList<Product>());
 
 			// Doorlopen van alle items
 			for (int i = 0; i < warehouseTask.getNumberOfItems(p); i++) {
 
 				// Sla de locatie van de items op in een product
-				Product product = new Product(new Location(
+				products.add(new Product(new Location(
 						warehouseTask.getCoordHorDigit(p, i),
-						warehouseTask.getCoordVertDigit(p, i)), i);
+						warehouseTask.getCoordVertDigit(p, i)), i));
 
-				// Bereken welke robot deze moet behandelen
-				int robotId = product.getLocation().x
-						/ (warehouseTask.maxX / NUMBER_ROBOTS);
-
-				// Voeg toe aan lijst
-				products.get(robotId).add(product);
 			}
+			
+			//DEBUG
+			System.out.println("===========================");
+			System.out.println("PRINTING ALL PRODUCTS:");
+			for(Product pr : products)
+				System.out.println(pr);
+			System.out.println("===========================");
+			//END DEBUG
+			
+			//Bereken nu de volgorde volgends het algoritme
 			for (int r = 0; r < NUMBER_ROBOTS; r++) {
+				
 				// Oplossen volgens algoritme
-				products.set(r,
-						tsp.calculateRoute(products.get(r), 10 * (r + 1), 10));
-
-				for (int i = 0; i < products.get(r).size(); i++) {
-					warehouseTask.setOrder(p, products.get(r).get(i).getId(),
-							r, i);
-				}
+				problem.set(r, tsp.calculateRoute(products, NUMBER_ROBOTS, r));
+				
+				//Geef alles van dit probleem door aan task classe
+				for (int i = 0; i < problem.get(r).size(); i++)					
+					warehouseTask.setOrder(p, problem.get(r).get(i).getId(), r, i);
+				
 			}
-
-			problemsOrderPicking.add(new TravelingSalesmanProblem(products));
+			
+			//Voeg dit probleem toe aan problemenlijst
+			problemsOrderPicking.add(new TravelingSalesmanProblem(problem));
+					
 		}
+		
+		//Debug code
+		System.out.println("Pring all problems");
+		int temp_problem = 0;
+		for(TravelingSalesmanProblem t : problemsOrderPicking)
+			System.out.println("Problem " + temp_problem++ + ":\n" + t + "\n\n");
+		// END debug code
+		
+		
 		warehouseTask.finishProcess();
 	}
 
@@ -176,8 +217,8 @@ public class TaskSimulationFrame extends JFrame implements ActionListener {
 		if (event.getSource() == previousBtnOrderPicker)
 			orderPickingPanel.previousProblem();
 		if(event.getSource() == nextBtnBinPacker)
-			orderPickingPanel.nextProblem();
+			binPackingPanel.nextProblem();
 		if(event.getSource() == previousBtnBinPacker)
-			orderPickingPanel.previousProblem();
+			binPackingPanel.previousProblem();
 	}
 }

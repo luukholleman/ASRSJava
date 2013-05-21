@@ -9,14 +9,15 @@ import order.Location;
 import order.Product;
 
 public class OrderPickingTaskSimulation extends JPanel {
+	private static final int LINE_INDENT = 12;
+	private static final int DOT_INDENT = 7;
+	private static final int CELL_SIZE = 25;
 	private ArrayList<TravelingSalesmanProblem> problems;
 	private int currentProblem = 0;
 
 	public OrderPickingTaskSimulation(
 			ArrayList<TravelingSalesmanProblem> problems) {
 		super();
-
-		setPreferredSize(new Dimension(400, 300));
 
 		this.problems = problems;
 	}
@@ -26,41 +27,44 @@ public class OrderPickingTaskSimulation extends JPanel {
 		g.setColor(Color.BLACK);
 
 		// Hier wordt het magazijn getekend in 20x10
-		for (int y = 0; y <= 19; y++) {
-			for (int x = 0; x <= 9; x++) {
-				g.drawRect((x * 20), (y * 20), 20, 20);
+		for (int y = 0; y < 10; y++) {
+			for (int x = 0; x < 20; x++) {
+				g.drawRect((x * CELL_SIZE), (y * CELL_SIZE), CELL_SIZE, CELL_SIZE);
 			}
 		}
 
 		Location lastLocation = null;
-		g.setColor(Color.BLUE);
+		g.setColor(Color.cyan);
 		Graphics2D g2D = (Graphics2D) g;
-		g2D.setStroke(new BasicStroke(3));
+		g2D.setStroke(new BasicStroke(2));
 		
 			for (ArrayList<Product> robot : problems.get(currentProblem)
 					.getProblem()) {
 				for (Product product : robot) {
 					Location productLocation = product.getLocation();
-					g.fillRect(productLocation.x * 20 + 5,
-							productLocation.y * 20 + 5, 10, 10);
+					g.fillRect(productLocation.x * CELL_SIZE + DOT_INDENT,
+							productLocation.y * CELL_SIZE + DOT_INDENT, 10, 10);
 					if (lastLocation != null)
-						g2D.drawLine(lastLocation.x * 20 + 10,
-								lastLocation.y + 10 * 20 + 10,
-								productLocation.x * 20 + 10,
-								productLocation.y * 20 + 10);
-					lastLocation = productLocation;
+						g2D.drawLine(lastLocation.x * CELL_SIZE + LINE_INDENT,
+								lastLocation.y * CELL_SIZE + LINE_INDENT,
+								productLocation.x * CELL_SIZE + LINE_INDENT,
+								productLocation.y * CELL_SIZE + LINE_INDENT);
+						lastLocation = productLocation;
 				}
-				g.setColor(Color.RED);
+				g.setColor(Color.yellow);
+				lastLocation = null;
 			}
 	}
 
 	public void nextProblem() {
-		currentProblem++;
+		if(currentProblem < problems.size()-1)
+			currentProblem++;
 		repaint();
 	}
 
 	public void previousProblem() {
-		currentProblem--;
+		if(currentProblem > 0)
+			currentProblem--;
 		repaint();
 	}
 }
