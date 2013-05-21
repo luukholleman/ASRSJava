@@ -9,6 +9,6 @@ import java.io.OutputStream;
 public class BinPackingArduino extends Arduino implements BinPacking{
 	
 	public BinPackingArduino (CommPortIdentifier port){
-		
+		super(port);
 	}
 }
