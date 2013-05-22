@@ -35,8 +35,6 @@ public class WarehouseRobot {
 
 	public Product getNextProduct() {
 		if (!products.isEmpty()) {
-
-			System.out.println("Robot: Ik heb nu nog " + products.size() + " producten.");
 			Product retProduct = products.get(0);
 			products.remove(0);
 			return retProduct;

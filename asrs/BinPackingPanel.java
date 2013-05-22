@@ -130,10 +130,10 @@ public class BinPackingPanel extends JPanel implements Runnable, BinPacking {
 			if (productHeigth <= 240) {
 				productHeigth = BORDER_Y;
 				byte binByte = 0;
-				try{
-					bins.get(eM.detectedProduct(binByte, binByte, binByte)).fill(productLine.get(0));
-				}
-				catch(Exception e){
+				if(binLine.get(0) != null)
+					binLine.get(0).fill(productLine.get(0));
+//					bins.get(eM.detectedProduct(binByte, binByte, binByte)).fill(productLine.get(0));
+				else{
 					overflow = overflow + productLine.get(0).getSize();
 				}
 				productLine.get(0).setStatus("ingepakt");
@@ -144,10 +144,9 @@ public class BinPackingPanel extends JPanel implements Runnable, BinPacking {
 			repaint();
 			frame();
 		}
-
 	}
 
-	public void packProducts(Product product, byte binByte) {
+	public void packProduct(Byte binByte, Product product) {
 		productLine.add(product);
 		if(binByte != bins.size())
 			binLine.add(bins.get((int) binByte));
@@ -199,5 +198,4 @@ public class BinPackingPanel extends JPanel implements Runnable, BinPacking {
 		this.eM = eM;
 		bins = eM.getBinManager().bins;
 	}
-	
 }

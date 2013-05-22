@@ -74,7 +74,6 @@ public class ExecutionManager {
 	 * @return binIndex
 	 */
 	private void detectedProduct(Byte color) {
-		//int size;
 		Bin bin;
 		if (useDetectedSize) {
 			bppProducts.get(0).setSize((int) color);
@@ -111,7 +110,10 @@ public class ExecutionManager {
 		bppProducts.addAll(robot.productsOnFork);
 		robot.productsOnFork.clear();
 //		warehouse.moveToStart(robot.id);
-		detectedProduct(color);
+		if(bppProducts.isEmpty())
+			detectedProduct(color);
+		else
+			warehouse.moveToStart(robot.id);
 	}
 
 	// Alle getters

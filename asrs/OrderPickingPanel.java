@@ -263,7 +263,7 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 				warehouse.remove(robots[1].destination);
 				for (WarehouseRobot robot : robots) {
 					if (robot.loc.x == BINPACKER_X && robot.loc.y == LOAD_MAX)
-						executionManager.deliveredProduct(robot);
+						executionManager.deliveredProduct(robot, (byte) 0);
 					else
 						for (Product product : products)
 							if (robot.destination == product.getLocation()) {
