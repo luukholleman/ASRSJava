@@ -127,7 +127,7 @@ public class ExecutionPanel extends JPanel implements ActionListener {
 	 * @param xmlFileLocation
 	 */
 	private void executeButtonPressed(BPPAlgorithm bpp, TSPAlgorithm tsp,
-			String com1, String com2) {
+			CommPortIdentifier com1, CommPortIdentifier com2) {
 		// trigger elk event
 		for (ExecuteButtonPressedListener ebpl : executeButtonPressedListeners)
 			ebpl.executePressed(bpp, tsp, com1, com2);
@@ -266,11 +266,27 @@ public class ExecutionPanel extends JPanel implements ActionListener {
 			if(bppAlgorithm == null || tspAlgorithm == null)
 				JOptionPane.showMessageDialog(this, "Selecteer eerst twee algoritmes.");
 			else {
-				System.out.println(comportsBpp.getName());
-				System.out.println(comportsTsp.getName());
+				executeButtonPressed(bppAlgorithm, tspAlgorithm, stringToComport(comportsBpp.getSelectedItem().toString()), stringToComport(comportsTsp.getSelectedItem().toString()));
 			}
-				executeButtonPressed(bppAlgorithm, tspAlgorithm, comportsBpp.getName(), comportsTsp.getName());
+				
 		}		
+	}
+	
+	private CommPortIdentifier stringToComport(String comport) {
+        Enumeration portEnum = CommPortIdentifier.getPortIdentifiers();
+        // Zoeken naar de poort
+        while (portEnum.hasMoreElements()) {
+            CommPortIdentifier currPortId = (CommPortIdentifier) portEnum.nextElement();
+                    	
+        	if(currPortId.getName().equals(comport)) {
+        		System.out.println("String to comport gevonden: " + comport);
+
+        		return currPortId;        		
+        	}            
+        }
+		System.out.println("String to comport niet gevonden: " + comport);
+        
+        return null;
 	}
 
 	/**
