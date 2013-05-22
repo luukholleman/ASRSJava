@@ -14,7 +14,6 @@ public class WarehouseRobot {
 	private ArrayList<Product> products;
 	public ArrayList<Product> productsOnFork;
 	public boolean finished;
-//	public ArrayList<Location> locationList = new ArrayList<Location>();
 	
 	public WarehouseRobot(Location loc, ArrayList<Product> products, int id){
 		this.loc = loc;
@@ -36,6 +35,8 @@ public class WarehouseRobot {
 
 	public Product getNextProduct() {
 		if (!products.isEmpty()) {
+
+			System.out.println("Robot: Ik heb nu nog " + products.size() + " producten.");
 			Product retProduct = products.get(0);
 			products.remove(0);
 			return retProduct;

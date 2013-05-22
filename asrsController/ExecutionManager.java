@@ -62,28 +62,7 @@ public class ExecutionManager {
 			// init de robot met zijn eigen startlocatie, producten en id
 			robots[r] = new WarehouseRobot(warehouse.getStartLocation(r), products, r);			
 		}
-	}
-	
-	/**
-	 * Start de robot, laat de simulatie lopen of laat de arduino bewegen
-	 * 
-	 * @return void
-	 */
-	public void start() {
-		// we moeten elke robot aanspreken en de id's zijn oplopend, de i is dus het robotid
-		int i = 0;
 		
-		for(WarehouseRobot wr : robots) { 
-			//laat de robot het volgende product ophalen
-			Product nextProduct = wr.getNextProduct();
-			
-			// is er een volgende product? zo ja, haal hem op, de robot wordt aangesproken met het id
-			if (nextProduct != null)
-				warehouse.retrieveProduct(nextProduct.getLocation(), i);
-			
-			// klaar met deze robot, op naar de volgende
-			i++;
-		}
 	}
 
 	/**
