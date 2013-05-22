@@ -231,7 +231,7 @@ public class Main extends JFrame implements XMLUploadedListener, ExecuteButtonPr
 			return;
 		}
 		
-		throw new UnsupportedOperationException();
+		System.out.println("test");
 		// TODO Auto-generated method stub
 		
 	}

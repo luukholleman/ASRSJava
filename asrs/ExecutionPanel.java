@@ -206,20 +206,20 @@ public class ExecutionPanel extends JPanel implements ActionListener {
             comports.add(currPortId.getName());            
         }
 
-		JComboBox comportBpp = new JComboBox(comports.toArray());
-		comportBpp.addActionListener(this);
+		comportsBpp = new JComboBox(comports.toArray());
+		comportsBpp.addActionListener(this);
 		
-		JComboBox comportTsp = new JComboBox(comports.toArray());
-		comportTsp.addActionListener(this);
+		comportsTsp = new JComboBox(comports.toArray());
+		comportsTsp.addActionListener(this);
 
 		JLabel bppArduino = new JLabel("Loopband Arduino");
 		JLabel tspArduino = new JLabel("Magazijn Arduino");
 		
 		comPanel.add(bppArduino);
-		comPanel.add(comportBpp);
+		comPanel.add(comportsBpp);
 		
 		comPanel.add(tspArduino);
-		comPanel.add(comportTsp);
+		comPanel.add(comportsTsp);
 		
 		comPanel.add(seed);
 
@@ -265,7 +265,10 @@ public class ExecutionPanel extends JPanel implements ActionListener {
 		if(e.getSource() == executeBtn) {
 			if(bppAlgorithm == null || tspAlgorithm == null)
 				JOptionPane.showMessageDialog(this, "Selecteer eerst twee algoritmes.");
-			else
+			else {
+				System.out.println(comportsBpp.getName());
+				System.out.println(comportsTsp.getName());
+			}
 				executeButtonPressed(bppAlgorithm, tspAlgorithm, comportsBpp.getName(), comportsTsp.getName());
 		}		
 	}
