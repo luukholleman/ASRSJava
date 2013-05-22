@@ -13,10 +13,8 @@ public class BinPackingArduino extends Arduino implements BinPacking{
 	private int bins;
 	private CommPortIdentifier port;
 	
-	public BinPackingArduino (ExecutionManager executionManager, int bins, CommPortIdentifier port){
+	public BinPackingArduino (CommPortIdentifier port){
 		super(port);
-		this.executionManager = executionManager;
-		this.bins = bins;
 	}
 	
 	public void sentToBin(Byte binNummer){
