@@ -10,12 +10,19 @@ import order.Location;
 
 public class WarehouseArduino extends Arduino implements Warehouse{
 	
-	public Arduino (CommPortIdentifier port){
-		
+	private static final int RETRIEVE = (byte)1;
+	
+	public WarehouseArduino(CommPortIdentifier port){
+		super(port);
 	}
 
 	@Override
 	public void retrieveProduct(Location location, int robotId) {
+		// open de connectie
+		open();
+		
+		// geef het commando retrieve, parameters zijn de x en y locatie
+		Byte[] bytes = {RETRIEVE, (byte)location.x, (byte)location.y};
 		// TODO Auto-generated method stub
 		
 	}

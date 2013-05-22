@@ -13,7 +13,9 @@ import order.Order;
 import order.Product;
 import taskSimulate.TaskSimulationFrame;
 import tspAlgorithm.TSPAlgorithm;
+import asrsController.BinPackingArduino;
 import asrsController.ExecutionManager;
+import asrsController.WarehouseArduino;
 import bppAlgorithm.BPPAlgorithm;
 import bppAlgorithm.Bin;
 import bppAlgorithm.BinManager;
@@ -231,7 +233,22 @@ public class Main extends JFrame implements XMLUploadedListener, ExecuteButtonPr
 			return;
 		}
 		
-		throw new UnsupportedOperationException();
+		// maak een binmanager aan
+		BinManager binManager = new BinManager();
+		
+		// voeg een paar bins toe
+		binManager.addBin(new Bin(20,0));
+		binManager.addBin(new Bin(20,0));
+		binManager.addBin(new Bin(20,0));
+		
+		// maak de Arduino klasses aan aan
+		BinPackingArduino binPackerArduino = new BinPackingArduino(com1);
+		WarehouseArduino warehouseArduino = new WarehouseArduino(com2);
+		
+		// maak de executionmanager aan me de net aangemaakte gegevens
+		ExecutionManager executionManager = new ExecutionManager(this, order, binManager, warehouseArduino, binPackerArduino, tsp, bpp, 10, 20, false);
+		
+		System.out.println("test");
 		// TODO Auto-generated method stub
 		
 	}
