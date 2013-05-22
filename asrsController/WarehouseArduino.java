@@ -18,23 +18,38 @@ public class WarehouseArduino extends Arduino implements Warehouse{
 
 	@Override
 	public void retrieveProduct(Location location, int robotId) {
+		
+		System.out.println("Retrieve product");
 		// open de connectie
 		open();
 		
 		// geef het commando retrieve, parameters zijn de x en y locatie
 		Byte[] bytes = {RETRIEVE, (byte)location.x, (byte)location.y};
-		// TODO Auto-generated method stub
+		
+		sendBytes(bytes);
+		
+		close();
 		
 	}
 
 	@Override
 	public void bringToBinPacker(int robotId) {
+		open();
+		
+		sendByte((byte)2);
+		
+		close();
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void moveToStart(int robotId) {
+		open();
+		
+		sendByte((byte)3);
+		
+		close();
 		// TODO Auto-generated method stub
 		
 	}
