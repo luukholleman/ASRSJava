@@ -48,7 +48,7 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 	 * De ExecutionManager die alle data opslaat en simulatie gerelateerde
 	 * berekeningen uitvoert
 	 */
-	private ExecutionManager executionManger;
+	private ExecutionManager executionManager;
 	/**
 	 * De thread die de animatie laat aflopen
 	 */
@@ -242,7 +242,7 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 	@Override
 	public void run() {
 		// De producten die onderdeel zijn worden uit de order gehaald
-		Order order = executionManger.getOrder();
+		Order order = executionManager.getOrder();
 		products = order.getProducts();
 
 		// Deze regel komt van het internet. Ik begrijp nog steeds threads niet
@@ -253,7 +253,7 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 			if (robots[0].load <= LOAD_MAX || robots[1].load <= LOAD_MAX) {
 				for (WarehouseRobot robot : robots)
 					if (robot.finished == false)
-						executionManger.pickedUpProduct(robot.id);
+						executionManager.pickedUpProduct(robot.id);
 				move();
 				sleep(PAUSE_TIME_ON_PICKUP);
 
@@ -262,15 +262,14 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 				warehouse.remove(robots[0].destination);
 				warehouse.remove(robots[1].destination);
 				for (WarehouseRobot robot : robots) {
-					if (robot.loc.x == BINPACKER_X && robot.loc.y == LOAD_MAX) {
-						binPackingPanel.packProducts(robot.productsOnFork);
-						executionManger.deliveredProduct(robot);
-					} else
+					if (robot.loc.x == BINPACKER_X && robot.loc.y == LOAD_MAX)
+						executionManager.deliveredProduct(robot, (byte) 0);
+					else
 						for (Product product : products)
 							if (robot.destination == product.getLocation()) {
 								robot.productsOnFork.add(product);
 								product.setStatus("opgepakt");
-								executionManger.getMain().productStatusUpdated(
+								executionManager.getMain().productStatusUpdated(
 										product);
 							}
 
@@ -426,6 +425,6 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 	 * @author Bas
 	 */
 	public void setEM(ExecutionManager eM) {
-		this.executionManger = eM;
+		this.executionManager = eM;
 	}
 }

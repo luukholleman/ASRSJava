@@ -13,26 +13,28 @@ import bppAlgorithm.Bin;
 import order.Product;
 
 public class BinPackingPanel extends JPanel implements Runnable, BinPacking {
+	private static final int LINE_DISTANCE = 20;
+	private static final int BORDER_Y = 500;
 	private ExecutionManager eM;
 	private Thread runner;
 	private int lines[];
 	private ArrayList<Product> productLine = new ArrayList<Product>();
 	private int productHeigth;
 	private ArrayList<Bin> bins;
+	private ArrayList<Bin> binLine = new ArrayList<Bin>();
 	private int overflow;
 
 	// Constructor
 	public BinPackingPanel() {
 		super();
-		setSize(300, 500);
+		setSize(300, BORDER_Y);
 
 		lines = new int[13];
 		
 		for(int a = 0 ; a < lines.length ; a++){
-			lines[a] = 500 - 20 * a;
+			lines[a] = BORDER_Y - LINE_DISTANCE * a;
 		}
-		
-		productHeigth = 500;
+		productHeigth = BORDER_Y;
 	}
 
 	@Override
@@ -121,22 +123,17 @@ public class BinPackingPanel extends JPanel implements Runnable, BinPacking {
 				if (lines[i] > 240)
 					lines[i]--;
 				else
-					lines[i] = 500;
+					lines[i] = BORDER_Y;
 			}
 			if (!productLine.isEmpty())
 				productHeigth--;
 			if (productHeigth <= 240) {
-				productHeigth = 500;
+				productHeigth = BORDER_Y;
 				byte binByte = 0;
-				try{
-					bins.get(eM.detectedProduct(binByte, binByte, binByte)).fill(productLine.get(0));
-				}
-				catch(Exception e){
-//					for(Bin bin : bins){
-//						overflow = overflow + bin.getFilled();
-//						bin.setFilled(0);
-//						bin.getProducts().clear();
-//					}
+				if(binLine.get(0) != null)
+					binLine.get(0).fill(productLine.get(0));
+//					bins.get(eM.detectedProduct(binByte, binByte, binByte)).fill(productLine.get(0));
+				else{
 					overflow = overflow + productLine.get(0).getSize();
 				}
 				productLine.get(0).setStatus("ingepakt");
@@ -147,11 +144,15 @@ public class BinPackingPanel extends JPanel implements Runnable, BinPacking {
 			repaint();
 			frame();
 		}
-
 	}
 
-	public void packProducts(ArrayList<Product> products) {
-		productLine.addAll(products);
+	public void packProduct(Byte binByte, Product product) {
+		productLine.add(product);
+		if(binByte != bins.size())
+			binLine.add(bins.get((int) binByte));
+		else
+			binLine.add(null);
+		
 		System.out.println("Bin Packer: Sorting " + productLine.size() + " products.");
 	}
 
