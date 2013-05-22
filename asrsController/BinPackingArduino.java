@@ -6,6 +6,8 @@ import gnu.io.SerialPort;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import order.Product;
+
 public class BinPackingArduino extends Arduino implements BinPacking{
 	private ExecutionManager executionManager;
 	private int bins;
@@ -17,4 +19,11 @@ public class BinPackingArduino extends Arduino implements BinPacking{
 		this.bins = bins;
 	}
 	
+	public void sentToBin(Byte binNummer){
+		
+	}
+	
+	public void packProduct(Byte binNummer, Product product){
+		
+	}
 }
