@@ -73,17 +73,20 @@ public class ExecutionManager {
 	 * @param blue
 	 * @return binIndex
 	 */
-	public Byte detectedProduct(Byte red, Byte green, Byte blue) {
+	private void detectedProduct(Byte color) {
 		//int size;
+		Bin bin;
 		if (useDetectedSize) {
-			bppProducts.remove(0);
-			return 0;
-		} else {
-			Bin bin = bppAlgorithm.calculateBin(bppProducts.get(0),
+			bppProducts.get(0).setSize((int) color);
+			bin = bppAlgorithm.calculateBin(bppProducts.get(0),
 					binManager.bins);
-			bppProducts.remove(0);
-			return (byte) binManager.bins.indexOf(bin);
+			
+		} else {
+			bin = bppAlgorithm.calculateBin(bppProducts.get(0),
+					binManager.bins);
 		}
+		binPacking.packProduct((byte) binManager.bins.indexOf(bin), bppProducts.get(0));
+		bppProducts.remove(0);
 	}
 
 	/**
@@ -104,10 +107,11 @@ public class ExecutionManager {
 	 * 
 	 * @param robotId
 	 */
-	public void deliveredProduct(WarehouseRobot robot) {
+	public void deliveredProduct(WarehouseRobot robot, Byte color) {
 		bppProducts.addAll(robot.productsOnFork);
 		robot.productsOnFork.clear();
-		warehouse.moveToStart(robot.id);
+//		warehouse.moveToStart(robot.id);
+		detectedProduct(color);
 	}
 
 	// Alle getters
