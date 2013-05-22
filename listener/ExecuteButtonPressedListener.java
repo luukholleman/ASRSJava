@@ -1,5 +1,6 @@
 package listener;
 
+import gnu.io.CommPortIdentifier;
 import tspAlgorithm.TSPAlgorithm;
 import bppAlgorithm.BPPAlgorithm;
 
@@ -29,5 +30,5 @@ public interface ExecuteButtonPressedListener {
 	 * @param com1
 	 * @param com2
 	 */
-	public abstract void executePressed(BPPAlgorithm bpp, TSPAlgorithm tsp, String com1, String com2);
+	public abstract void executePressed(BPPAlgorithm bpp, TSPAlgorithm tsp, CommPortIdentifier com1, CommPortIdentifier com2);
 }

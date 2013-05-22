@@ -1,4 +1,6 @@
 package asrs;
+import gnu.io.CommPortIdentifier;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 
@@ -227,7 +229,7 @@ public class Main extends JFrame implements XMLUploadedListener, ExecuteButtonPr
 	 */
 	@Override
 	public void executePressed(BPPAlgorithm bpp, TSPAlgorithm tsp,	
-			String com1, String com2) {
+			CommPortIdentifier comBpp, CommPortIdentifier comTsp) {
 		if(order == null) {
 			JOptionPane.showMessageDialog(this, "Selecteer eerst een XML bestand");
 			return;
@@ -242,12 +244,12 @@ public class Main extends JFrame implements XMLUploadedListener, ExecuteButtonPr
 		binManager.addBin(new Bin(20,0));
 		
 		// maak de Arduino klasses aan aan
-		BinPackingArduino binPackerArduino = new BinPackingArduino(com1);
-		WarehouseArduino warehouseArduino = new WarehouseArduino(com2);
+		BinPackingArduino binPackerArduino = new BinPackingArduino(comBpp);
+		WarehouseArduino warehouseArduino = new WarehouseArduino(comTsp);
 		
 		// maak de executionmanager aan me de net aangemaakte gegevens
 		ExecutionManager executionManager = new ExecutionManager(this, order, binManager, warehouseArduino, binPackerArduino, tsp, bpp, 10, 20, false);
-		
+				
 		System.out.println("test");
 		// TODO Auto-generated method stub
 		

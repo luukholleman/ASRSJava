@@ -24,7 +24,6 @@ public abstract class TSPAlgorithm {
 	protected ArrayList<Product> splitOrder(ArrayList<Product> products,
 			int numberOfRobots, int currentRobot) {
 		ArrayList<Product> filteredProducts = new ArrayList<Product>();
-
 		int width = getEffectiveWarehouseWidth(products);
 
 		for (Product p : products) {
@@ -45,7 +44,7 @@ public abstract class TSPAlgorithm {
 
 		return filteredProducts;
 	}
-
+	
 	private int getEffectiveWarehouseWidth(ArrayList<Product> products) {
 
 		int maxX = 0;
