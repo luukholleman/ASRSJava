@@ -140,6 +140,7 @@ public class BinPackingPanel extends JPanel implements Runnable, BinPacking {
 				eM.getMain().productStatusUpdated(productLine.get(0));
 				
 				productLine.remove(0);
+				binLine.remove(0);
 			}
 			repaint();
 			frame();
@@ -152,8 +153,6 @@ public class BinPackingPanel extends JPanel implements Runnable, BinPacking {
 			binLine.add(bins.get((int) binByte));
 		else
 			binLine.add(null);
-		
-		System.out.println("Bin Packer: Sorting " + productLine.size() + " products.");
 	}
 
 	/**
