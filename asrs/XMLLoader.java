@@ -40,7 +40,7 @@ public class XMLLoader {
 			order = new Order(date, totalPrice, customer);
 			
 			// Get products
-			List list = rootNode.getChildren("product");
+			List<Element> list = rootNode.getChildren("product");
 			for (int i = 0; i < list.size(); i++) {
 				
 				Element node = (Element) list.get(i);

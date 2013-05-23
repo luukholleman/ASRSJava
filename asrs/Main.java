@@ -75,7 +75,7 @@ public class Main extends JFrame implements XMLUploadedListener, ExecuteButtonPr
 		}
 		
 		// start de executie
-		JFrame main = new Main();
+		new Main();
 	}
 	
 	/**
