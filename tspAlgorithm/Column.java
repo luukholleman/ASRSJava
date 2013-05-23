@@ -1,109 +1,71 @@
 package tspAlgorithm;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+
+import bppAlgorithm.Bin;
 
 import order.Location;
 import order.Product;
 
-
 public class Column extends TSPAlgorithm {
-	//visibility modifiers + opsomming mag niet
-	private ArrayList<Product> route = new ArrayList<Product>();
-	private ArrayList<Product> column1 = new ArrayList<Product>(); 
-	private ArrayList<Product> column2 = new ArrayList<Product>();
-	Location location;
 	private static String name = "Column";
-	int columnsize;
-	
-	
+
 	@Override
 	public String getName() {
 		return name;
 	}
-	
-	
-	/**
-	 * Berekend een efficiente route op basis van het (zelf bedachte) Column algoritme.
-	 * 
-	 * @param ArrayList<Product>
-	 * @return ArrayList<Product>
-	 */
-	public ArrayList<Product> calculateRoute(ArrayList<Product> products, int numberOfRobots, int currentRobot){
-		products = splitOrder(products, numberOfRobots, currentRobot);
-		
-		//Opzoeken van het horizontale verste product
-		int xmax = 0;
-		for (Product product : products){
-			location = product.getLocation();
-			if (location.x > xmax){
-				xmax = location.x;
-			}
-		}
-		/** Het magazijn  wordt verticaal verdeelt in 2 kolommen
-		 *  en daarin worden de producten verdeelt.
-		*/  
-		columnsize = xmax/2;
-		for (Product product : products){
-			location = product.getLocation();
-			if(location.x <= columnsize){
-				column1.add(product);
-			}
-			else{
-				column2.add(product);
-			}
-		}
-		//Daarna wordt alleen nog maar de producten in volgorde van hoogte verdeelt.
-		sortColumn(column1, true);
-		sortColumn(column2, false);
-		
-		
-		return route;
-	}
 
-	/**
-	 * Berekend het laagste product
-	 * verwijderd het product uit products zodat het niet meer meegenomen wordt
-	 * 
-	 * @param products
-	 * @return product
-	 */
-	private void sortColumn(ArrayList<Product> products, boolean dir){
-		// de arraylist is leeg, niks te berekenen. return zonder iets te doen
-		if(products.size() == 0) return;
-		Product minProduct = null;
+	public ArrayList<Product> calculateRoute(ArrayList<Product> products,
+			int numberOfRobots, int currentRobot) {
+		// Splits de producten per robot
+		products = splitOrder(products, numberOfRobots, currentRobot);
+
+		// Arraylist om de route in op te slaan
+		ArrayList<Product> route = new ArrayList<Product>();
+
+		// Welke col om te vinden in deze ronde
+		int x = 0;
 		
-		// we lopen nu elk product af en berekenen de hoogte. de laagste wordt opgeslagen
-		while(products.size() != 0){
-			int ymax = 0;
-			int ymin = 0;
-			for(Product product : products) {
-				location = product.getLocation();
-				int yloc = location.y;
-				
-				if(dir){
-					/* als ymin is de eerste keer, dan moet hij altijd geset worden.
-					* de andere statement is als de net berekende hoogte korter is dan de vorige
-					*/
-					if(ymin == 0 || ymin > yloc) {
-						ymin = yloc;
-						minProduct = product;
-					}	
-				}
-				if(!dir){
-					// Zelfde als de vorige, maar in de andere richting
-					if(ymax == 0 || ymax < yloc) {
-						ymax = yloc;
-						minProduct = product;
+		//Hoeveelste gevonden colom dit is
+		int foundColumn = 0;
+		
+		// Ga door tot alle producten verwerkt zijn
+		while (products.size() > 0) {
+			// Sla alle produten uit deze col indeze lijst op
+			ArrayList<Product> column = new ArrayList<Product>();
+
+			//Ga door alle producten heen, en vind de juisten
+			for (Product product : products)
+				if (product.getLocation().x == x)
+					column.add(product);
+
+			//Verwijder de gevonden producten
+			products.removeAll(column);
+			
+			if(column.size() > 0)
+			{
+				//Sorteer de colom op y as coordinaat
+				Collections.sort(column, new Comparator<Product>() {
+					public int compare(Product one, Product two) {
+						return ((Integer)(one.getLocation().y)).compareTo(two.getLocation().y);
 					}
-				}
+				});
+				
+				//Als de colom de onevense in de lijst is is, flip em
+				if(foundColumn % 2 == 0)
+					Collections.reverse(column);
+				
+				for(Product product : column)
+					route.add(product);
+				
+				foundColumn++;
 			}
-		
-		
-		/* we hebben het dichtsbijzijnde product, voeg hem toe aan de route, 
-		*  verwijderen van de nog te berekenen producten
-		*/
-		route.add(minProduct);
-		products.remove(minProduct);
+			x++;
 		}
+		
+
+		return route;
 	}
 }
