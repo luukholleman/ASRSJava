@@ -62,7 +62,6 @@ public class ExecutionManager {
 			// init de robot met zijn eigen startlocatie, producten en id
 			robots[r] = new WarehouseRobot(warehouse.getStartLocation(r), products, r);			
 		}
-		
 	}
 
 	/**
