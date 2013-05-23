@@ -56,11 +56,13 @@ public class ExecutionManager {
 
 		// loop de robots en bepaal de route die de robot moet volgen
 		for (int r = 0; r < warehouse.getNumberOfRobots(); r++) {
-			//Sorteer de producten volgens het meegegeven algoritme
-			ArrayList<Product> products = tspAlgorithm.calculateRoute(order.getProducts(), warehouse.getNumberOfRobots(), r);
-			
+			// Sorteer de producten volgens het meegegeven algoritme
+			ArrayList<Product> products = tspAlgorithm.calculateRoute(
+					order.getProducts(), warehouse.getNumberOfRobots(), r);
+
 			// init de robot met zijn eigen startlocatie, producten en id
-			robots[r] = new WarehouseRobot(warehouse.getStartLocation(r), products, r);			
+			robots[r] = new WarehouseRobot(warehouse.getStartLocation(r),
+					products, r);
 		}
 	}
 	
@@ -87,40 +89,40 @@ public class ExecutionManager {
 	}
 	
 	/**
-	 * Wordt opgeroepen door bppArduino, zet de kleur om naar een grootte, of gebruikt het products zijn opgeslagen grootte.
-	 * 
-	 * @param red
-	 * @param green
-	 * @param blue
-	 * @return binIndex
+	 * Wordt opgeroepen als er een product op de bin packer wordt gezet. Kijkt
+	 * in welke bin het gegeven product in kan.
 	 */
-	private void detectedProduct(Byte color) {
+	private void detectedProduct() {
 		Bin bin;
-		if (useDetectedSize) {
-			bppProducts.get(0).setSize((int) color);
-			bin = bppAlgorithm.calculateBin(bppProducts.get(0),
-					binManager.bins);
-			
+		bin = bppAlgorithm.calculateBin(bppProducts.get(0), binManager.bins);
+		if (bin != null) {
+			binManager.bins.get(binManager.bins.indexOf(bin)).fill(
+					bppProducts.get(0));
+			binPacking.packProduct((byte) binManager.bins.indexOf(bin),
+					bppProducts.get(0));
+			bppProducts.remove(0);
 		} else {
-			bin = bppAlgorithm.calculateBin(bppProducts.get(0),
-					binManager.bins);
-		}
-		if(bin != null){
-			binManager.bins.get(binManager.bins.indexOf(bin)).fill(bppProducts.get(0));
-			binPacking.packProduct((byte) binManager.bins.size(), bppProducts.get(0));
-		}
-		else{
-			binPacking.packProduct((byte) binManager.bins.indexOf(bin), bppProducts.get(0));
+			binPacking.packProduct((byte) binManager.bins.size(),
+					bppProducts.get(0));
 			bppProducts.remove(0);
 		}
 	}
 
 	/**
-	 * Geeft volgende locatie, tenzij er geen locatie meer is, Dan bringToBinPacker() aanroepen.
+	 * Bekijkt de groote van het product als dat moet en geeft volgende locatie,
+	 * tenzij er geen locatie meer is, Dan bringToBinPacker() aanroepen.
 	 * 
 	 * @param robotId
 	 */
-	public void pickedUpProduct(int robotId) {
+	public void pickedUpProduct(int robotId, byte color) {
+		if (!robots[robotId].getProducts().isEmpty())
+			robots[robotId].pickUp(robots[robotId].getProducts().get(0));
+		if (!robots[robotId].productsOnFork.isEmpty()) {
+			if (useDetectedSize)
+				robots[robotId].productsOnFork.get(
+						robots[robotId].productsOnFork.size() - 1).setSize(
+						(int) color);
+		}
 		Product nextProduct = robots[robotId].getNextProduct();
 		if (nextProduct != null)
 			warehouse.retrieveProduct(nextProduct.getLocation(), robotId);
@@ -131,16 +133,21 @@ public class ExecutionManager {
 	/**
 	 * Wordt aangeroepen nadat de producten af geleverd zijn door de robot.
 	 * 
-	 * @param robotId
+	 * @param robotID
 	 */
-	public void deliveredProduct(WarehouseRobot robot, Byte color) {
-		bppProducts.addAll(robot.productsOnFork);
-		robot.productsOnFork.clear();
-		System.out.println("Products delivered");
-		if(!bppProducts.isEmpty())
-			detectedProduct(color);
-		else
-			warehouse.moveToStart(robot.id);
+	public void deliveredProduct(int robotID) {
+		
+		bppProducts.addAll(robots[robotID].productsOnFork);
+		robots[robotID].productsOnFork.clear();
+		if (!bppProducts.isEmpty()) {
+			while(!bppProducts.isEmpty())
+				detectedProduct();
+			warehouse.moveToStart(robotID);
+		} else {
+			warehouse.moveToStart(robotID);
+			System.out
+					.println("Robot had no products to deliver, returning to start.");
+		}
 	}
 
 	// Alle getters

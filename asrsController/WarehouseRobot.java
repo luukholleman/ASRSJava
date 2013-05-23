@@ -21,8 +21,12 @@ public class WarehouseRobot {
 		load = 0;
 		productsOnFork = new ArrayList<Product>();
 		this.id = id;
-		this.products = products;
+		this.setProducts(products);
 		finished = false;
+		System.out.println("De producten in deze robot hebben de groote: ");
+		for(Product product : products){
+			System.out.println(Integer.toString(product.getSize()));
+		}
 	}
 	
 	public WarehouseRobot(Location loc, int id){
@@ -34,9 +38,9 @@ public class WarehouseRobot {
 	}
 
 	public Product getNextProduct() {
-		if (!products.isEmpty()) {
-			Product retProduct = products.get(0);
-			products.remove(0);
+		if (!getProducts().isEmpty()) {
+			Product retProduct = getProducts().get(0);
+			getProducts().remove(0);
 			return retProduct;
 		}
 		else {
@@ -46,5 +50,19 @@ public class WarehouseRobot {
 	
 	public void pickUp(Product product){
 		productsOnFork.add(product);
+	}
+
+	/**
+	 * @return the products
+	 */
+	public ArrayList<Product> getProducts() {
+		return products;
+	}
+
+	/**
+	 * @param products the products to set
+	 */
+	public void setProducts(ArrayList<Product> products) {
+		this.products = products;
 	}
 }
