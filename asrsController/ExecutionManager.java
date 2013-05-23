@@ -84,8 +84,14 @@ public class ExecutionManager {
 			bin = bppAlgorithm.calculateBin(bppProducts.get(0),
 					binManager.bins);
 		}
-		binPacking.packProduct((byte) binManager.bins.indexOf(bin), bppProducts.get(0));
-		bppProducts.remove(0);
+		if(bin != null){
+			binManager.bins.get(binManager.bins.indexOf(bin)).fill(bppProducts.get(0));
+			binPacking.packProduct((byte) binManager.bins.size(), bppProducts.get(0));
+		}
+		else{
+			binPacking.packProduct((byte) binManager.bins.indexOf(bin), bppProducts.get(0));
+			bppProducts.remove(0);
+		}
 	}
 
 	/**
@@ -109,8 +115,8 @@ public class ExecutionManager {
 	public void deliveredProduct(WarehouseRobot robot, Byte color) {
 		bppProducts.addAll(robot.productsOnFork);
 		robot.productsOnFork.clear();
-//		warehouse.moveToStart(robot.id);
-		if(bppProducts.isEmpty())
+		System.out.println("Products delivered");
+		if(!bppProducts.isEmpty())
 			detectedProduct(color);
 		else
 			warehouse.moveToStart(robot.id);

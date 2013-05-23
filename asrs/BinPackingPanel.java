@@ -196,6 +196,9 @@ public class BinPackingPanel extends JPanel implements Runnable, BinPacking {
 	 */
 	public void setEM(ExecutionManager eM) {
 		this.eM = eM;
-		bins = eM.getBinManager().bins;
+		bins = new ArrayList<Bin>();
+		for(Bin bin : eM.getBinManager().bins)
+			bins.add(new Bin(bin.getSize(),bin.getFilled()));
+		
 	}
 }
