@@ -113,11 +113,19 @@ public class ExecutionPanel extends JPanel implements ActionListener {
 	 * @param xmlFileLocation
 	 */
 	private void simulateTaskButtonPressed(BPPAlgorithm bpp, TSPAlgorithm tsp, String seed) {
-		// trigger elk event
-		for (ExecuteButtonPressedListener ebpl : executeButtonPressedListeners){
-			long longSeed = Long.parseLong(seed, 36);
-			ebpl.simulateTaskPressed(bpp, tsp, longSeed);
+		long longSeed=0;
+		try
+		{
+			longSeed = Long.parseLong(seed, 36);
 		}
+		catch(NumberFormatException e)
+		{
+			JOptionPane.showMessageDialog(this, "Voer eerst een geldige seed in.");
+			return;
+		}
+		// trigger elk event
+		for (ExecuteButtonPressedListener ebpl : executeButtonPressedListeners)
+			ebpl.simulateTaskPressed(bpp, tsp, longSeed);
 	}
 
 	/**
