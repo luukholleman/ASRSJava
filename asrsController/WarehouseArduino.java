@@ -13,28 +13,15 @@ import order.Product;
 public class WarehouseArduino extends Arduino implements Warehouse{
 	
 	private ExecutionManager executionManager;
-	
-	private static final int RETRIEVE = (byte)1;
-	
+		
 	public WarehouseArduino(CommPortIdentifier port){
 		super(port);
+		
+		open();
 	}
 	
 	public void setExecutionManager(ExecutionManager executionManager) {
 		this.executionManager = executionManager;
-	}
-	
-	public void start() {
-		open();
-		
-		Order order = executionManager.getOrder();
-		
-		for(Product p : order.getProducts()) {
-			System.out.println("Product ophalen: " + p.getId() + p.getDescription());
-			retrieveProduct(p.getLocation(), 0);
-		}
-		
-		close();
 	}
 
 	@Override
@@ -43,31 +30,27 @@ public class WarehouseArduino extends Arduino implements Warehouse{
 		System.out.println("Retrieve product");
 		
 		// geef het commando retrieve, parameters zijn de x en y locatie
-		Byte[] bytes = {RETRIEVE, (byte)location.x, (byte)location.y};
+		Byte[] bytes = {PICKUP_PRODUCT, (byte)location.x, (byte)location.y};
 		
 		sendBytes(bytes);
+		
+		waitForArduinoReady();
+				
+		int color = inputData.get(1);
 	}
 
 	@Override
-	public void bringToBinPacker(int robotId) {
-		open();
+	public void bringToBinPacker(int robotId) {		
+		sendByte(DELIVER_PRODUCT);
 		
-		sendByte((byte)2);
-		
-		close();
-		// TODO Auto-generated method stub
-		
+		waitForArduinoReady();
 	}
 
 	@Override
 	public void moveToStart(int robotId) {
-		open();
+		sendByte(DONE);
 		
-		sendByte((byte)3);
-		
-		close();
-		// TODO Auto-generated method stub
-		
+		waitForArduinoReady();
 	}
 
 	@Override

@@ -252,7 +252,9 @@ public class Main extends JFrame implements XMLUploadedListener, ExecuteButtonPr
 		
 		warehouseArduino.setExecutionManager(executionManager);
 		
-		warehouseArduino.start();
+		executionManager.start();
+		
+//		warehouseArduino.start();
 		
 		
 		System.out.println("test");
