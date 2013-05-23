@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import order.Location;
 import order.Product;
 
-public class Greedy implements TSPAlgorithm {
+public class Greedy extends TSPAlgorithm {
 	public static String name = "Greedy";
 	/**
 	 *  de gegeven product, alleen de producten die nog niet in de route staatn
@@ -32,38 +32,13 @@ public class Greedy implements TSPAlgorithm {
 	
 	@Override
 	public ArrayList<Product> calculateRoute(ArrayList<Product> products, int numberOfRobots, int currentRobot) {
+		this.products = splitOrder(products, numberOfRobots, currentRobot);
 		
-		ArrayList<Product> filteredProducts = new ArrayList<Product>();
-		
-		int width = getEffectiveWarehouseWidth(products);
-		
-		for (Product p : products) {
-			//splits het magazijn
-			int cols = width / numberOfRobots;
-			//pak de producten uit het eigen deel van het magazijn
-			if (p.getLocation().x >= cols * currentRobot
-					&& p.getLocation().x < cols * (currentRobot + 1)) {
-				filteredProducts.add(p);
-			}
-		}
-		
-		this.products = filteredProducts;
+		this.route = new ArrayList<Product>();
 		
 		while(nextNode(this.products));
 		
 		return this.route;
-	}
-	
-	private int getEffectiveWarehouseWidth(ArrayList<Product> products) {
-		int maxX = 0;
-		
-		for(Product p : products) {
-			if(p.getLocation().x > maxX)
-				maxX = p.getLocation().x;			
-		}
-		
-		// omdat het magazijn op 0 begint is de breedte 1 hoger
-		return maxX + 1;
 	}
 	
 	/**
@@ -89,10 +64,10 @@ public class Greedy implements TSPAlgorithm {
 			if(minDistance == 0 || minDistance > distance) {
 				minDistance = distance;
 				minProduct = product;
-			}
-			
-			// de robot is nu op de locatie van dit product, update de locatie
-			location = product.getLocation();			
+				
+				// de robot is nu op de locatie van dit product, update de locatie
+				location = product.getLocation();	
+			}		
 		}
 		
 		// we hebben het dichtsbijzijnde product, voeg hem toe aan de route, verwijderen van de nog te berekenen producten

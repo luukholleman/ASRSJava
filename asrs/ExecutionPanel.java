@@ -5,7 +5,6 @@ package asrs;
  */
 import gnu.io.CommPortIdentifier;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -115,8 +114,10 @@ public class ExecutionPanel extends JPanel implements ActionListener {
 	 */
 	private void simulateTaskButtonPressed(BPPAlgorithm bpp, TSPAlgorithm tsp, String seed) {
 		// trigger elk event
-		for (ExecuteButtonPressedListener ebpl : executeButtonPressedListeners)
-			ebpl.simulateTaskPressed(bpp, tsp, seed);
+		for (ExecuteButtonPressedListener ebpl : executeButtonPressedListeners){
+			long longSeed = Long.parseLong(seed, 36);
+			ebpl.simulateTaskPressed(bpp, tsp, longSeed);
+		}
 	}
 
 	/**
@@ -125,7 +126,7 @@ public class ExecutionPanel extends JPanel implements ActionListener {
 	 * @param xmlFileLocation
 	 */
 	private void executeButtonPressed(BPPAlgorithm bpp, TSPAlgorithm tsp,
-			String com1, String com2) {
+			CommPortIdentifier com1, CommPortIdentifier com2) {
 		// trigger elk event
 		for (ExecuteButtonPressedListener ebpl : executeButtonPressedListeners)
 			ebpl.executePressed(bpp, tsp, com1, com2);
@@ -143,7 +144,6 @@ public class ExecutionPanel extends JPanel implements ActionListener {
 		JPanel bppPanel = new JPanel();
 		JPanel tspPanel = new JPanel();
 		JPanel comPanel = new JPanel();
-		JPanel seedPanel = new JPanel();
 
 		bppPanel.setPreferredSize(new Dimension(150, 130));
 		tspPanel.setPreferredSize(new Dimension(150, 130));
@@ -191,12 +191,12 @@ public class ExecutionPanel extends JPanel implements ActionListener {
 		
 		// er worden 20 comports ondersteund
 		ArrayList<String> comports = new ArrayList<String>();
-//		String[] comports = new String[20]; 
-		int i = 0;
-		
-        CommPortIdentifier portId = null;
-        Enumeration portEnum = CommPortIdentifier.getPortIdentifiers();
+
+		Enumeration portEnum = CommPortIdentifier.getPortIdentifiers();
+        
+        //Laat zien of er portEnum
         System.out.println(portEnum.hasMoreElements());
+        
         // Zoeken naar de poort
         while (portEnum.hasMoreElements()) {
             CommPortIdentifier currPortId = (CommPortIdentifier) portEnum.nextElement();
@@ -204,20 +204,20 @@ public class ExecutionPanel extends JPanel implements ActionListener {
             comports.add(currPortId.getName());            
         }
 
-		JComboBox comportBpp = new JComboBox(comports.toArray());
-		comportBpp.addActionListener(this);
+		comportsBpp = new JComboBox(comports.toArray());
+		comportsBpp.addActionListener(this);
 		
-		JComboBox comportTsp = new JComboBox(comports.toArray());
-		comportTsp.addActionListener(this);
+		comportsTsp = new JComboBox(comports.toArray());
+		comportsTsp.addActionListener(this);
 
 		JLabel bppArduino = new JLabel("Loopband Arduino");
 		JLabel tspArduino = new JLabel("Magazijn Arduino");
 		
 		comPanel.add(bppArduino);
-		comPanel.add(comportBpp);
+		comPanel.add(comportsBpp);
 		
 		comPanel.add(tspArduino);
-		comPanel.add(comportTsp);
+		comPanel.add(comportsTsp);
 		
 		comPanel.add(seed);
 
@@ -263,9 +263,28 @@ public class ExecutionPanel extends JPanel implements ActionListener {
 		if(e.getSource() == executeBtn) {
 			if(bppAlgorithm == null || tspAlgorithm == null)
 				JOptionPane.showMessageDialog(this, "Selecteer eerst twee algoritmes.");
-			else
-				executeButtonPressed(bppAlgorithm, tspAlgorithm, comportsBpp.getName(), comportsTsp.getName());
+			else {
+				executeButtonPressed(bppAlgorithm, tspAlgorithm, stringToComport(comportsBpp.getSelectedItem().toString()), stringToComport(comportsTsp.getSelectedItem().toString()));
+			}
+				
 		}		
+	}
+	
+	private CommPortIdentifier stringToComport(String comport) {
+        Enumeration portEnum = CommPortIdentifier.getPortIdentifiers();
+        // Zoeken naar de poort
+        while (portEnum.hasMoreElements()) {
+            CommPortIdentifier currPortId = (CommPortIdentifier) portEnum.nextElement();
+                    	
+        	if(currPortId.getName().equals(comport)) {
+        		System.out.println("String to comport gevonden: " + comport);
+
+        		return currPortId;        		
+        	}            
+        }
+		System.out.println("String to comport niet gevonden: " + comport);
+        
+        return null;
 	}
 
 	/**

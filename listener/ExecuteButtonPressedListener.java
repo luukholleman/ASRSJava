@@ -1,5 +1,6 @@
 package listener;
 
+import gnu.io.CommPortIdentifier;
 import tspAlgorithm.TSPAlgorithm;
 import bppAlgorithm.BPPAlgorithm;
 
@@ -19,7 +20,7 @@ public interface ExecuteButtonPressedListener {
 	 * @param bpp
 	 * @param tsp
 	 */
-	public abstract void simulateTaskPressed(BPPAlgorithm bpp, TSPAlgorithm tsp, String seed);
+	public abstract void simulateTaskPressed(BPPAlgorithm bpp, TSPAlgorithm tsp, long seed);
 	
 	/**
 	 * Event dat de  knop is ingedrukt
@@ -29,5 +30,5 @@ public interface ExecuteButtonPressedListener {
 	 * @param com1
 	 * @param com2
 	 */
-	public abstract void executePressed(BPPAlgorithm bpp, TSPAlgorithm tsp, String com1, String com2);
+	public abstract void executePressed(BPPAlgorithm bpp, TSPAlgorithm tsp, CommPortIdentifier com1, CommPortIdentifier com2);
 }

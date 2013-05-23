@@ -1,4 +1,6 @@
 package asrs;
+import gnu.io.CommPortIdentifier;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 
@@ -11,8 +13,11 @@ import listener.ExecuteButtonPressedListener;
 import listener.XMLUploadedListener;
 import order.Order;
 import order.Product;
+import taskSimulate.TaskSimulationFrame;
 import tspAlgorithm.TSPAlgorithm;
+import asrsController.BinPackingArduino;
 import asrsController.ExecutionManager;
+import asrsController.WarehouseArduino;
 import bppAlgorithm.BPPAlgorithm;
 import bppAlgorithm.Bin;
 import bppAlgorithm.BinManager;
@@ -70,7 +75,7 @@ public class Main extends JFrame implements XMLUploadedListener, ExecuteButtonPr
 		}
 		
 		// start de executie
-		JFrame main = new Main();
+		new Main();
 	}
 	
 	/**
@@ -210,9 +215,6 @@ public class Main extends JFrame implements XMLUploadedListener, ExecuteButtonPr
 		// maak de executionmanager aan me de net aangemaakte gegevens
 		ExecutionManager executionManager = new ExecutionManager(this, order, binManager, opPanel, bpPanel, tsp, bpp, 10, 20, false);
 		
-		// start hem
-		executionManager.start();
-		
 		// geef de em door aan de panels zodat ze de gegevens kunnen uitlezen
 		bpPanel.setEM(executionManager);
 		opPanel.setEM(executionManager);
@@ -227,22 +229,44 @@ public class Main extends JFrame implements XMLUploadedListener, ExecuteButtonPr
 	 */
 	@Override
 	public void executePressed(BPPAlgorithm bpp, TSPAlgorithm tsp,	
-			String com1, String com2) {
+			CommPortIdentifier comBpp, CommPortIdentifier comTsp) {
 		if(order == null) {
 			JOptionPane.showMessageDialog(this, "Selecteer eerst een XML bestand");
 			return;
 		}
 		
-		throw new UnsupportedOperationException();
+		// maak een binmanager aan
+		BinManager binManager = new BinManager();
+		
+		// voeg een paar bins toe
+		binManager.addBin(new Bin(20,0));
+		binManager.addBin(new Bin(20,0));
+		binManager.addBin(new Bin(20,0));
+		
+		// maak de Arduino klasses aan aan
+		BinPackingArduino binPackingArduino = new BinPackingArduino(comBpp);
+		WarehouseArduino warehouseArduino = new WarehouseArduino(comTsp);
+		
+		// maak de executionmanager aan me de net aangemaakte gegevens
+		ExecutionManager executionManager = new ExecutionManager(this, order, binManager, warehouseArduino, binPackingArduino, tsp, bpp, 10, 20, false);
+		
+		warehouseArduino.setExecutionManager(executionManager);
+		
+		executionManager.start();
+		
+//		warehouseArduino.start();
+		
+		
+		System.out.println("test");
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void simulateTaskPressed(BPPAlgorithm bpp, TSPAlgorithm tsp, String seed) {
+	public void simulateTaskPressed(BPPAlgorithm bpp, TSPAlgorithm tsp, long seed) {
 		System.out.println(seed);
-		// TODO Auto-generated method stub
-		
+		TaskSimulationFrame taskFrame = new TaskSimulationFrame(seed, bpp, tsp);
+		taskFrame.setVisible(true);
 	}
 
 	/**

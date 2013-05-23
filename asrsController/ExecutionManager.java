@@ -65,27 +65,27 @@ public class ExecutionManager {
 	}
 	
 	/**
-	 * Start de robot, laat de simulatie lopen of laat de arduino bewegen
-	 * 
-	 * @return void
-	 */
+	* Start de robot, laat de simulatie lopen of laat de arduino bewegen
+	* 
+	* @return void
+	*/
 	public void start() {
 		// we moeten elke robot aanspreken en de id's zijn oplopend, de i is dus het robotid
 		int i = 0;
-		
+		 
 		for(WarehouseRobot wr : robots) { 
 			//laat de robot het volgende product ophalen
 			Product nextProduct = wr.getNextProduct();
-			
+			  
 			// is er een volgende product? zo ja, haal hem op, de robot wordt aangesproken met het id
 			if (nextProduct != null)
 				warehouse.retrieveProduct(nextProduct.getLocation(), i);
-			
+			  
 			// klaar met deze robot, op naar de volgende
 			i++;
 		}
 	}
-
+	
 	/**
 	 * Wordt opgeroepen door bppArduino, zet de kleur om naar een grootte, of gebruikt het products zijn opgeslagen grootte.
 	 * 
@@ -94,16 +94,24 @@ public class ExecutionManager {
 	 * @param blue
 	 * @return binIndex
 	 */
-	public Byte detectedProduct(Byte red, Byte green, Byte blue) {
-		//int size;
+	private void detectedProduct(Byte color) {
+		Bin bin;
 		if (useDetectedSize) {
-			bppProducts.remove(0);
-			return 0;
-		} else {
-			Bin bin = bppAlgorithm.calculateBin(bppProducts.get(0),
+			bppProducts.get(0).setSize((int) color);
+			bin = bppAlgorithm.calculateBin(bppProducts.get(0),
 					binManager.bins);
+			
+		} else {
+			bin = bppAlgorithm.calculateBin(bppProducts.get(0),
+					binManager.bins);
+		}
+		if(bin != null){
+			binManager.bins.get(binManager.bins.indexOf(bin)).fill(bppProducts.get(0));
+			binPacking.packProduct((byte) binManager.bins.size(), bppProducts.get(0));
+		}
+		else{
+			binPacking.packProduct((byte) binManager.bins.indexOf(bin), bppProducts.get(0));
 			bppProducts.remove(0);
-			return (byte) binManager.bins.indexOf(bin);
 		}
 	}
 
@@ -125,10 +133,14 @@ public class ExecutionManager {
 	 * 
 	 * @param robotId
 	 */
-	public void deliveredProduct(WarehouseRobot robot) {
+	public void deliveredProduct(WarehouseRobot robot, Byte color) {
 		bppProducts.addAll(robot.productsOnFork);
 		robot.productsOnFork.clear();
-		warehouse.moveToStart(robot.id);
+		System.out.println("Products delivered");
+		if(!bppProducts.isEmpty())
+			detectedProduct(color);
+		else
+			warehouse.moveToStart(robot.id);
 	}
 
 	// Alle getters
