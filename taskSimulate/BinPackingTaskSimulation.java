@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import bppAlgorithm.Bin;
 
 public class BinPackingTaskSimulation extends JPanel {
+	private static final int BIN_WIDTH = 50;
 	private ArrayList<BinPackingProblem> problems;
 	private int currentProblem = 0;
 
@@ -27,15 +28,16 @@ public class BinPackingTaskSimulation extends JPanel {
 			g.setColor(Color.green);
 			float floaty = (float) 300 -  300 * ( (float) bin.getFilled() / bin.getSize() );
 			int y = (int) floaty;
-			g.fillRect((count * 40) + 1, y, 37,
+			g.fillRect((count * BIN_WIDTH) + 1, y, 47,
 					300 - y);
 			g.setColor(Color.black);
-			g.drawRect((count * 40), 0, 38, 300);
+			g.drawRect((count * BIN_WIDTH), 0, 48, 300);
 			g.drawString(bin.getFilled() + "/" + bin.getSize(),
-					5 + (count * 40), 150);
+					5 + (count * BIN_WIDTH), 150);
 
 			count++;
 		}
+		g.drawString(Integer.toString(currentProblem), BIN_WIDTH, 310);
 	}
 
 	public void nextProblem() {

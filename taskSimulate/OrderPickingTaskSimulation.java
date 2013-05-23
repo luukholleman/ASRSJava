@@ -33,27 +33,33 @@ public class OrderPickingTaskSimulation extends JPanel {
 			}
 		}
 
-		Location lastLocation = null;
+		Location lastLocation = new Location(-1,0);
+		int totalDistance = 0;
+		int distanceIndent = 0;
 		g.setColor(Color.blue);
 		Graphics2D g2D = (Graphics2D) g;
 		g2D.setStroke(new BasicStroke(2));
 		
-			for (ArrayList<Product> robot : problems.get(currentProblem)
-					.getProblem()) {
-				for (Product product : robot) {
-					Location productLocation = product.getLocation();
-					g.fillRect(productLocation.x * CELL_SIZE + DOT_INDENT,
-							productLocation.y * CELL_SIZE + DOT_INDENT, 10, 10);
-					if (lastLocation != null)
-						g2D.drawLine(lastLocation.x * CELL_SIZE + LINE_INDENT,
-								lastLocation.y * CELL_SIZE + LINE_INDENT,
-								productLocation.x * CELL_SIZE + LINE_INDENT,
-								productLocation.y * CELL_SIZE + LINE_INDENT);
-						lastLocation = productLocation;
-				}
-				g.setColor(Color.red);
-				lastLocation = null;
+		for (ArrayList<Product> robot : problems.get(currentProblem)
+				.getProblem()) {
+			for (Product product : robot) {
+				Location productLocation = product.getLocation();
+				g.fillRect(productLocation.x * CELL_SIZE + DOT_INDENT,
+						productLocation.y * CELL_SIZE + DOT_INDENT, 10, 10);
+				g2D.drawLine(lastLocation.x * CELL_SIZE + LINE_INDENT,
+						lastLocation.y * CELL_SIZE + LINE_INDENT,
+						productLocation.x * CELL_SIZE + LINE_INDENT,
+						productLocation.y * CELL_SIZE + LINE_INDENT);
+				totalDistance += productLocation.getDistanceTo(lastLocation);
+				lastLocation = productLocation;
 			}
+			g.drawString(Integer.toString(totalDistance), distanceIndent, 260);
+			g.setColor(Color.red);
+			distanceIndent += 25;
+			lastLocation = new Location(20,0);
+		}
+		g.setColor(Color.black);
+		g.drawString(Integer.toString(currentProblem), distanceIndent, 260);
 	}
 
 	public void nextProblem() {
