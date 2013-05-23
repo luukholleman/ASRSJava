@@ -35,6 +35,15 @@ public class TwoOpt extends TSPAlgorithm {
 		// de starting node
 		for (Path path1 : getPaths(products)) {
 			for (Path path2 : getPaths(products)) {
+				
+				//Kijk of geen van de locaties overeen komen in de paden
+				if(path1.startLocation == path1.endLocation ||
+						path2.startLocation == path2.endLocation ||
+						path1.startLocation == path2.startLocation ||
+						path2.startLocation == path1.startLocation)
+					continue;
+				
+				
 				// een hele lijpe berekening om te berekenen of de 2 paden
 				// elkaar kruizen
 				
@@ -133,16 +142,15 @@ public class TwoOpt extends TSPAlgorithm {
 
 		ArrayList<Location> locations = getLocations(products);
 
-		//Als er geen locaties zijn, stuur niks terug
-		if(locations.size() == 0)
+		// Als er geen locaties zijn, stuur niks terug
+		if (locations.size() == 0)
 			return paths;
-		//Als er een locatie is, stuur alleen die terug
-		else if(locations.size() == 1)
-		{
+		// Als er een locatie is, stuur alleen die terug
+		else if (locations.size() == 1) {
 			paths.add(new Path(locations.get(0), locations.get(0)));
 			return paths;
 		}
-		
+
 		// de eerste is een uitzondering, om de loop goed te laten verlopen moet
 		// endlocation al bepaalt zijn
 		// en niet meer in de array voorkomen omdat de oude endlocation gelijk
