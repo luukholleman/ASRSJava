@@ -1,5 +1,8 @@
 package asrs;
 import java.awt.Dimension;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
@@ -111,7 +114,8 @@ public class CustomerPanel extends JPanel {
 	
 	public void setDate(Date date)
 	{
-		dateVal.setText(date.toLocaleString());
+		DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+		dateVal.setText(df.format(date));
 	}
 	
 	public void setTotalPrice(float totalPrice)
