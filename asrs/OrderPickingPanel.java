@@ -252,7 +252,10 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 			if (robots[0].load <= LOAD_MAX || robots[1].load <= LOAD_MAX) {
 				for (WarehouseRobot robot : robots)
 					if (robot.finished == false)
-						executionManager.pickedUpProduct(robot.id);
+						if(!robot.productsOnFork.isEmpty())
+							executionManager.pickedUpProduct(robot.id, (byte) robot.productsOnFork.get(0).getSize());
+						else
+							executionManager.pickedUpProduct(robot.id, (byte) 0);
 				move();
 				sleep(PAUSE_TIME_ON_PICKUP);
 
@@ -261,8 +264,8 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 				warehouse.remove(robots[0].destination);
 				warehouse.remove(robots[1].destination);
 				for (WarehouseRobot robot : robots) {
-					if (robot.loc.x == BINPACKER_X && robot.loc.y == LOAD_MAX)
-						executionManager.deliveredProduct(robot, (byte) 0);
+					if (robot.loc.x == BINPACKER_X && robot.loc.y == BINPACKER_Y)
+						executionManager.deliveredProduct(robot.id);
 					else
 						for (Product product : products)
 							if (robot.destination == product.getLocation()) {
