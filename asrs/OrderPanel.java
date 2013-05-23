@@ -108,6 +108,15 @@ public class OrderPanel extends JPanel {
 		private ProductModel() {
 			products = new LinkedList<Product>();
 		}
+		
+		/**
+		 * Bepaalt de kolomnaam
+		 * 
+		 * @return string
+		 */
+		public String getColumnName(int column) {
+		    return columnNames[column];
+		}
 
 		/**
 		 * Voeg een product toe aan de tabel, wordt automatisch geupdate
