@@ -5,7 +5,6 @@ package asrs;
  */
 import gnu.io.CommPortIdentifier;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -145,7 +144,6 @@ public class ExecutionPanel extends JPanel implements ActionListener {
 		JPanel bppPanel = new JPanel();
 		JPanel tspPanel = new JPanel();
 		JPanel comPanel = new JPanel();
-		JPanel seedPanel = new JPanel();
 
 		bppPanel.setPreferredSize(new Dimension(150, 130));
 		tspPanel.setPreferredSize(new Dimension(150, 130));
@@ -193,12 +191,12 @@ public class ExecutionPanel extends JPanel implements ActionListener {
 		
 		// er worden 20 comports ondersteund
 		ArrayList<String> comports = new ArrayList<String>();
-//		String[] comports = new String[20]; 
-		int i = 0;
-		
-        CommPortIdentifier portId = null;
-        Enumeration portEnum = CommPortIdentifier.getPortIdentifiers();
+
+		Enumeration portEnum = CommPortIdentifier.getPortIdentifiers();
+        
+        //Laat zien of er portEnum
         System.out.println(portEnum.hasMoreElements());
+        
         // Zoeken naar de poort
         while (portEnum.hasMoreElements()) {
             CommPortIdentifier currPortId = (CommPortIdentifier) portEnum.nextElement();

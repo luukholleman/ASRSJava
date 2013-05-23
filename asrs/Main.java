@@ -75,7 +75,7 @@ public class Main extends JFrame implements XMLUploadedListener, ExecuteButtonPr
 		}
 		
 		// start de executie
-		JFrame main = new Main();
+		new Main();
 	}
 	
 	/**
@@ -244,12 +244,17 @@ public class Main extends JFrame implements XMLUploadedListener, ExecuteButtonPr
 		binManager.addBin(new Bin(20,0));
 		
 		// maak de Arduino klasses aan aan
-		BinPackingArduino binPackerArduino = new BinPackingArduino(comBpp);
+		BinPackingArduino binPackingArduino = new BinPackingArduino(comBpp);
 		WarehouseArduino warehouseArduino = new WarehouseArduino(comTsp);
 		
 		// maak de executionmanager aan me de net aangemaakte gegevens
-		ExecutionManager executionManager = new ExecutionManager(this, order, binManager, warehouseArduino, binPackerArduino, tsp, bpp, 10, 20, false);
-				
+		ExecutionManager executionManager = new ExecutionManager(this, order, binManager, warehouseArduino, binPackingArduino, tsp, bpp, 10, 20, false);
+		
+		warehouseArduino.setExecutionManager(executionManager);
+		
+		warehouseArduino.start();
+		
+		
 		System.out.println("test");
 		// TODO Auto-generated method stub
 		

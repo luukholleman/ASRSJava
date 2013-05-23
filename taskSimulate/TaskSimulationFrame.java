@@ -6,14 +6,11 @@ import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import order.Location;
 import order.Product;
 
-import tspAlgorithm.BruteForce;
 import tspAlgorithm.TSPAlgorithm;
 import bppAlgorithm.BPPAlgorithm;
-import bppAlgorithm.BestFit;
 import bppAlgorithm.Bin;
 
 public class TaskSimulationFrame extends JFrame implements ActionListener {

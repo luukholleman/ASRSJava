@@ -6,7 +6,6 @@ package asrs;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Random;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
