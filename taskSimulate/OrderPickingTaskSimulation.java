@@ -73,6 +73,7 @@ public class OrderPickingTaskSimulation extends JPanel {
 			g.drawString(Integer.toString(totalDistance), distanceIndent, 260);
 			g.setColor(Color.red);
 			distanceIndent += 25*10;
+			totalDistance = 0;
 			lastLocation = new Location(20, 0);
 		}
 		g.setColor(Color.black);
