@@ -26,9 +26,9 @@ import javax.swing.JTextField;
 import listener.ExecuteButtonPressedListener;
 
 import tspAlgorithm.BruteForce;
+import tspAlgorithm.Column;
 import tspAlgorithm.Greedy;
 import tspAlgorithm.TSPAlgorithm;
-import tspAlgorithm.TwoOpt;
 import bppAlgorithm.AlmostWorstFit;
 import bppAlgorithm.BPPAlgorithm;
 import bppAlgorithm.BestFit;
@@ -81,7 +81,7 @@ public class ExecutionPanel extends JPanel implements ActionListener {
 
 		tspAlgorithms.add(new BruteForce());
 		tspAlgorithms.add(new Greedy());
-		tspAlgorithms.add(new TwoOpt());
+		tspAlgorithms.add(new Column());
 
 		buildUI();
 	}
