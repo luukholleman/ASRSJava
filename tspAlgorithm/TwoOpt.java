@@ -133,6 +133,16 @@ public class TwoOpt extends TSPAlgorithm {
 
 		ArrayList<Location> locations = getLocations(products);
 
+		//Als er geen locaties zijn, stuur niks terug
+		if(locations.size() == 0)
+			return paths;
+		//Als er een locatie is, stuur alleen die terug
+		else if(locations.size() == 1)
+		{
+			paths.add(new Path(locations.get(0), locations.get(0)));
+			return paths;
+		}
+		
 		// de eerste is een uitzondering, om de loop goed te laten verlopen moet
 		// endlocation al bepaalt zijn
 		// en niet meer in de array voorkomen omdat de oude endlocation gelijk
