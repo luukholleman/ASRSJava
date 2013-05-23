@@ -51,6 +51,8 @@ public class WarehouseArduino extends Arduino implements Warehouse{
 		sendByte(DONE);
 		
 		waitForArduinoReady();
+		
+		close();
 	}
 
 	@Override
