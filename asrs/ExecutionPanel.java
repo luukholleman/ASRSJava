@@ -32,6 +32,7 @@ import listener.ExecuteButtonPressedListener;
 import tspAlgorithm.BruteForce;
 import tspAlgorithm.Column;
 import tspAlgorithm.Greedy;
+import tspAlgorithm.Simultaneously;
 import tspAlgorithm.Random;
 import tspAlgorithm.TSPAlgorithm;
 import bppAlgorithm.AlmostWorstFit;
@@ -129,6 +130,7 @@ public class ExecutionPanel extends JPanel implements ActionListener {
 		tspAlgorithms.add(new BruteForce());
 		tspAlgorithms.add(new Greedy());
 		tspAlgorithms.add(new Column());
+		tspAlgorithms.add(new Simultaneously());
 		tspAlgorithms.add(new Random());
 
 		buildUI();

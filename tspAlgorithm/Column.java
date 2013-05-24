@@ -9,6 +9,11 @@ import bppAlgorithm.Bin;
 import order.Location;
 import order.Product;
 
+/**
+ * TSP algoritme die per colom alle producten langs gaat
+ * @author timpotze
+ *
+ */
 public class Column extends TSPAlgorithm {
 	private static String name = "Column";
 
