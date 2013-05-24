@@ -31,6 +31,7 @@ import javax.swing.JTextField;
 import listener.ExecuteButtonPressedListener;
 import tspAlgorithm.BruteForce;
 import tspAlgorithm.Column;
+import tspAlgorithm.ForcedGreedy;
 import tspAlgorithm.Greedy;
 import tspAlgorithm.Simultaneously;
 import tspAlgorithm.Random;
@@ -127,6 +128,7 @@ public class ExecutionPanel extends JPanel implements ActionListener {
 		bppAlgorithms.add(new AlmostWorstFit());
 
 		// voeg de tsp algoritmes toe
+		tspAlgorithms.add(new ForcedGreedy());
 		tspAlgorithms.add(new BruteForce());
 		tspAlgorithms.add(new Greedy());
 		tspAlgorithms.add(new Column());

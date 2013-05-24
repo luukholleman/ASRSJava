@@ -38,11 +38,11 @@ public class BruteForce extends TSPAlgorithm {
 		ArrayList<Product> splittedProducts = splitOrder(products, numberOfRobots, currentRobot);
 		
 		// als er meer dan 11 producten moet worden berekend is het niet meer haalbaar met bruteforce, greedy is het alternatief
-//		if(splittedProducts.size() > 15) {
-//			Greedy greedy = new Greedy();
-//
-//			return greedy.calculateRoute(splittedProducts, 1, 0);
-//		}
+		if(splittedProducts.size() > 12) {
+			Greedy greedy = new Greedy();
+
+			return greedy.calculateRoute(splittedProducts, 1, 0);
+		}
 		
 		// steinhaus om alle combinaties te maken
 		Steinhaus sh = new Steinhaus();
