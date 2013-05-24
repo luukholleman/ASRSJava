@@ -115,9 +115,6 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 		}
 	}
 
-	/**
-	 * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
-	 */
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -300,8 +297,6 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 	/**
 	 * Stopt de animatie
 	 * 
-	 * @param void
-	 * @return void
 	 * @author Bas
 	 */
 	public void stop() {
@@ -314,8 +309,6 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 	/**
 	 * Een functie om de robot van de huidige locatie naar het doel te bewegen.
 	 * 
-	 * @param void
-	 * @return void
 	 * @author Bas
 	 */
 	private void move() {
@@ -343,8 +336,6 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 	/**
 	 * Stopt de animatie voor 25 miliseconden
 	 * 
-	 * @param void
-	 * @return void
 	 * @author Bas
 	 */
 	private void sleep() {
@@ -358,7 +349,6 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 	 * Stopt de animatie voor een variabel aantal miliseconden
 	 * 
 	 * @param int
-	 * @return void
 	 * @author Bas
 	 */
 	private void sleep(int pause) {
@@ -368,25 +358,16 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 		}
 	}
 
-	/**
-	 * @see asrsController.Warehouse#retrieveProduct(order.Location, int)
-	 */
 	@Override
 	public void retrieveProduct(Location location, int robotId) {
 		robots[robotId].destination = location;
 	}
 
-	/**
-	 * @see asrsController.Warehouse#bringToBinPacker(int)
-	 */
 	@Override
 	public void bringToBinPacker(int robotID) {
 		robots[robotID].destination = new Location(BINPACKER_X, LOAD_MAX);
 	}
 
-	/**
-	 * @see asrsController.Warehouse#moveToStart(int)
-	 */
 	@Override
 	public void moveToStart(int robotId) {
 		robots[robotId].destination = getStartLocation(robotId);
@@ -397,17 +378,11 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 			stop();
 	}
 
-	/**
-	 * @see asrsController.Warehouse#getProblem()
-	 */
 	@Override
 	public Integer getNumberOfRobots() {
 		return 2;
 	}
 
-	/**
-	 * @see asrsController.Warehouse#getStartLocation(int)
-	 */
 	@Override
 	public Location getStartLocation(int robotId) {
 		if (robotId == 0) {
