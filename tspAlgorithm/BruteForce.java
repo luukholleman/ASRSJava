@@ -39,6 +39,14 @@ public class BruteForce extends TSPAlgorithm {
 	public ArrayList<Product> calculateRoute(ArrayList<Product> products,
 			int numberOfRobots, int currentRobot) {
 		ArrayList<Product> splittedProducts = splitOrder(products, numberOfRobots, currentRobot);
+		
+		if(splittedProducts.size() > 11) {
+			Greedy greedy = new Greedy();
+
+			// we hebben greedy als basis nodig en dus laten we greedy ook de
+			// initele route bepalen
+			return greedy.calculateRoute(splittedProducts, 1, 0);
+		}
 				
 		Steinhaus sh = new Steinhaus();
 		
@@ -47,9 +55,17 @@ public class BruteForce extends TSPAlgorithm {
 		for(Product p : splittedProducts)
 			locations.add(p.getLocation());
 		
-		sh.getShortestPathForLocation(locations, new Location(0, 0));
+		ArrayList<Location> fastest = sh.getShortestPathForLocation(locations, new Location(0, 0));
 		
-		return splittedProducts;
+		ArrayList<Product> newProducts = new ArrayList<Product>();
+		
+		for(Location location : fastest)
+			for(Product p : splittedProducts)
+				if(p.getLocation() == location)
+					newProducts.add(p);
+		
+		return newProducts;
+	}
 		
 		
 //
@@ -71,7 +87,6 @@ public class BruteForce extends TSPAlgorithm {
 //		permute(splittedProducts, tmp);
 //		
 //		return fastest;
-	}
 
 	/**
 	 * Bereken alle routes door een product uit de originele lijst toe te voegen
