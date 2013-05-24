@@ -61,7 +61,7 @@ public class BinPackingTaskSimulation extends JPanel {
 			count++;
 		}
 		// Onderaan de bins staat het nummer van het huidige probleem.
-		g.drawString(Integer.toString(currentProblem), BIN_WIDTH,
+		g.drawString("Current problem: " + currentProblem, BIN_WIDTH,
 				BIN_LENGTH + 10);
 	}
 
