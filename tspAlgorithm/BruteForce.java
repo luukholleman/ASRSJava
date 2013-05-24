@@ -75,7 +75,7 @@ public class BruteForce extends TSPAlgorithm {
 			// Voeg een product toe aan de lijst, namenlijk het volgende product
 			// uit de originele lijst
 			tmp.add(i, origin.get(current.size()));
-
+			
 			// Als de nieuwe lijst alle producten bevat, geef deze terug,
 			// anders, herhaal deze functie
 			if (tmp.size() == origin.size()) {
