@@ -1,10 +1,12 @@
 /**
- * @author Luuk Holleman
+ * @author Tim Potze
  * @date 15 april
  */
 package tspAlgorithm;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import order.Product;
 
@@ -23,37 +25,27 @@ public abstract class TSPAlgorithm {
 
 	protected ArrayList<Product> splitOrder(ArrayList<Product> products,
 			int numberOfRobots, int currentRobot) {
-		ArrayList<Product> filteredProducts = new ArrayList<Product>();
-		int width = getEffectiveWarehouseWidth(products);
-
-		for (Product p : products) {
-			// splits het magazijn
-			int cols = width / numberOfRobots;
-
-			// Als de breedte oneven is, de cols 1 verhogen om het missen van
-			// colomen te voorkomen
-			if (width % 2 == 1)
-				cols++;
-
-			// pak de producten uit het eigen deel van het magazijn
-			if (p.getLocation().x >= cols * currentRobot
-					&& p.getLocation().x < cols * (currentRobot + 1)) {
-				filteredProducts.add(p);
+		
+		//Sla
+		ArrayList<Product> allProducts = new ArrayList<Product>(products);
+		
+		Collections.sort(allProducts, new Comparator<Product>() {
+			public int compare(Product one, Product two) {
+				return ((Integer)(one.getLocation().x)).compareTo(two.getLocation().x);
 			}
-		}
+		});
+		
+		//Verdeel de producten over de robots
+		int productsPerRobot = allProducts.size() / numberOfRobots;
+			
+		//Berenken de start en begin indexen
+		int startIndex = currentRobot * productsPerRobot;
+		int endIndex = (currentRobot + 1) * productsPerRobot;
+		
+		//Als er een oneven aantal producten zijn, tel er een bij op
+		if(allProducts.size() % numberOfRobots == 1 && currentRobot == numberOfRobots - 1)
+			endIndex++;
 
-		return filteredProducts;
-	}
-	
-	private int getEffectiveWarehouseWidth(ArrayList<Product> products) {
-
-		int maxX = 0;
-
-		for (Product p : products)
-			if (p.getLocation().x > maxX)
-				maxX = p.getLocation().x;
-
-		// omdat het magazijn op 0 begint is de breedte 1 hoger
-		return maxX + 1;
+		return new ArrayList<Product>(allProducts.subList(startIndex, endIndex));
 	}
 }
