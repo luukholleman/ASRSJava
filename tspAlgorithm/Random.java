@@ -12,7 +12,7 @@ import order.Location;
 import order.Product;
 
 public class Random extends TSPAlgorithm {
-	public static String name = "Greedy";
+	public static String name = "Random";
 	
 	@Override
 	public String getName() {
