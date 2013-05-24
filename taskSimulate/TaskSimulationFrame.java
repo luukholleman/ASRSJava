@@ -163,7 +163,8 @@ public class TaskSimulationFrame extends JFrame implements ActionListener {
 			
 			TSPThread tspThread = new TSPThread(warehouseTask, p, algorithm);
 		
-			Thread thread = new Thread(tspThread);
+			Thread thread = new Thread(tspThread, "tsp" + p);
+			thread.setPriority(Thread.MAX_PRIORITY);
 			thread.start();
 			
 			threads.add(tspThread);
@@ -217,6 +218,9 @@ public class TaskSimulationFrame extends JFrame implements ActionListener {
 
 		//@Override
 		public void run() {
+			//Debug
+			System.out.println("TSP Thread for problem " + problemId + " started");
+			
 			 // Lijst van de producten per robot
 			 ArrayList<ArrayList<Product>> problem = new
 			 ArrayList<ArrayList<Product>>();
@@ -262,6 +266,8 @@ public class TaskSimulationFrame extends JFrame implements ActionListener {
 			
 			//We zijn klaar
 			isDone=true;
+			
+			System.out.println("TSP Thread for problem " + problemId + " ended");
 		}
 
 		public TravelingSalesmanProblem getResult() {
