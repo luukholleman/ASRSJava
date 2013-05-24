@@ -6,6 +6,9 @@ package tspAlgorithm;
 
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
+import order.Location;
 import order.Product;
 
 /**
@@ -35,24 +38,39 @@ public class BruteForce extends TSPAlgorithm {
 	@Override
 	public ArrayList<Product> calculateRoute(ArrayList<Product> products,
 			int numberOfRobots, int currentRobot) {
-		products = splitOrder(products, numberOfRobots, currentRobot);
-
-		// Als de lijst leeg is, geef deze terug
-		if (products.size() == 0)
-			return products;
-
-		// Als er een product is in de lijst, geef deze terug
-		if (products.size() == 1)
-			return products;
-
-		// Tijdelijke lijst met alleen het eerste product
-		ArrayList<Product> tmp = new ArrayList<Product>();
-		tmp.add(products.get(0));
-
-		// Ga door alle routes in de permutaties heen
-		permute(products, tmp);
-
-		return fastest;
+		ArrayList<Product> splittedProducts = splitOrder(products, numberOfRobots, currentRobot);
+				
+		Steinhaus sh = new Steinhaus();
+		
+		ArrayList<Location> locations = new ArrayList<Location>();
+		
+		for(Product p : splittedProducts)
+			locations.add(p.getLocation());
+		
+		sh.getShortestPathForLocation(locations, new Location(0, 0));
+		
+		return splittedProducts;
+		
+		
+//
+//		fastest = new ArrayList<Product>();
+//		
+//		// Als de lijst leeg is, geef deze terug
+//		if (splittedProducts.size() == 0)
+//			return products;
+//
+//		// Als er een product is in de lijst, geef deze terug
+//		if (splittedProducts.size() == 1)
+//			return products;
+//
+//		// Tijdelijke lijst met alleen het eerste product
+//		ArrayList<Product> tmp = new ArrayList<Product>();
+//		tmp.add(splittedProducts.get(0));
+//
+//		// Ga door alle routes in de permutaties heen
+//		permute(splittedProducts, tmp);
+//		
+//		return fastest;
 	}
 
 	/**
@@ -68,7 +86,7 @@ public class BruteForce extends TSPAlgorithm {
 	private void permute(ArrayList<Product> origin, ArrayList<Product> current) {
 
 		// Voeg een product toe op elke mogelijke locatie in de lijst
-		for (int i = 0; i < current.size() + 1; i++) {
+		for (int i = 0; i <= current.size(); i++) {
 			// Maak een copie van de huidige lijst
 			ArrayList<Product> tmp = new ArrayList<Product>(current);
 
