@@ -1,4 +1,11 @@
+/**
+ * De main class is de core class in deze applicatie, hij start de init van de
+ * gui en koppelt de verschillende packages aan elkaar
+ * 
+ * @author Luuk
+ */
 package asrs;
+
 import gnu.io.CommPortIdentifier;
 
 import java.awt.BorderLayout;
@@ -21,13 +28,8 @@ import asrsController.WarehouseArduino;
 import bppAlgorithm.BPPAlgorithm;
 import bppAlgorithm.Bin;
 import bppAlgorithm.BinManager;
-
-/**
- * De main class is de core class in deze applicatie, hij start de init van de gui en koppelt de verschillende packages aan elkaar
- * 
- * @author Luuk
- */
-public class Main extends JFrame implements XMLUploadedListener, ExecuteButtonPressedListener {
+public class Main extends JFrame implements XMLUploadedListener,
+		ExecuteButtonPressedListener {
 	/**
 	 * Panel voor xml uploaden
 	 */
@@ -44,7 +46,7 @@ public class Main extends JFrame implements XMLUploadedListener, ExecuteButtonPr
 	 * Panel voor producten weergeven
 	 */
 	private OrderPanel orderPanel = new OrderPanel();
-	
+
 	/**
 	 * de ingelezen order
 	 */
@@ -59,72 +61,71 @@ public class Main extends JFrame implements XMLUploadedListener, ExecuteButtonPr
 		// probeer met de database verbinding te maken
 		try {
 			Database.connect();
-		} catch(DatabaseConnectionFailedException e) {
+		} catch (DatabaseConnectionFailedException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
-			
+
 			// we kunnen niet verder zonder database, afkappen die zooi
 			return;
 		}
-		
+
 		// zet de look and feel naar windows of osx (of linux)
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {
-			// class niet gevonden, laat een melding zien. programma kan wel verder zonder enkel probleem
+			// class niet gevonden, laat een melding zien. programma kan wel
+			// verder zonder enkel probleem
 			System.out.println("Unable to load look and feel");
 		}
-		
+
 		// start de executie
 		new Main();
 	}
-	
+
 	/**
 	 * Ctor
 	 */
-	public Main()
-	{
+	public Main() {
 		// afmeting van het scherm
 		setSize(1200, 700);
-		
+
 		// titel van applicatie
 		setTitle("Auto Dropbox");
-		
+
 		// sluit het proces als je op kruisje drukt
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		/**
-		 * Het scherm is op te delen in 2 kolommen
-		 * De flowlayout zorgt voor de kolommen en de panels 
-		 * zorgen dat we meerdere componenten in 1 kant kunnen stoppen
+		 * Het scherm is op te delen in 2 kolommen De flowlayout zorgt voor de
+		 * kolommen en de panels zorgen dat we meerdere componenten in 1 kant
+		 * kunnen stoppen
 		 */
 		setLayout(new BorderLayout());
-		
+
 		// start de ui
 		buildUI();
-		
+
 		// bind listeners zodat we acties kunnen tracken
 		bindListeners();
-		
+
 		// applicatie is klaar, laat hem zien
 		setVisible(true);
 	}
-	
+
 	/**
 	 * Zorgt voor het weergeven van de ui
 	 * 
 	 * @return void
 	 */
-	private void buildUI()
-	{
+	private void buildUI() {
 		/**
 		 * Linker en rechterkant van het scherm
 		 */
 		JPanel leftPanel = new JPanel();
 		JPanel rightPanel = new JPanel();
-		
-		/** 
-		 * zet de leftpanel op een breedte
-		 * de rechter heeft dit niet nodig omdat daar maar 1 panel in zit
+
+		/**
+		 * zet de leftpanel op een breedte de rechter heeft dit niet nodig omdat
+		 * daar maar 1 panel in zit
 		 */
 		leftPanel.setPreferredSize(new Dimension(500, 700));
 
@@ -133,19 +134,18 @@ public class Main extends JFrame implements XMLUploadedListener, ExecuteButtonPr
 		leftPanel.add(executionPanel);
 		leftPanel.add(customerPanel);
 		rightPanel.add(orderPanel);
-	
+
 		// plaats de panels
 		add(leftPanel, BorderLayout.WEST);
 		add(rightPanel, BorderLayout.CENTER);
 	}
-	
+
 	/**
 	 * Bind de listeners zodat we events kunnen waarnemen
 	 * 
 	 * @return void
 	 */
-	private void bindListeners()
-	{
+	private void bindListeners() {
 		// voeg listeners toe
 		xmlPanel.addXMLUploadListener(this);
 		executionPanel.addExecutionListener(this);
@@ -154,7 +154,8 @@ public class Main extends JFrame implements XMLUploadedListener, ExecuteButtonPr
 	/**
 	 * Event voor xml upload
 	 * 
-	 * @param String xmlFileLocation
+	 * @param String
+	 *            xmlFileLocation
 	 * 
 	 * @return void
 	 */
@@ -167,58 +168,64 @@ public class Main extends JFrame implements XMLUploadedListener, ExecuteButtonPr
 
 			// er bestaat een product niet, laat een melding zien
 			JOptionPane.showMessageDialog(null, e.getMessage());
-			
+
 			e.printStackTrace();
-			
-			// applicatie kan niet verder, stoppen zodat de gebruiker een nieuw bestand kan uploaden
+
+			// applicatie kan niet verder, stoppen zodat de gebruiker een nieuw
+			// bestand kan uploaden
 			return;
 		}
-		
+
 		// zet de gegevens in het customer panel
 		customerPanel.setCustomerId(order.getCustomer().getId());
 		customerPanel.setCustomerName(order.getCustomer().getName());
 		customerPanel.setDate(order.getDate());
 		customerPanel.setTotalPrice(order.getTotalPrice());
-		
-		// order doorgeven aan het orderpanel, zodat deze het in de tabel kan weergeven
+
+		// order doorgeven aan het orderpanel, zodat deze het in de tabel kan
+		// weergeven
 		orderPanel.setOrder(order);
 	}
 
 	/**
 	 * Event voor het starten van de simulatie
 	 * 
-	 * @param BPPAlgorithm bpp
-	 * @param TSPAlgorithm tsp
+	 * @param BPPAlgorithm
+	 *            bpp
+	 * @param TSPAlgorithm
+	 *            tsp
 	 * 
 	 * @return void
 	 */
 	@Override
 	public void simulatePressed(BPPAlgorithm bpp, TSPAlgorithm tsp) {
 		// controleer eerst of er al een order bestaat, zo nee, stop ermee
-		if(order == null) {
-			JOptionPane.showMessageDialog(this, "Selecteer eerst een XML bestand");
+		if (order == null) {
+			JOptionPane.showMessageDialog(this,
+					"Selecteer eerst een XML bestand");
 			return;
 		}
-		
+
 		// maak een binmanager aan
 		BinManager binManager = new BinManager();
-		
+
 		// voeg een paar bins toe
-		binManager.addBin(new Bin(10,0));
-		binManager.addBin(new Bin(20,0));
-		binManager.addBin(new Bin(30,0));
-		
+		binManager.addBin(new Bin(10, 0));
+		binManager.addBin(new Bin(20, 0));
+		binManager.addBin(new Bin(30, 0));
+
 		// maak de panels aan
 		BinPackingPanel bpPanel = new BinPackingPanel();
 		OrderPickingPanel opPanel = new OrderPickingPanel(bpPanel);
-		
+
 		// maak de executionmanager aan me de net aangemaakte gegevens
-		ExecutionManager executionManager = new ExecutionManager(this, order, binManager, opPanel, bpPanel, tsp, bpp, 10, 20, false);
-		
+		ExecutionManager executionManager = new ExecutionManager(this, order,
+				binManager, opPanel, bpPanel, tsp, bpp, 10, 20, false);
+
 		// geef de em door aan de panels zodat ze de gegevens kunnen uitlezen
 		bpPanel.setEM(executionManager);
 		opPanel.setEM(executionManager);
-		
+
 		// maak een frame aan met de panels die we net gemaakt hebben
 		SimulationFrame frame = new SimulationFrame(bpPanel, opPanel);
 		frame.setVisible(true);
@@ -228,42 +235,45 @@ public class Main extends JFrame implements XMLUploadedListener, ExecuteButtonPr
 	 * @TODO
 	 */
 	@Override
-	public void executePressed(BPPAlgorithm bpp, TSPAlgorithm tsp,	
+	public void executePressed(BPPAlgorithm bpp, TSPAlgorithm tsp,
 			CommPortIdentifier comBpp, CommPortIdentifier comTsp) {
-		if(order == null) {
-			JOptionPane.showMessageDialog(this, "Selecteer eerst een XML bestand");
+		if (order == null) {
+			JOptionPane.showMessageDialog(this,
+					"Selecteer eerst een XML bestand");
 			return;
 		}
-		
+
 		// maak een binmanager aan
 		BinManager binManager = new BinManager();
-		
+
 		// voeg een paar bins toe
-		binManager.addBin(new Bin(20,0));
-		binManager.addBin(new Bin(20,0));
-		binManager.addBin(new Bin(20,0));
-		
+		binManager.addBin(new Bin(20, 0));
+		binManager.addBin(new Bin(20, 0));
+		binManager.addBin(new Bin(20, 0));
+
 		// maak de Arduino klasses aan aan
 		BinPackingArduino binPackingArduino = new BinPackingArduino(comBpp);
 		WarehouseArduino warehouseArduino = new WarehouseArduino(comTsp);
-		
+
 		// maak de executionmanager aan me de net aangemaakte gegevens
-		ExecutionManager executionManager = new ExecutionManager(this, order, binManager, warehouseArduino, binPackingArduino, tsp, bpp, 10, 20, false);
-		
+		ExecutionManager executionManager = new ExecutionManager(this, order,
+				binManager, warehouseArduino, binPackingArduino, tsp, bpp, 10,
+				20, false);
+
 		warehouseArduino.setExecutionManager(executionManager);
-		
+
 		executionManager.start();
-		
-//		warehouseArduino.start();
-		
-		
+
+		// warehouseArduino.start();
+
 		System.out.println("test");
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
-	public void simulateTaskPressed(BPPAlgorithm bpp, TSPAlgorithm tsp, long seed) {
+	public void simulateTaskPressed(BPPAlgorithm bpp, TSPAlgorithm tsp,
+			long seed) {
 		System.out.println(seed);
 		TaskSimulationFrame taskFrame = new TaskSimulationFrame(seed, bpp, tsp);
 		taskFrame.setVisible(true);
@@ -276,8 +286,7 @@ public class Main extends JFrame implements XMLUploadedListener, ExecuteButtonPr
 	 * 
 	 * @return void
 	 */
-	public void productStatusUpdated(Product product)
-	{
+	public void productStatusUpdated(Product product) {
 		orderPanel.updateStatus(product, product.getStatus());
 	}
 }
