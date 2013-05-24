@@ -24,9 +24,6 @@ public class BruteForce extends TSPAlgorithm {
 	// De berekende snelste route tot een betere is gevonden
 	private ArrayList<Product> fastest = null;
 	private float length = INFINITY;
-
-	
-	
 	
 	public static String name = "Brute Force";
 	
@@ -40,25 +37,30 @@ public class BruteForce extends TSPAlgorithm {
 			int numberOfRobots, int currentRobot) {
 		ArrayList<Product> splittedProducts = splitOrder(products, numberOfRobots, currentRobot);
 		
-		if(splittedProducts.size() > 11) {
-			Greedy greedy = new Greedy();
-
-			// we hebben greedy als basis nodig en dus laten we greedy ook de
-			// initele route bepalen
-			return greedy.calculateRoute(splittedProducts, 1, 0);
-		}
-				
-		Steinhaus sh = new Steinhaus();
+		// als er meer dan 11 producten moet worden berekend is het niet meer haalbaar met bruteforce, greedy is het alternatief
+//		if(splittedProducts.size() > 15) {
+//			Greedy greedy = new Greedy();
+//
+//			return greedy.calculateRoute(splittedProducts, 1, 0);
+//		}
 		
+		// steinhaus om alle combinaties te maken
+		Steinhaus sh = new Steinhaus();
+
+		// plaats voor alle locaties van de producten
 		ArrayList<Location> locations = new ArrayList<Location>();
 		
+		// we strippen alle locaties van de producten
 		for(Product p : splittedProducts)
 			locations.add(p.getLocation());
 		
+		// laat de kortste berekenen
 		ArrayList<Location> fastest = sh.getShortestPathForLocation(locations, new Location(0, 0));
 		
+		// nieuwe lijst met producten
 		ArrayList<Product> newProducts = new ArrayList<Product>();
 		
+		// we zoeken weer het product bij de locaties
 		for(Location location : fastest)
 			for(Product p : splittedProducts)
 				if(p.getLocation() == location)
@@ -66,27 +68,6 @@ public class BruteForce extends TSPAlgorithm {
 		
 		return newProducts;
 	}
-		
-		
-//
-//		fastest = new ArrayList<Product>();
-//		
-//		// Als de lijst leeg is, geef deze terug
-//		if (splittedProducts.size() == 0)
-//			return products;
-//
-//		// Als er een product is in de lijst, geef deze terug
-//		if (splittedProducts.size() == 1)
-//			return products;
-//
-//		// Tijdelijke lijst met alleen het eerste product
-//		ArrayList<Product> tmp = new ArrayList<Product>();
-//		tmp.add(splittedProducts.get(0));
-//
-//		// Ga door alle routes in de permutaties heen
-//		permute(splittedProducts, tmp);
-//		
-//		return fastest;
 
 	/**
 	 * Bereken alle routes door een product uit de originele lijst toe te voegen
