@@ -30,7 +30,7 @@ public class BinPackingTaskSimulation extends JPanel {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		/*
-		 * Teken alle bins en hun inhoudHet nummer van de huidige bin wordt
+		 * Teken alle bins en hun inhoud. Het nummer van de huidige bin wordt
 		 * bijgehouden
 		 */
 		int count = 0;
@@ -61,7 +61,7 @@ public class BinPackingTaskSimulation extends JPanel {
 			count++;
 		}
 		// Onderaan de bins staat het nummer van het huidige probleem.
-		g.drawString(Integer.toString(currentProblem), BIN_WIDTH,
+		g.drawString("Current problem: " + currentProblem, BIN_WIDTH,
 				BIN_LENGTH + 10);
 	}
 

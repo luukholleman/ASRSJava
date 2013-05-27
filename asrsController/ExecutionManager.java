@@ -89,44 +89,34 @@ public class ExecutionManager {
 	}
 	
 	/**
-	 * Wordt opgeroepen als er een product op de bin packer wordt gezet. Kijkt
-	 * in welke bin het gegeven product in kan.
-	 */
-	private void detectedProduct() {
-		Bin bin;
-		bin = bppAlgorithm.calculateBin(bppProducts.get(0), binManager.bins);
-		if (bin != null) {
-			binManager.bins.get(binManager.bins.indexOf(bin)).fill(
-					bppProducts.get(0));
-			binPacking.packProduct((byte) binManager.bins.indexOf(bin),
-					bppProducts.get(0));
-			bppProducts.remove(0);
-		} else {
-			binPacking.packProduct((byte) binManager.bins.size(),
-					bppProducts.get(0));
-			bppProducts.remove(0);
-		}
-	}
-
-	/**
 	 * Bekijkt de groote van het product als dat moet en geeft volgende locatie,
 	 * tenzij er geen locatie meer is, Dan bringToBinPacker() aanroepen.
 	 * 
 	 * @param robotId
 	 */
 	public void pickedUpProduct(int robotId, byte color) {
-		if (!robots[robotId].getProducts().isEmpty())
-			robots[robotId].pickUp(robots[robotId].getProducts().get(0));
+		
+		//Als de gescande kleur moet worden gebruikt als indicatie van de grootte, verander dan lokaal de grootte van het laatst opgepakte product op basis van de kleur.
 		if (!robots[robotId].productsOnFork.isEmpty()) {
 			if (useDetectedSize)
 				robots[robotId].productsOnFork.get(
 						robots[robotId].productsOnFork.size() - 1).setSize(
 						(int) color);
 		}
+		
+		//Als er een product was opgepakt, sla dit product dan lokaal op.
+		if (!robots[robotId].getProducts().isEmpty())
+			robots[robotId].pickUp(robots[robotId].getProducts().get(0));
+		
+		//Zoek naar het volgende product...
 		Product nextProduct = robots[robotId].getNextProduct();
 		if (nextProduct != null)
+			
+			//Als er een is, haal deze op.
 			warehouse.retrieveProduct(nextProduct.getLocation(), robotId);
 		else
+			
+			//Als er niks meer is, ga naar de bin packer.
 			warehouse.bringToBinPacker(robotId);
 	}
 
@@ -137,13 +127,40 @@ public class ExecutionManager {
 	 */
 	public void deliveredProduct(int robotID) {
 		
+		//Sla eerst alle producten die de robot aflevert op voor de Bin packer, haal de producten daarna van de robot af.
 		bppProducts.addAll(robots[robotID].productsOnFork);
 		robots[robotID].productsOnFork.clear();
+		
+		//Als de robot producten heeft afgeleverd, stuur deze producten dan naar de Bin Packer
 		if (!bppProducts.isEmpty()) {
-			while(!bppProducts.isEmpty())
-				detectedProduct();
+			while(!bppProducts.isEmpty()) {
+				
+				//Kijk in welke bin het product het beste past
+				Bin bin;
+				bin = bppAlgorithm.calculateBin(bppProducts.get(0), binManager.bins);
+				
+				//Als er een passende bin is gevonden, stuur het nummer daarvan dan door
+				if (bin != null) {
+					binManager.bins.get(binManager.bins.indexOf(bin)).fill(
+							bppProducts.get(0));
+					binPacking.packProduct((byte) binManager.bins.indexOf(bin),
+							bppProducts.get(0));
+					bppProducts.remove(0);
+				} else {
+					
+					//Als er geen passende bin is, stuur de grootte van de ArrayList toe. Aangezien het terugsturen van een 'null' byte onmogelijk bleek, was dit een passend alternatief.
+					binPacking.packProduct((byte) binManager.bins.size(),
+							bppProducts.get(0));
+					
+					//Haal het product uit de lijst zodat deze niet nog een keer wordt behandelt
+					bppProducts.remove(0);
+				}
+			}
+			
+			//Als alle producten zijn afgeleverd, stuur de robot terug naar het begin.
 			warehouse.moveToStart(robotID);
 		} else {
+			//Als er geen producten zijn afgeleverd, print een bericht en stuur de robot terug.
 			warehouse.moveToStart(robotID);
 			System.out
 					.println("Robot had no products to deliver, returning to start.");
