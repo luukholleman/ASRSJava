@@ -219,7 +219,7 @@ public class TaskSimulationFrame extends JFrame implements ActionListener {
 		//@Override
 		public void run() {
 			//Debug
-			System.out.println("TSP Thread for problem " + problemId + " started");
+//			System.out.println("TSP Thread for problem " + problemId + " started");
 			
 			 // Lijst van de producten per robot
 			 ArrayList<ArrayList<Product>> problem = new
@@ -243,6 +243,7 @@ public class TaskSimulationFrame extends JFrame implements ActionListener {
 			 }
 			
 			 // DEBUG
+			 System.out.println("Probleem: " + problemId + ", producten: " + products.size());
 			 // System.out.println("===========================");
 			 // System.out.println("PRINTING ALL PRODUCTS:");
 			 // for(Product pr : products)
@@ -267,7 +268,7 @@ public class TaskSimulationFrame extends JFrame implements ActionListener {
 			//We zijn klaar
 			isDone=true;
 			
-			System.out.println("TSP Thread for problem " + problemId + " ended");
+//			System.out.println("TSP Thread for problem " + problemId + " ended");
 		}
 
 		public TravelingSalesmanProblem getResult() {
