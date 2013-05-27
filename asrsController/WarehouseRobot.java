@@ -2,6 +2,8 @@ package asrsController;
 
 import java.util.ArrayList;
 
+import asrs.OrderPickingPanel;
+
 import order.Location;
 import order.Product;
 
@@ -17,7 +19,8 @@ public class WarehouseRobot {
 	 */
 	public Location loc;
 	/**
-	 * De pixels van de robot worden alleen gebruikt voor het tekenen in de simulatie
+	 * De pixels van de robot worden alleen gebruikt voor het tekenen in de
+	 * simulatie
 	 */
 	public Location pixels;
 	/**
@@ -51,14 +54,12 @@ public class WarehouseRobot {
 	public WarehouseRobot(Location loc, ArrayList<Product> products, int id) {
 		this.loc = loc;
 		
-		//Uitleg voor deze berekening staat in Order Picking Panel
-		pixels = new Location(61 + (loc.x * 20), 1 + ((19 - loc.y) * 20));
-		
 		//De lading begint op 0
 		load = 0;
 		
 		//De fork is op het begin altijd leeg
 		productsOnFork = new ArrayList<Product>();
+		
 		this.id = id;
 		this.setProducts(products);
 		finished = false;
@@ -79,7 +80,8 @@ public class WarehouseRobot {
 	}
 
 	/**
-	 * Haal het volgende product uit de producten lijst en haal deze daarna uit de lijst.
+	 * Haal het volgende product uit de producten lijst en haal deze daarna uit
+	 * de lijst.
 	 * 
 	 * @author Bas
 	 */
