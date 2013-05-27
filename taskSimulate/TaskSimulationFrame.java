@@ -74,6 +74,8 @@ public class TaskSimulationFrame extends JFrame implements ActionListener {
 	 * 
 	 * @param seed
 	 * @param bppAlgorithm
+	 * 
+	 * @author Bas, Tim
 	 */
 	private void executeBinPackingTask(long seed, BPPAlgorithm bppAlgorithm) {
 		// Start de task classe
@@ -117,6 +119,8 @@ public class TaskSimulationFrame extends JFrame implements ActionListener {
 	 * 
 	 * @param seed
 	 * @param tsp
+	 * 
+	 * @author Bas, Tim
 	 */
 	private void executeWarehouseTask(long seed, TSPAlgorithm tsp) {
 
@@ -169,6 +173,8 @@ public class TaskSimulationFrame extends JFrame implements ActionListener {
 	/**
 	 * Maakt alle UI elementen aan en geeft de uitkomsten van de tasks mee aan
 	 * panels
+	 * 
+	 * @author Bas
 	 */
 	private void buildUI() {
 		GridBagConstraints c = new GridBagConstraints();
