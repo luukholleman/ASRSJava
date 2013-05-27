@@ -25,25 +25,27 @@ public abstract class TSPAlgorithm {
 
 	protected ArrayList<Product> splitOrder(ArrayList<Product> products,
 			int numberOfRobots, int currentRobot) {
-		
-		//Sla
+
+		// Sla
 		ArrayList<Product> allProducts = new ArrayList<Product>(products);
-		
+
 		Collections.sort(allProducts, new Comparator<Product>() {
 			public int compare(Product one, Product two) {
-				return ((Integer)(one.getLocation().x)).compareTo(two.getLocation().x);
+				return ((Integer) (one.getLocation().x)).compareTo(two
+						.getLocation().x);
 			}
 		});
-		
-		//Verdeel de producten over de robots
+
+		// Verdeel de producten over de robots
 		int productsPerRobot = allProducts.size() / numberOfRobots;
-			
-		//Berenken de start en begin indexen
+
+		// Berenken de start en begin indexen
 		int startIndex = currentRobot * productsPerRobot;
 		int endIndex = (currentRobot + 1) * productsPerRobot;
-		
-		//Als er een oneven aantal producten zijn, tel er een bij op
-		if(allProducts.size() % numberOfRobots == 1 && currentRobot == numberOfRobots - 1)
+
+		// Als er een oneven aantal producten zijn, tel er een bij op
+		if (allProducts.size() % numberOfRobots == 1
+				&& currentRobot == numberOfRobots - 1)
 			endIndex++;
 
 		return new ArrayList<Product>(allProducts.subList(startIndex, endIndex));

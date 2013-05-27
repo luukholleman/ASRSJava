@@ -35,51 +35,62 @@ public class TwoOpt extends TSPAlgorithm {
 		// de starting node
 		for (Path path1 : getPaths(products)) {
 			for (Path path2 : getPaths(products)) {
-				
-				//Kijk of geen van de locaties overeen komen in de paden
-				if(path1.startLocation == path1.endLocation ||
-						path2.startLocation == path2.endLocation ||
-						path1.startLocation == path2.startLocation ||
-						path2.startLocation == path1.startLocation)
+
+				// Kijk of geen van de locaties overeen komen in de paden
+				if (path1.startLocation == path1.endLocation
+						|| path2.startLocation == path2.endLocation
+						|| path1.startLocation == path2.startLocation
+						|| path2.startLocation == path1.startLocation)
 					continue;
-				
-				
+
 				// een hele lijpe berekening om te berekenen of de 2 paden
 				// elkaar kruizen
-				
+
 				boolean startCross = false;
 				boolean endCross = false;
-				
-				//Als begin en eind val pad1 op zelfde x zijn...
+
+				// Als begin en eind val pad1 op zelfde x zijn...
 				if (path1.startLocation.x == path1.endLocation.x) {
-					
-					//Als de x van begin & eind van pad2 niet gelijk zijn, en  het begin en eind van pad2 liggen aan weerzijden van pad1...
-					if(path2.endLocation.x != path2.startLocation.x && (path2.startLocation.x < path1.startLocation.x) != (path2.endLocation.x < path1.endLocation.x)) {
-						
-						//Bereken de steiging in Y per X coordinaat van pad2
+
+					// Als de x van begin & eind van pad2 niet gelijk zijn, en
+					// het begin en eind van pad2 liggen aan weerzijden van
+					// pad1...
+					if (path2.endLocation.x != path2.startLocation.x
+							&& (path2.startLocation.x < path1.startLocation.x) != (path2.endLocation.x < path1.endLocation.x)) {
+
+						// Bereken de steiging in Y per X coordinaat van pad2
 						float elevation = ((float) (path2.endLocation.y - path2.startLocation.y) / (float) (path2.endLocation.x - path2.startLocation.x));
-						
-						//Bereken het verschil in x' start punten van de paden
-						int diff = path2.startLocation.x - path1.startLocation.x;
-						
-						//bereken de Y coordinaat waarop de lijnen mogelijk kruisen
+
+						// Bereken het verschil in x' start punten van de paden
+						int diff = path2.startLocation.x
+								- path1.startLocation.x;
+
+						// bereken de Y coordinaat waarop de lijnen mogelijk
+						// kruisen
 						float crossY = path2.startLocation.y + elevation * diff;
-						
-						//Als de kruisende Y tussen de Y start en eind van pad1 ligt. Dan ligt het einde van pad2 rechts van pad1
-						endCross = Math.max(path1.startLocation.y, path1.endLocation.y) > crossY && crossY > Math.min(path1.startLocation.y, path1.endLocation.y);
+
+						// Als de kruisende Y tussen de Y start en eind van pad1
+						// ligt. Dan ligt het einde van pad2 rechts van pad1
+						endCross = Math.max(path1.startLocation.y,
+								path1.endLocation.y) > crossY
+								&& crossY > Math.min(path1.startLocation.y,
+										path1.endLocation.y);
 					}
 				} else {
-					//Berekende de steiging in Y per X coordinaat van pad1
+					// Berekende de steiging in Y per X coordinaat van pad1
 					float elevation = ((float) (path1.endLocation.y - path1.startLocation.y) / (float) (path1.endLocation.x - path1.startLocation.x));
 
-					//Bereken het verschil in het start(X)coordinaat van de paden
+					// Bereken het verschil in het start(X)coordinaat van de
+					// paden
 					int startDiff = path2.startLocation.x
 							- path1.startLocation.x;
-					
-					//Bereken het verschil in het eind(X)coordinaat van de paden					
+
+					// Bereken het verschil in het eind(X)coordinaat van de
+					// paden
 					int endDiff = path2.endLocation.x - path1.startLocation.x;
 
-					//Bereken aan welke zijden van pad 2 de begin en eind punten van pad 1 liggen
+					// Bereken aan welke zijden van pad 2 de begin en eind
+					// punten van pad 1 liggen
 					startCross = path1.startLocation.y - elevation * startDiff > path2.startLocation.y;
 					endCross = path1.startLocation.y - elevation * endDiff > path2.endLocation.y;
 				}

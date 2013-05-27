@@ -1,3 +1,8 @@
+/**
+ * @author Luuk
+ * 
+ * Deze class zorgt voor het weergeven van de productinformatie in een tabel
+ */
 package asrs;
 
 import java.awt.Dimension;
@@ -59,7 +64,7 @@ public class OrderPanel extends JPanel {
 	 */
 	public void setOrder(Order order) {
 		productModel.removeAllRows();
-		
+
 		for (Product product : order.getProducts()) {
 			productModel.addElement(product);
 
@@ -108,14 +113,14 @@ public class OrderPanel extends JPanel {
 		private ProductModel() {
 			products = new LinkedList<Product>();
 		}
-		
+
 		/**
 		 * Bepaalt de kolomnaam
 		 * 
 		 * @return string
 		 */
 		public String getColumnName(int column) {
-		    return columnNames[column];
+			return columnNames[column];
 		}
 
 		/**
@@ -183,17 +188,16 @@ public class OrderPanel extends JPanel {
 		 * @param row
 		 */
 		public void removeRow(int row) {
-		    fireTableRowsDeleted(row, row);
-		    products.remove(row);
+			fireTableRowsDeleted(row, row);
+			products.remove(row);
 		}
-		
+
 		/**
 		 * Verwijder alle regels
 		 * 
 		 * @author Tim
 		 */
-		public void removeAllRows()
-		{
+		public void removeAllRows() {
 			fireTableRowsDeleted(0, getRowCount());
 			products.clear();
 		}

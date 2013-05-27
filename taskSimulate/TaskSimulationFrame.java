@@ -66,6 +66,7 @@ public class TaskSimulationFrame extends JFrame implements ActionListener {
 		executeBinPackingTask(seed, bppAlgorithm);
 
 		// En hier wordt alles getekend.
+		executeBinPackingTask(seed, bppAlgorithm);
 		buildUI();
 	}
 
@@ -254,5 +255,85 @@ public class TaskSimulationFrame extends JFrame implements ActionListener {
 			binPackingPanel.nextProblem();
 		if (event.getSource() == previousBtnBinPacker)
 			binPackingPanel.previousProblem();
+	}
+
+	private class TSPThread implements Runnable {
+
+		private TravelingSalesmanProblem travelingSalesmanProblem = null;
+
+		private WarehouseTask warehouseTask;
+		private int problemId;
+		private TSPAlgorithm tspAlgorithm;
+
+		private Boolean isDone = false;
+		
+		public TSPThread(WarehouseTask warehouseTask, int problemId, TSPAlgorithm tspAlgorithm) {
+			this.warehouseTask = warehouseTask;
+			this.problemId = problemId;
+			this.tspAlgorithm = tspAlgorithm;
+		}
+
+		//@Override
+		public void run() {
+			//Debug
+			System.out.println("TSP Thread for problem " + problemId + " started");
+			
+			 // Lijst van de producten per robot
+			 ArrayList<ArrayList<Product>> problem = new
+			 ArrayList<ArrayList<Product>>();
+			
+			 // Lijst van alle producten
+			 ArrayList<Product> products = new ArrayList<Product>();
+			
+			 // Initializeren robots lijst
+			 for (int r = 0; r < NUMBER_ROBOTS; r++)
+			 problem.add(new ArrayList<Product>());
+			
+			 // Doorlopen van alle items
+			 for (int i = 0; i < warehouseTask.getNumberOfItems(problemId); i++) {
+			
+			 // Sla de locatie van de items op in een product
+			 products.add(new Product(new Location(warehouseTask
+			 .getCoordHorDigit(problemId, i), warehouseTask
+			 .getCoordVertDigit(problemId, i)), i));
+			
+			 }
+			
+			 // DEBUG
+			 // System.out.println("===========================");
+			 // System.out.println("PRINTING ALL PRODUCTS:");
+			 // for(Product pr : products)
+			 // System.out.println(pr);
+			 // System.out.println("===========================");
+			 // END DEBUG
+			
+			 // //Bereken nu de volgorde volgends het algoritme
+			 for (int r = 0; r < NUMBER_ROBOTS; r++) {
+			
+			 // Oplossen volgens algoritme
+			 problem.set(r, tspAlgorithm.calculateRoute(products, NUMBER_ROBOTS, r));
+			
+			 //Geef alles van dit probleem door aan task classe
+			 for (int i = 0; i < problem.get(r).size(); i++)
+			 warehouseTask.setOrder(problemId, problem.get(r).get(i).getId(), r, i);
+			
+			 }
+			
+			 travelingSalesmanProblem = new TravelingSalesmanProblem(problem);
+			
+			//We zijn klaar
+			isDone=true;
+			
+			System.out.println("TSP Thread for problem " + problemId + " ended");
+		}
+
+		public TravelingSalesmanProblem getResult() {
+			return travelingSalesmanProblem;
+		}
+		
+		public Boolean isDone()
+		{
+			return isDone;
+		}
 	}
 }

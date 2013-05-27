@@ -1,47 +1,79 @@
 /**
- * @author Luuk Holleman
- * @date 15 april
+ * @author Tim Potze
+ * @date 3 mei
  */
 package tspAlgorithm;
 
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 import order.Location;
 import order.Product;
 
-public class Greedy extends TSPAlgorithm {
+/**
+ * Brute force algoritme om de allerbeste route te berekenen
+ * 
+ * @author timpotze
+ * 
+ */
+public class ForcedGreedy extends TSPAlgorithm {
 	private static final int INFINITY = 99999;
-	public static String name = "Greedy";
-	/**
-	 * de gegeven product, alleen de producten die nog niet in de route staatn
-	 * dus aan het eind is deze arraylist leeg
-	 */
-	private ArrayList<Product> products = new ArrayList<Product>();
 
 	// de locatie van de robot, de robot start op 0, 0
 	private Location location = new Location(0, 0);
+	
+	public static String name = "Forced Greedy";
 
 	/**
 	 * De berekende route, wordt gevuld met objecten uit products
 	 */
 	private ArrayList<Product> route = new ArrayList<Product>();
 
+	
 	@Override
 	public String getName() {
-		return name;
+		return ForcedGreedy.name;
 	}
 
 	@Override
 	public ArrayList<Product> calculateRoute(ArrayList<Product> products,
 			int numberOfRobots, int currentRobot) {
-		this.products = splitOrder(products, numberOfRobots, currentRobot);
+		ArrayList<Product> splittedProducts = splitOrder(products, numberOfRobots, currentRobot);
+		
+		// als er meer dan 11 producten moet worden berekend is het niet meer haalbaar met bruteforce, greedy is het alternatief
+		if(splittedProducts.size() < 10) {
+			// steinhaus om alle combinaties te maken
+			Steinhaus sh = new Steinhaus();
+
+			// plaats voor alle locaties van de producten
+			ArrayList<Location> locations = new ArrayList<Location>();
+			
+			// we strippen alle locaties van de producten
+			for(Product p : splittedProducts)
+				locations.add(p.getLocation());
+			
+			// laat de kortste berekenen
+			ArrayList<Location> fastest = sh.getShortestPathForLocation(locations, new Location(0, 0));
+			
+			// nieuwe lijst met producten
+			ArrayList<Product> newProducts = new ArrayList<Product>();
+			
+			// we zoeken weer het product bij de locaties
+			for(Location location : fastest)
+				for(Product p : splittedProducts)
+					if(p.getLocation() == location)
+						newProducts.add(p);
+			
+			return newProducts;
+		}
 
 		this.route = new ArrayList<Product>();
-
-		while (nextNode(this.products))
-			;
+		
+		while (nextNode(splittedProducts));
 
 		return this.route;
+		
 	}
 
 	/**
@@ -85,5 +117,6 @@ public class Greedy extends TSPAlgorithm {
 		return true;
 
 	}
+	
 
 }
