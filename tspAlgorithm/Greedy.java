@@ -38,8 +38,7 @@ public class Greedy extends TSPAlgorithm {
 
 		this.route = new ArrayList<Product>();
 
-		while (nextNode(this.products))
-			;
+		while (nextNode(this.products));
 
 		return this.route;
 	}
