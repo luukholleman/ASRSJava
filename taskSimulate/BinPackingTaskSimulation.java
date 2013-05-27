@@ -30,7 +30,7 @@ public class BinPackingTaskSimulation extends JPanel {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		/*
-		 * Teken alle bins en hun inhoudHet nummer van de huidige bin wordt
+		 * Teken alle bins en hun inhoud. Het nummer van de huidige bin wordt
 		 * bijgehouden
 		 */
 		int count = 0;
