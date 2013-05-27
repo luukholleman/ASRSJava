@@ -6,29 +6,32 @@ import java.awt.event.*;
 import javax.swing.JFrame;
 
 public class SimulationFrame extends JFrame {
-	private OrderPickingPanel opPanel;
-	private BinPackingPanel bpPanel;
+	private OrderPickingPanel warehousePanel;
+	private BinPackingPanel binPackingPanel;
 	
-	public SimulationFrame(BinPackingPanel bpPanel, OrderPickingPanel opPanel){
+	public SimulationFrame(BinPackingPanel binPackingPanel, OrderPickingPanel warehousePanel){
 		setLayout( new FlowLayout() );
 		setTitle( "Virtual Auto Dropbox" );
 		setVisible( true );
 		setSize(800,600);
 		
-		this.bpPanel = bpPanel;
-		this.opPanel = opPanel;
+		this.binPackingPanel = binPackingPanel;
+		this.warehousePanel = warehousePanel;
 		
 
-		bpPanel.setPreferredSize(new Dimension(350, 500));
-		add(bpPanel);
-		//Starten van de simulatie
-		bpPanel.start();
-
-		opPanel.setPreferredSize(new Dimension(350, 500));
-		add(opPanel);
-		//Starten van de simulatie
-		opPanel.start();
+		binPackingPanel.setPreferredSize(new Dimension(350, 500));
+		add(binPackingPanel);
 		
+		//Starten van de simulatie
+		binPackingPanel.start();
+
+		warehousePanel.setPreferredSize(new Dimension(350, 500));
+		add(warehousePanel);
+		
+		//Starten van de simulatie
+		warehousePanel.start();
+		
+		//Als de frame wordt gesloten, stop dan de simulaties.
 		this.addWindowListener(new WindowAdapter()
 		{
 			public void windowClosing(WindowEvent e)
@@ -39,9 +42,14 @@ public class SimulationFrame extends JFrame {
 		
 		revalidate();
 	}
+	/**
+	 * Stopt de simulaties.
+	 * 
+	 * @author Bas
+	 */
 	private void close(){
-		bpPanel.stop();
-		opPanel.stop();
+		binPackingPanel.stop();
+		warehousePanel.stop();
 	}
 	
 }
