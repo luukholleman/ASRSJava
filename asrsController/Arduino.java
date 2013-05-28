@@ -41,8 +41,6 @@ public abstract class Arduino implements SerialPortEventListener {
 	 * @param port
 	 */
 	public Arduino(CommPortIdentifier port) {
-		System.out.println("Created arduino on " + port.getName());
-
 		this.port = port;
 	}
 
@@ -77,7 +75,7 @@ public abstract class Arduino implements SerialPortEventListener {
 
 		//Wacht even zodat de arduino op kan starten
 		try {
-			Thread.sleep(1000);
+			Thread.sleep(5000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
