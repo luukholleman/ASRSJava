@@ -92,22 +92,22 @@ public class ExecutionManager {
 		switch (color) {
 		case 1:
 			System.out.println("Black color detected");
-			return 8;
+			return 12;
 		case 2:
 			System.out.println("Blue color detected");
-			return 7;
+			return 11;
 		case 3:
 			System.out.println("Green color detected");
-			return 9;
+			return 10;
 		case 4:
 			System.out.println("Yellow color detected");
-			return 10;
+			return 9;
 		case 5:
 			System.out.println("Red color detected");
-			return 3;
+			return 8;
 		default:
 			System.out.println("White color detected");
-			return 6;
+			return 3;
 		}
 	}
 
@@ -195,14 +195,9 @@ public class ExecutionManager {
 				binManager.bins.get(binManager.bins.indexOf(bin)).fill(
 						bppProducts.get(0));
 				
-				System.out.println("Send product to bin" + bin);
-				
 				binPacking.packProduct((byte) binManager.bins.indexOf(bin),
 						bppProducts.get(0));
 			} else {
-
-				System.out.println("Send product to infinity bin");
-				
 				// Als er geen passende bin is, stuur de grootte van de
 				// ArrayList toe. Aangezien het terugsturen van een 'null'
 				// byte onmogelijk bleek, was dit een passend alternatief.
