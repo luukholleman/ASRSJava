@@ -15,7 +15,13 @@ import order.Product;
 
 public class WarehouseArduino extends Arduino implements Warehouse {
 
+	public static final byte PICKUP_PRODUCT = 1;
+	public static final byte DELIVER_PRODUCT = 2;
+	public static final byte DONE = 3;
+
 	private ExecutionManager executionManager;
+
+	private byte executingCommand;
 
 	public WarehouseArduino(CommPortIdentifier port) {
 		super(port);
@@ -37,29 +43,29 @@ public class WarehouseArduino extends Arduino implements Warehouse {
 
 		sendBytes(bytes);
 
-		waitForArduinoReady();
-
-		int color = inputData.get(1);
+		executingCommand = PICKUP_PRODUCT;
 	}
 
 	@Override
 	public void bringToBinPacker(int robotId) {
+		System.out.println("Bring product");
 		sendByte(DELIVER_PRODUCT);
-
-		waitForArduinoReady();
+		
+		executingCommand = DELIVER_PRODUCT;
 	}
 
 	@Override
 	public void moveToStart(int robotId) {
 		sendByte(DONE);
 
-		waitForArduinoReady();
-
+		executingCommand = DONE;
+		
+		//Sluit de connectie...
 		close();
 	}
 
 	@Override
-	public Location getStartLocation(int r) {
+	public Location getStartLocation(int robotId) {
 		return new Location(0, 0);
 	}
 
@@ -68,4 +74,23 @@ public class WarehouseArduino extends Arduino implements Warehouse {
 		return 1;
 	}
 
+	@Override
+	public void receivedData() {
+		System.out.println("Response!");
+		switch (executingCommand) {
+		case PICKUP_PRODUCT:
+			System.out.println("Pickup's response...");
+			if(getInputBuffer().size() == 2)
+			{
+				System.out.println("Pickup has two bytes in buffer...");
+				//Vertel EM dat we een product hebben
+				executionManager.pickedUpProduct(0, (byte)((int)getInputBuffer().get(0)));
+			}
+			break;
+		case DELIVER_PRODUCT:
+			System.out.println("Deliver's response...");
+			executionManager.deliveredProduct(0);
+			break;
+		}
+	}
 }

@@ -101,7 +101,7 @@ public class ExecutionManager {
 			if (useDetectedSize)
 				robots[robotId].productsOnFork.get(
 						robots[robotId].productsOnFork.size() - 1).setSize(
-						(int) color);
+						(int) color);//De gegeven kleur is de waarde die gegeven is door de arduino
 		}
 		
 		//Als er een product was opgepakt, sla dit product dan lokaal op.
