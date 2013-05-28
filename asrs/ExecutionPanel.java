@@ -21,6 +21,7 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -105,6 +106,11 @@ public class ExecutionPanel extends JPanel implements ActionListener {
 	private JComboBox comportsTsp;
 
 	/**
+	 * Checkbox om gedetecteerde size te gebruken
+	 */
+	private JCheckBox detectedSize;
+	
+	/**
 	 * De seed voor de task
 	 */
 	private JTextField seed = new JTextField();
@@ -118,7 +124,7 @@ public class ExecutionPanel extends JPanel implements ActionListener {
 		// creeer een fieldset met title
 		setBorder(BorderFactory.createTitledBorder("Uitvoeren"));
 
-		setPreferredSize(new Dimension(500, 220));
+		setPreferredSize(new Dimension(500, 270));
 
 		// voeg de bpp algoritmes toe
 		bppAlgorithms.add(new FirstFit());
@@ -151,9 +157,9 @@ public class ExecutionPanel extends JPanel implements ActionListener {
 		JPanel tspPanel = new JPanel();
 		JPanel comPanel = new JPanel();
 
-		bppPanel.setPreferredSize(new Dimension(150, 130));
-		tspPanel.setPreferredSize(new Dimension(150, 130));
-		comPanel.setPreferredSize(new Dimension(170, 130));
+		bppPanel.setPreferredSize(new Dimension(150, 180));
+		tspPanel.setPreferredSize(new Dimension(150, 180));
+		comPanel.setPreferredSize(new Dimension(170, 180));
 
 		// de boxlayout laat de elementen stapelen
 		bppPanel.setLayout(new BoxLayout(bppPanel, BoxLayout.PAGE_AXIS));
@@ -221,6 +227,9 @@ public class ExecutionPanel extends JPanel implements ActionListener {
 		comportsTsp = new JComboBox(comports.toArray());
 		comportsTsp.addActionListener(this);
 
+		//Maak de checkbox voor de grootte
+		detectedSize = new JCheckBox("Detecteer grote");
+
 		JLabel bppArduino = new JLabel("Loopband Arduino");
 		JLabel tspArduino = new JLabel("Magazijn Arduino");
 
@@ -235,6 +244,9 @@ public class ExecutionPanel extends JPanel implements ActionListener {
 		// seed textfield
 		comPanel.add(seed);
 
+		//size checkbox
+		comPanel.add(detectedSize);
+		
 		// voeg de actionlisteners toe zodat het event kan worden getriggerd
 		simulateBtn.addActionListener(this);
 		simulateTaskBtn.addActionListener(this);
@@ -273,7 +285,7 @@ public class ExecutionPanel extends JPanel implements ActionListener {
 	private void simulateButtonPressed(BPPAlgorithm bpp, TSPAlgorithm tsp) {
 		// trigger elk event
 		for (ExecuteButtonPressedListener ebpl : executeButtonPressedListeners)
-			ebpl.simulatePressed(bpp, tsp);
+			ebpl.simulatePressed(bpp, tsp, detectedSize.isSelected());
 	}
 
 	/**
@@ -305,14 +317,10 @@ public class ExecutionPanel extends JPanel implements ActionListener {
 			CommPortIdentifier com1, CommPortIdentifier com2) {
 		// trigger elk event
 		for (ExecuteButtonPressedListener ebpl : executeButtonPressedListeners)
-			ebpl.executePressed(bpp, tsp, com1, com2);
+			ebpl.executePressed(bpp, tsp, com1, com2, detectedSize.isSelected());
 	}
 
-	/**
-	 * Action performed
-	 * 
-	 * @author Luuk
-	 */
+	@Override
 	public void actionPerformed(ActionEvent e) {
 		getBPPAlgorithmFromRadioButtons();
 		getTSPAlgorithmFromRadioButtons();
@@ -342,10 +350,8 @@ public class ExecutionPanel extends JPanel implements ActionListener {
 								.toString()), stringToComport(comportsTsp
 								.getSelectedItem().toString()));
 			}
-
 		}
 	}
-
 	private CommPortIdentifier stringToComport(String comport) {
 		Enumeration portEnum = CommPortIdentifier.getPortIdentifiers();
 		// Zoeken naar de poort

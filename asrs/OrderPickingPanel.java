@@ -37,7 +37,6 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 	private static final int WAREHOUSE_MAX_X = 9;
 	private static final int BINPACKER_SIZE = 60;
 	private static final int BINPACKER_DEPTH = 340;
-	
 
 	/**
 	 * De panel van de bin packer
@@ -152,9 +151,8 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 		g.setColor(Color.blue);
 		for (WarehouseRobot robot : robots)
 			if (robot.destination != null)
-				g.drawRect(
-						BINPACKER_SIZE + DESTINATION_INDENT
-								+ (robot.destination.x * CELL_SIZE),
+				g.drawRect(BINPACKER_SIZE + DESTINATION_INDENT
+						+ (robot.destination.x * CELL_SIZE),
 						((WAREHOUSE_MAX_Y - robot.destination.y) * CELL_SIZE)
 								+ DESTINATION_INDENT, DESTINATION_SIZE,
 						DESTINATION_SIZE);
@@ -249,10 +247,13 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 			if (robots[0].load <= LOAD_MAX || robots[1].load <= LOAD_MAX) {
 				for (WarehouseRobot robot : robots)
 					if (robot.finished == false)
-						if(!robot.productsOnFork.isEmpty())
-							executionManager.pickedUpProduct(robot.id, (byte) robot.productsOnFork.get(0).getSize());
+						if (!robot.productsOnFork.isEmpty())
+							executionManager.pickedUpProduct(robot.id,
+									(byte) robot.productsOnFork.get(0)
+											.getSize());
 						else
-							executionManager.pickedUpProduct(robot.id, (byte) 0);
+							executionManager
+									.pickedUpProduct(robot.id, (byte) 0);
 				move();
 				sleep(PAUSE_TIME_ON_PICKUP);
 
@@ -261,15 +262,16 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 				warehouse.remove(robots[0].destination);
 				warehouse.remove(robots[1].destination);
 				for (WarehouseRobot robot : robots) {
-					if (robot.loc.x == BINPACKER_X && robot.loc.y == BINPACKER_Y)
+					if (robot.loc.x == BINPACKER_X
+							&& robot.loc.y == BINPACKER_Y)
 						executionManager.deliveredProduct(robot.id);
 					else
 						for (Product product : products)
 							if (robot.destination == product.getLocation()) {
 								robot.productsOnFork.add(product);
 								product.setStatus("opgepakt");
-								executionManager.getMain().productStatusUpdated(
-										product);
+								executionManager.getMain()
+										.productStatusUpdated(product);
 							}
 
 				}
@@ -325,7 +327,7 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 		for (int i = 0; i < CELL_SIZE; i++) {
 			robots[0].pixels.x = robots[0].pixels.x + stepx0;
 			robots[0].pixels.y = robots[0].pixels.y - stepy0;
-			
+
 			robots[1].pixels.x = robots[1].pixels.x + stepx1;
 			robots[1].pixels.y = robots[1].pixels.y - stepy1;
 			repaint();
@@ -379,8 +381,15 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 	}
 
 	@Override
-	public Integer getNumberOfRobots() {
+	public int getNumberOfRobots() {
 		return 2;
+	}
+
+	@Override
+	public int getMaxLoad() {
+		// We stellen hier dat er maximaal LOAD_MAX producten op de fork van een robot
+		// kunnen kunnen.
+		return LOAD_MAX;
 	}
 
 	@Override
