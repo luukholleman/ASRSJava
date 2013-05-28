@@ -102,7 +102,7 @@ public abstract class Arduino implements SerialPortEventListener {
 
 		System.out.println("Serial sendbyte");
 		try {
-			System.out.println("Output: " + b);
+			System.out.println("Send to " + port.getName() + ": " + b);
 			// schrijf de byte naar arduino
 			output.write(b);
 			output.flush();
@@ -143,8 +143,9 @@ public abstract class Arduino implements SerialPortEventListener {
 
 		try {
 			while ((data = input.read()) > -1) {
-				System.out.println("Input: " + data);
+				System.out.println("Received from " + port.getName() +": " + data);
 
+				
 				inputBuffer.add(data);
 
 				receivedData();

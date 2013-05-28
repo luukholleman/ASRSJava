@@ -118,13 +118,6 @@ public class ExecutionManager {
 	 * @param robotId
 	 */
 	public void pickedUpProduct(int robotId, byte color) {
-
-		System.out.println("[debug]pickedUpProduct(" + robotId + ", " + color
-				+ "){...}");
-		System.out.println("Products on fork: "
-				+ robots[robotId].productsOnFork.size());
-		System.out.println("Products for bpp: " + bppProducts.size());
-
 		//Als er daadwerkelijk producten op de fork staan
 		if (!robots[robotId].productsOnFork.isEmpty()) {
 
@@ -147,10 +140,6 @@ public class ExecutionManager {
 			}
 		}
 
-		// Als er een product was opgepakt, sla dit product dan lokaal op.
-		if (!robots[robotId].getProducts().isEmpty()) {
-			robots[robotId].pickUp(robots[robotId].getProducts().get(0));
-		}
 		// Als er nog een product op te halen is, en de fork is nog niet vol...
 		if (robots[robotId].hasNextProduct()
 				&& warehouse.getMaxLoad() > robots[robotId].getProducts()
@@ -165,12 +154,12 @@ public class ExecutionManager {
 	}
 
 	private void retrieveNextProduct(int robotId) {
-
-		System.out.println("RetreiveNextProduct(" + robotId + "){...}");
-
 		// Zoek naar het volgende product...
 		Product nextProduct = robots[robotId].getNextProduct();
 
+		//Sla op dat deze is opgepakt
+		robots[robotId].pickUp(nextProduct);
+		
 		// Als er een is, haal deze op.
 		warehouse.retrieveProduct(nextProduct.getLocation(), robotId);
 	}
@@ -181,14 +170,10 @@ public class ExecutionManager {
 	 * @param robotId
 	 */
 	public void deliveredProduct(int robotId) {
-		System.out.println("[debug]deliveredProduct(" + robotId + "){...}");
-		System.out.println("Products on fork: "
-				+ robots[robotId].productsOnFork.size());
-		System.out.println("Products for bpp: " + bppProducts.size());
-
 		// Sla eerst alle producten die de robot aflevert op voor de Bin packer,
 		// haal de producten daarna van de robot af.
 		bppProducts.addAll(robots[robotId].productsOnFork);
+		
 		robots[robotId].productsOnFork.clear();
 
 		// Als de robot producten heeft afgeleverd, stuur deze producten dan
@@ -210,10 +195,14 @@ public class ExecutionManager {
 				binManager.bins.get(binManager.bins.indexOf(bin)).fill(
 						bppProducts.get(0));
 				
+				System.out.println("Send product to bin" + bin);
+				
 				binPacking.packProduct((byte) binManager.bins.indexOf(bin),
 						bppProducts.get(0));
 			} else {
 
+				System.out.println("Send product to infinity bin");
+				
 				// Als er geen passende bin is, stuur de grootte van de
 				// ArrayList toe. Aangezien het terugsturen van een 'null'
 				// byte onmogelijk bleek, was dit een passend alternatief.

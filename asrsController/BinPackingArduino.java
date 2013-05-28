@@ -18,7 +18,7 @@ public class BinPackingArduino extends Arduino implements BinPacking{
 	
 	public void packProduct(Byte binNummer, Product product){
 		//stuurt het binnummer naar de Arduino
-		sendByte((byte)(binNummer + 1));
+		sendByte(binNummer);
 		
 		//sluit de seriele communicatie
 		//close();
