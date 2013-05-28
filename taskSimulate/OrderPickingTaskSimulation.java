@@ -46,59 +46,63 @@ public class OrderPickingTaskSimulation extends JPanel {
 	 * @param g
 	 */
 	private void drawPath(Graphics g) {
-		//lastLocation is de vorige locatie. De eerste locatie is het start punt.
+		// lastLocation is de vorige locatie. De eerste locatie is het start
+		// punt.
 		Location lastLocation = new Location(STARTING_X1, 0);
 		int totalDistance = 0;
-		//De ruimte tussen de text die de totale afstand weergeeft
+		// De ruimte tussen de text die de totale afstand weergeeft
 		int distanceSpacing = CELL_SIZE;
-		//Instellen van 2D graphics om een dikkere lijn te tekenen
+		// Instellen van 2D graphics om een dikkere lijn te tekenen
 		g.setColor(Color.blue);
 		Graphics2D g2D = (Graphics2D) g;
 		g2D.setStroke(new BasicStroke(LINE_WIDTH));
-		//Hier worden de robotten verdeelt van het huidige probleem
+		// Hier worden de robotten verdeelt van het huidige probleem
 		int count = 0;
 		for (ArrayList<Product> robot : problems.get(currentProblem)
 				.getProblem()) {
-			//Teken eerst het begin punt.
+			// Teken eerst het begin punt.
 			g.fillRect(lastLocation.x * CELL_SIZE + DOT_INDENT + CELL_SIZE,
 					(WAREHOUSE_Y - lastLocation.y) * CELL_SIZE + DOT_INDENT,
-					PRODUCT_SIZE, PRODUCT_SIZE); 
+					PRODUCT_SIZE, PRODUCT_SIZE);
 			for (Product product : robot) {
-				//Teken het huidige product
+				// Teken het huidige product
 				Location productLocation = product.getLocation();
 				g.fillRect(productLocation.x * CELL_SIZE + DOT_INDENT
 						+ CELL_SIZE, (WAREHOUSE_Y - productLocation.y)
 						* CELL_SIZE + DOT_INDENT, PRODUCT_SIZE, PRODUCT_SIZE);
-				//Teken een lijn tussen het huidige product en de vorige
+				// Teken een lijn tussen het huidige product en de vorige
 				g2D.drawLine(lastLocation.x * CELL_SIZE + LINE_INDENT
 						+ CELL_SIZE, (WAREHOUSE_Y - lastLocation.y) * CELL_SIZE
 						+ LINE_INDENT, productLocation.x * CELL_SIZE
 						+ LINE_INDENT + CELL_SIZE,
 						(WAREHOUSE_Y - productLocation.y) * CELL_SIZE
 								+ LINE_INDENT);
-				//Voeg de afstand tussen het huidige en het vorige product toe bij het totaal
+				// Voeg de afstand tussen het huidige en het vorige product toe
+				// bij het totaal
 				totalDistance += productLocation.getDistanceTo(lastLocation);
 				lastLocation = productLocation;
 			}
-			//Teken uiteindelijk een lijn tussen het laatste product en het begin punt.
+			// Teken uiteindelijk een lijn tussen het laatste product en het
+			// begin punt.
 			g2D.drawLine(lastLocation.x * CELL_SIZE + LINE_INDENT + CELL_SIZE,
 					(WAREHOUSE_Y - lastLocation.y) * CELL_SIZE + LINE_INDENT,
 					(STARTING_X1 + count * (WAREHOUSE_X + 2)) * CELL_SIZE
 							+ LINE_INDENT + CELL_SIZE, (WAREHOUSE_Y)
 							* CELL_SIZE + LINE_INDENT);
-			//En voeg die afstand ook toe aan het totaal
+			// En voeg die afstand ook toe aan het totaal
 			totalDistance += lastLocation.getDistanceTo(new Location(
-					(STARTING_X1 + count * WAREHOUSE_X + 2), 0));
-			//Schrijf daarna de totale afstand onderaan de pagina. De eerste totale afstand komt links en de tweede komt in het midden.
+					(STARTING_X1 + count * (WAREHOUSE_X + 2)), 0));
+			// Schrijf daarna de totale afstand onderaan de pagina. De eerste
+			// totale afstand komt links en de tweede komt in het midden.
 			g.drawString("Totale afstand: " + totalDistance, distanceSpacing,
 					CELL_SIZE * (WAREHOUSE_Y + 1) + 10);
 			distanceSpacing += CELL_SIZE * (WAREHOUSE_X + 1) / 2;
-			//De kleur veranderen voor de volgende robot
+			// De kleur veranderen voor de volgende robot
 			g.setColor(Color.red);
-			//Totaal resetten om die van de andere robot ook te volgen
+			// Totaal resetten om die van de andere robot ook te volgen
 			totalDistance = 0;
-			//Start locatie van de andere robot instellen.
-			lastLocation = new Location(WAREHOUSE_X+1, 0);
+			// Start locatie van de andere robot instellen.
+			lastLocation = new Location(WAREHOUSE_X + 1, 0);
 			count++;
 		}
 		g.setColor(Color.black);

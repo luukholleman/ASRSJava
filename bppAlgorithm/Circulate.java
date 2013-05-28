@@ -37,11 +37,11 @@ public class Circulate implements BPPAlgorithm {
 		for(int i = 0 ; i < bins.size() ; i++){
 			
 			//Als de vorige bin niet de laatste bin was in de array, probeer hem dan in de volgende bin te stoppen.
-			if(bins.indexOf(lastBin) < bins.size()-1){
+			if(bins.indexOf(lastBin) < bins.size()-1)
 				lastBin = bins.get(bins.indexOf(lastBin)+1);
 				if(lastBin.getSize()-lastBin.getFilled() >= product.getSize())
 					return lastBin;
-			}
+			
 			
 			//Als het wel de laatste bin in de array is, probeer hem dan in de eerste bin te stoppen.
 			else{
