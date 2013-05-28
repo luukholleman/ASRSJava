@@ -96,6 +96,13 @@ public class WarehouseRobot {
 	}
 
 	/**
+	 * Geeft aan of er nog producten voor deze robot zijn
+	 * @return Waarheid
+	 */
+	public Boolean hasNextProduct() {
+		return getProducts().size() > 0;
+	}
+	/**
 	 * Legt het product op de fork
 	 * 
 	 * @param product

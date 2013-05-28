@@ -9,8 +9,13 @@ public interface Warehouse {
 	
 	public abstract void moveToStart(int robotId);
 	
-	public abstract Integer getNumberOfRobots();
+	public abstract int getNumberOfRobots();
 
 	public abstract Location getStartLocation(int r);
 
+	/**
+	 * Geeft het maximale aantal producten op de fork terug
+	 * @return
+	 */
+	public abstract int getMaxLoad();
 }

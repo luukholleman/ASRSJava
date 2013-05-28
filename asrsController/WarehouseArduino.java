@@ -70,10 +70,14 @@ public class WarehouseArduino extends Arduino implements Warehouse {
 	}
 
 	@Override
-	public Integer getNumberOfRobots() {
+	public int getNumberOfRobots() {
 		return 1;
 	}
 
+	@Override
+	public int getMaxLoad() {
+		return 1;
+	}
 	@Override
 	public void receivedData() {
 		System.out.println("Response!");

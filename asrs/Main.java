@@ -11,6 +11,7 @@ import gnu.io.CommPortIdentifier;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -151,15 +152,7 @@ public class Main extends JFrame implements XMLUploadedListener,
 		xmlPanel.addXMLUploadListener(this);
 		executionPanel.addExecutionListener(this);
 	}
-
-	/**
-	 * Event voor xml upload
-	 * 
-	 * @param String
-	 *            xmlFileLocation
-	 * 
-	 * @return void
-	 */
+	
 	@Override
 	public void xmlUploaded(String xmlFileLocation) {
 		// probeer de order class te maken
@@ -187,19 +180,9 @@ public class Main extends JFrame implements XMLUploadedListener,
 		// weergeven
 		orderPanel.setOrder(order);
 	}
-
-	/**
-	 * Event voor het starten van de simulatie
-	 * 
-	 * @param BPPAlgorithm
-	 *            bpp
-	 * @param TSPAlgorithm
-	 *            tsp
-	 * 
-	 * @return void
-	 */
+	
 	@Override
-	public void simulatePressed(BPPAlgorithm bpp, TSPAlgorithm tsp) {
+	public void simulatePressed(BPPAlgorithm bpp, TSPAlgorithm tsp, Boolean useDetectedSize) {
 		// controleer eerst of er al een order bestaat, zo nee, stop ermee
 		if (order == null) {
 			JOptionPane.showMessageDialog(this,
@@ -211,9 +194,9 @@ public class Main extends JFrame implements XMLUploadedListener,
 		BinManager binManager = new BinManager();
 
 		// voeg een paar bins toe
-		binManager.addBin(new Bin(10, 0));
-		binManager.addBin(new Bin(20, 0));
-		binManager.addBin(new Bin(30, 0));
+		binManager.addBin(new Bin(25, 0));
+		binManager.addBin(new Bin(25, 0));
+		binManager.addBin(new Bin(25, 0));
 
 		// maak de panels aan
 		BinPackingPanel bpPanel = new BinPackingPanel();
@@ -221,7 +204,7 @@ public class Main extends JFrame implements XMLUploadedListener,
 
 		// maak de executionmanager aan me de net aangemaakte gegevens
 		ExecutionManager executionManager = new ExecutionManager(this, order,
-				binManager, opPanel, bpPanel, tsp, bpp, 10, 20, false);
+				binManager, opPanel, bpPanel, tsp, bpp, 10, 20, useDetectedSize);
 
 		// geef de em door aan de panels zodat ze de gegevens kunnen uitlezen
 		bpPanel.setEM(executionManager);
@@ -232,13 +215,10 @@ public class Main extends JFrame implements XMLUploadedListener,
 		frame.setVisible(true);
 	}
 
-	/**
-	 * @throws InterruptedException 
-	 * @TODO
-	 */
+	
 	@Override
 	public void executePressed(BPPAlgorithm bpp, TSPAlgorithm tsp,
-			CommPortIdentifier comBpp, CommPortIdentifier comTsp) {
+			CommPortIdentifier comBpp, CommPortIdentifier comTsp, Boolean useDetectedSize) {
 		if (order == null) {
 			JOptionPane.showMessageDialog(this,
 					"Selecteer eerst een XML bestand");
@@ -249,9 +229,9 @@ public class Main extends JFrame implements XMLUploadedListener,
 		BinManager binManager = new BinManager();
 
 		// voeg een paar bins toe
-		binManager.addBin(new Bin(20, 0));
-		binManager.addBin(new Bin(20, 0));
-		binManager.addBin(new Bin(20, 0));
+		binManager.addBin(new Bin(25, 0));
+		binManager.addBin(new Bin(25, 0));
+		binManager.addBin(new Bin(25, 0));
 
 		// maak de Arduino klasses aan aan
 		BinPackingArduino binPackingArduino = new BinPackingArduino(comBpp);
@@ -260,7 +240,7 @@ public class Main extends JFrame implements XMLUploadedListener,
 		// maak de executionmanager aan me de net aangemaakte gegevens
 		ExecutionManager executionManager = new ExecutionManager(this, order,
 				binManager, warehouseArduino, binPackingArduino, tsp, bpp, 10,
-				20, false);
+				20, useDetectedSize);
 
 		warehouseArduino.setExecutionManager(executionManager);
 

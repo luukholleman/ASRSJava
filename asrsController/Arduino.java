@@ -41,8 +41,6 @@ public abstract class Arduino implements SerialPortEventListener {
 	 * @param port
 	 */
 	public Arduino(CommPortIdentifier port) {
-		System.out.println("Created arduino on " + port.getName());
-
 		this.port = port;
 	}
 
@@ -77,7 +75,7 @@ public abstract class Arduino implements SerialPortEventListener {
 
 		//Wacht even zodat de arduino op kan starten
 		try {
-			Thread.sleep(1000);
+			Thread.sleep(5000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -104,7 +102,7 @@ public abstract class Arduino implements SerialPortEventListener {
 
 		System.out.println("Serial sendbyte");
 		try {
-			System.out.println("Output: " + b);
+			System.out.println("Send to " + port.getName() + ": " + b);
 			// schrijf de byte naar arduino
 			output.write(b);
 			output.flush();
@@ -145,8 +143,9 @@ public abstract class Arduino implements SerialPortEventListener {
 
 		try {
 			while ((data = input.read()) > -1) {
-				System.out.println("Input: " + data);
+				System.out.println("Received from " + port.getName() +": " + data);
 
+				
 				inputBuffer.add(data);
 
 				receivedData();
