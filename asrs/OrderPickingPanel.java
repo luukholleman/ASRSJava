@@ -269,9 +269,9 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 						for (Product product : products)
 							if (robot.destination == product.getLocation()) {
 								robot.productsOnFork.add(product);
-								product.setStatus("opgepakt");
-								executionManager.getMain()
-										.productStatusUpdated(product);
+//								product.setStatus("opgepakt");
+//								executionManager.getMain()
+//										.productStatusUpdated(product);
 							}
 
 				}

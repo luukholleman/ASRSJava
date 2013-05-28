@@ -255,9 +255,9 @@ public class BinPackingPanel extends JPanel implements Runnable, BinPacking {
 					overflow = overflow + productLine.get(0).getSize();
 				}
 				// Zet in de tabel dat hij is ingepakt.
-				productLine.get(0).setStatus("ingepakt");
-				executionManager.getMain().productStatusUpdated(
-						productLine.get(0));
+//				productLine.get(0).setStatus("ingepakt");
+//				executionManager.getMain().productStatusUpdated(
+//						productLine.get(0));
 
 				// Haal het product en de bin waar hij in moet uit de wachtwij
 				productLine.remove(0);

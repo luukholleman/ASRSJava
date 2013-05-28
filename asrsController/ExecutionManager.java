@@ -2,6 +2,8 @@ package asrsController;
 
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 import order.*;
 import tspAlgorithm.TSPAlgorithm;
 import asrs.*;
@@ -117,35 +119,55 @@ public class ExecutionManager {
 	 */
 	public void pickedUpProduct(int robotId, byte color) {
 
-		// Als de gescande kleur moet worden gebruikt als indicatie van de
-		// grootte, verander dan lokaal de grootte van het laatst opgepakte
-		// product op basis van de kleur.
+		System.out.println("[debug]pickedUpProduct(" + robotId + ", " + color
+				+ "){...}");
+		System.out.println("Products on fork: "
+				+ robots[robotId].productsOnFork.size());
+		System.out.println("Products for bpp: " + bppProducts.size());
 
-		if (useDetectedSize && !robots[robotId].productsOnFork.isEmpty()) {
+		//Als er daadwerkelijk producten op de fork staan
+		if (!robots[robotId].productsOnFork.isEmpty()) {
+
+			// Verander de status en waarschuw het tabel
 			robots[robotId].productsOnFork.get(
-					robots[robotId].productsOnFork.size() - 1).setSize(
-					getSizeFromColor(color));
-			// De gegeven kleur is door de robot gegeven
+					robots[robotId].productsOnFork.size() - 1).setStatus(
+					"opgepakt");
+			getMain().productStatusUpdated(
+					robots[robotId].productsOnFork
+							.get(robots[robotId].productsOnFork.size() - 1));
+
+			// Als de gescande kleur moet worden gebruikt als indicatie van de
+			// grootte, verander dan lokaal de grootte van het laatst opgepakte
+			// product op basis van de kleur.
+			if (useDetectedSize) {
+				robots[robotId].productsOnFork.get(
+						robots[robotId].productsOnFork.size() - 1).setSize(
+						getSizeFromColor(color));
+				// De gegeven kleur is door de robot gegeven
+			}
 		}
 
 		// Als er een product was opgepakt, sla dit product dan lokaal op.
-		if (!robots[robotId].getProducts().isEmpty())
+		if (!robots[robotId].getProducts().isEmpty()) {
 			robots[robotId].pickUp(robots[robotId].getProducts().get(0));
-
+		}
 		// Als er nog een product op te halen is, en de fork is nog niet vol...
 		if (robots[robotId].hasNextProduct()
 				&& warehouse.getMaxLoad() > robots[robotId].getProducts()
-						.size())
-
+						.size()) {
 			// Haal het volgende product op
 			retrieveNextProduct(robotId);
-		else
-
+		} else {
 			// Anders, breng de producten naar de binpacker.
 			warehouse.bringToBinPacker(robotId);
+
+		}
 	}
 
 	private void retrieveNextProduct(int robotId) {
+
+		System.out.println("RetreiveNextProduct(" + robotId + "){...}");
+
 		// Zoek naar het volgende product...
 		Product nextProduct = robots[robotId].getNextProduct();
 
@@ -159,6 +181,10 @@ public class ExecutionManager {
 	 * @param robotId
 	 */
 	public void deliveredProduct(int robotId) {
+		System.out.println("[debug]deliveredProduct(" + robotId + "){...}");
+		System.out.println("Products on fork: "
+				+ robots[robotId].productsOnFork.size());
+		System.out.println("Products for bpp: " + bppProducts.size());
 
 		// Sla eerst alle producten die de robot aflevert op voor de Bin packer,
 		// haal de producten daarna van de robot af.
@@ -167,43 +193,35 @@ public class ExecutionManager {
 
 		// Als de robot producten heeft afgeleverd, stuur deze producten dan
 		// naar de Bin Packer
-		if (!bppProducts.isEmpty()) {
-			while (!bppProducts.isEmpty()) {
+		while (!bppProducts.isEmpty()) {
 
-				// Kijk in welke bin het product het beste past
-				Bin bin;
-				bin = bppAlgorithm.calculateBin(bppProducts.get(0),
-						binManager.bins);
+			// Kijk in welke bin het product het beste past
+			Bin bin;
+			bin = bppAlgorithm
+					.calculateBin(bppProducts.get(0), binManager.bins);
 
-				// Als er een passende bin is gevonden, stuur het nummer daarvan
-				// dan door
-				if (bin != null) {
-					binManager.bins.get(binManager.bins.indexOf(bin)).fill(
-							bppProducts.get(0));
-					binPacking.packProduct((byte) binManager.bins.indexOf(bin),
-							bppProducts.get(0));
-					bppProducts.remove(0);
-				} else {
+			// Verander de status en waarschuw het tabel
+			bppProducts.get(0).setStatus("ingepakt");
+			getMain().productStatusUpdated(bppProducts.get(0));
 
-					// Als er geen passende bin is, stuur de grootte van de
-					// ArrayList toe. Aangezien het terugsturen van een 'null'
-					// byte onmogelijk bleek, was dit een passend alternatief.
-					binPacking.packProduct((byte) binManager.bins.size(),
-							bppProducts.get(0));
+			// Als er een passende bin is gevonden, stuur het nummer daarvan
+			// dan door
+			if (bin != null) {
+				binManager.bins.get(binManager.bins.indexOf(bin)).fill(
+						bppProducts.get(0));
+				
+				binPacking.packProduct((byte) binManager.bins.indexOf(bin),
+						bppProducts.get(0));
+			} else {
 
-					// Haal het product uit de lijst zodat deze niet nog een
-					// keer wordt behandelt
-					bppProducts.remove(0);
-				}
+				// Als er geen passende bin is, stuur de grootte van de
+				// ArrayList toe. Aangezien het terugsturen van een 'null'
+				// byte onmogelijk bleek, was dit een passend alternatief.
+				binPacking.packProduct((byte) binManager.bins.size(),
+						bppProducts.get(0));
 			}
-
-			// Alle producten zijn afgeleverd.
-
-		} else {
-			// Als er geen producten zijn afgeleverd, print een bericht en stuur
-			// de robot terug.
-			System.out
-					.println("Robot had no products to deliver, returning to start.");
+			
+			bppProducts.remove(0);
 		}
 
 		if (robots[robotId].hasNextProduct())

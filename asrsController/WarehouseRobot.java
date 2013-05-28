@@ -89,6 +89,7 @@ public class WarehouseRobot {
 		if (!getProducts().isEmpty()) {
 			Product retProduct = getProducts().get(0);
 			getProducts().remove(0);
+			productsOnFork.add(retProduct);
 			return retProduct;
 		} else {
 			return null;
