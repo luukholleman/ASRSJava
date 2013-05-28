@@ -21,30 +21,19 @@ public abstract class Arduino implements SerialPortEventListener {
 	private InputStream input;
 	// De output stream naar de poort
 	private OutputStream output;
+
 	// Aantal milliseconden wachten tot de poort opent
 	private static final int TIME_OUT = 2000;
+
 	// Standaard bits per second voor de COM poort.
 	private static final int DATA_RATE = 9600;
-
-	public static final byte PICKUP_PRODUCT = 1;
-	public static final byte DELIVER_PRODUCT = 2;
-	public static final byte DONE = 3;
-	public static final byte IS_READY = 4;
-
-	/**
-	 * Houdt bij of de arduino klaar is met de opdracht wordt op false gezet als
-	 * je een opdracht verstuurd true wanneer de arduino aangeeft dat hij klaar
-	 * is
-	 */
-	boolean arduinoReady;
 
 	private CommPortIdentifier port;
 
 	/**
-	 * De ontvangen data, wordt automatisch geleegd bij versturen van een nieuwe
-	 * opdracht
+	 * Buffer met inkomende data
 	 */
-	public ArrayList<Integer> inputData = new ArrayList<Integer>();
+	private ArrayList<Integer> inputBuffer = new ArrayList<Integer>();
 
 	/**
 	 * ctor
@@ -52,6 +41,8 @@ public abstract class Arduino implements SerialPortEventListener {
 	 * @param port
 	 */
 	public Arduino(CommPortIdentifier port) {
+		System.out.println("Created arduino on " + port.getName());
+
 		this.port = port;
 	}
 
@@ -64,7 +55,7 @@ public abstract class Arduino implements SerialPortEventListener {
 		System.out.println("Serial Open");
 
 		try {
-			// Open seriële poort en gebruik de class naam voor de appNaam
+			// Open seriele poort en gebruik de class naam voor de appNaam
 			serialPort = (SerialPort) port.open(this.getClass().getName(),
 					TIME_OUT);
 
@@ -84,75 +75,46 @@ public abstract class Arduino implements SerialPortEventListener {
 			e.printStackTrace();
 		}
 
-		// test elke halve seconde of de arduino aan staat. De loop wordt
-		// automatisch doorbroken als dit het geval is
-		while (arduinoReady == false) {
-			sendByte(IS_READY);
-
-			try {
-				Thread.sleep(500);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		//Wacht even zodat de arduino op kan starten
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
+		System.out.println("Woke up");
 	}
 
 	/**
-	 * Laat de thread 'slapen' tot de arduino klaar is
-	 */
-	public void waitForArduinoReady() {
-		while (arduinoReady == false)
-			;
-	}
-
-	/**
-	 * Meerdere bytes verzenden
+	 * Verzend meerdere bytes naar de arduino
 	 * 
 	 * @param bytes
 	 */
 	public void sendBytes(Byte[] bytes) {
-		inputData.clear();
-
-		System.out.println("Serial sendbytes");
-		try {
-			// schrijf de bytes naar arduino
-			for (Byte b : bytes) {
-				System.out.println("Sending: " + b);
-
-				output.write(b);
-				output.flush();
-			}
-
-			// omdat we weer een opdracht hebben versturen is de arduino niet
-			// klaar
-			arduinoReady = false;
-
-		} catch (IOException e) {
-			System.err.println(e.toString());
-		}
+		for (Byte b : bytes)
+			sendByte(b);
 	}
 
 	/**
-	 * 1 byte verzenden
+	 * Verzend een byte naar de arduino
 	 * 
 	 * @param b
 	 */
 	public void sendByte(Byte b) {
-		inputData.clear();
+		inputBuffer.clear();
 
-		arduinoReady = false;
 		System.out.println("Serial sendbyte");
 		try {
-			System.out.println("Sending: " + b);
+			System.out.println("Output: " + b);
 			// schrijf de byte naar arduino
 			output.write(b);
 			output.flush();
 
-			// omdat we weer een opdracht hebben versturen is de arduino niet
-			// klaar
-			arduinoReady = false;
-
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			
 		} catch (IOException e) {
 			System.err.println(e.toString());
 		}
@@ -176,31 +138,38 @@ public abstract class Arduino implements SerialPortEventListener {
 	@Override
 	public void serialEvent(SerialPortEvent oEvent) {
 
+		if(SerialPortEvent.DATA_AVAILABLE != oEvent.getEventType())
+			return;
+		
 		int data;
-		byte[] buffer = new byte[1024];
 
 		try {
-			int len = 0;
 			while ((data = input.read()) > -1) {
-				System.out.println("Data input: "
-						+ Character.getNumericValue(data));
-				if (data == '\n') {
-					break;
-				}
+				System.out.println("Input: " + data);
 
-				inputData.add(Character.getNumericValue(data));
+				inputBuffer.add(data);
 
-				// buffer[len++] = (byte) data;
+				receivedData();
 			}
-
-			// arduino is weer klaar
-			arduinoReady = true;
-
-			// input wegschrijven naar console
-			System.out.print(new String(buffer, 0, len));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * Wordt aangeroepen als er data binnenkomt
+	 */
+	public void receivedData() {
+		// Overwritable
+	}
+
+	/**
+	 * Verkrijg een lijst met inkomende data
+	 * 
+	 * @return
+	 */
+	public ArrayList<Integer> getInputBuffer() {
+		return inputBuffer;
 	}
 
 }

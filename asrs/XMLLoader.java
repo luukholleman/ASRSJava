@@ -47,8 +47,12 @@ public class XMLLoader {
 				int productId = Integer.parseInt(node.getChildText("productnumber"));
 				String description = node.getChildText("description");
 				float price = Float.parseFloat(node.getChildText("price"));
-				Product product = new Product(productId, description, price);
-				order.addProduct(product);
+				
+				//Haal het aangegeven aantal producten op
+				for(int n = 0 ; n < Integer.parseInt(node.getChildText("amount")); n++) {
+					Product product = new Product(productId, description, price);
+					order.addProduct(product);
+				}
 			}
 		}
 		

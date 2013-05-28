@@ -30,6 +30,7 @@ import bppAlgorithm.Bin;
 import bppAlgorithm.BinManager;
 public class Main extends JFrame implements XMLUploadedListener,
 		ExecuteButtonPressedListener {
+	
 	/**
 	 * Panel voor xml uploaden
 	 */
@@ -232,6 +233,7 @@ public class Main extends JFrame implements XMLUploadedListener,
 	}
 
 	/**
+	 * @throws InterruptedException 
 	 * @TODO
 	 */
 	@Override
@@ -267,8 +269,6 @@ public class Main extends JFrame implements XMLUploadedListener,
 		// warehouseArduino.start();
 
 		System.out.println("test");
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
