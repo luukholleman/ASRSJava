@@ -3,14 +3,7 @@ package asrsController;
 import gui.*;
 
 import java.util.ArrayList;
-<<<<<<< HEAD
-import order.*;
-=======
-
-import javax.swing.JOptionPane;
-
 import productInfo.*;
->>>>>>> 556b3cb96fe5164af1be4f4c8ca0308398ae6c51
 import tspAlgorithm.TSPAlgorithm;
 import bppAlgorithm.*;
 
