@@ -229,9 +229,9 @@ public class Main extends JFrame implements XMLUploadedListener,
 		BinManager binManager = new BinManager();
 
 		// voeg een paar bins toe
-		binManager.addBin(new Bin(25, 0));
-		binManager.addBin(new Bin(25, 0));
-		binManager.addBin(new Bin(25, 0));
+		binManager.addBin(new Bin(20, 0));
+		binManager.addBin(new Bin(20, 0));
+		binManager.addBin(new Bin(20, 0));
 
 		// maak de Arduino klasses aan aan
 		BinPackingArduino binPackingArduino = new BinPackingArduino(comBpp);

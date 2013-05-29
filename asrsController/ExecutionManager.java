@@ -92,19 +92,19 @@ public class ExecutionManager {
 		switch (color) {
 		case 1:
 			System.out.println("Black color detected");
-			return 12;
+			return 17;
 		case 2:
 			System.out.println("Blue color detected");
-			return 11;
+			return 5;
 		case 3:
 			System.out.println("Green color detected");
-			return 10;
+			return 15;
 		case 4:
 			System.out.println("Yellow color detected");
-			return 9;
+			return 10;
 		case 5:
 			System.out.println("Red color detected");
-			return 8;
+			return 2;
 		default:
 			System.out.println("White color detected");
 			return 3;
