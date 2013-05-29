@@ -93,7 +93,7 @@ public class ExecutionManager {
 		switch (color) {
 		case 1:
 			System.out.println("Black color detected");
-			return 17;
+			return 4;
 		case 2:
 			System.out.println("Blue color detected");
 			return 5;
