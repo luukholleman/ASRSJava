@@ -1,27 +1,68 @@
 package asrsController;
 
 import java.util.ArrayList;
-
-import javax.swing.JOptionPane;
-
 import order.*;
 import tspAlgorithm.TSPAlgorithm;
 import asrs.*;
 import bppAlgorithm.*;
 
+
+/**
+ * 
+ * @author Mike, Tim, Bas, Luuk
+ * 
+ */
+
 public class ExecutionManager {
+
+	/**
+	 * Main
+	 */
 	private Main main;
+	
+	/**
+	 * Order
+	 */
 	private Order order;
+
+	/**
+	 * Binmanager
+	 */
 	private BinManager binManager;
+
+	/**
+	 * Warehouse interface
+	 */
 	private Warehouse warehouse;
+
+	/**
+	 * Binpacking interface
+	 */
 	private BinPacking binPacking;
-	private TSPAlgorithm tspAlgorithm;
+
+	/**
+	 * Binpacking algoritme
+	 */
 	private BPPAlgorithm bppAlgorithm;
-	private int width;
-	private int height;
+
+	/**
+	 * Sensor gebruik
+	 */
 	private Boolean useDetectedSize;
+
+	/**
+	 * Lading van een robot
+	 */
 	private int load = 0;
+
+	/**
+	 * Aantal robots in het magazijn
+	 */
 	private WarehouseRobot[] robots;
+
+	/**
+	 * Lijst met producten uit de order
+	 */
 	private ArrayList<Product> bppProducts = new ArrayList<Product>();
 
 	/**
@@ -42,15 +83,11 @@ public class ExecutionManager {
 			TSPAlgorithm tspAlgorithm, BPPAlgorithm bppAlgorithm, int width,
 			int height, Boolean useDetectedSize) {
 
-		this.main = main;
-		this.order = order;
-		this.binManager = binManager;
+		this.setMain(main);
+		this.setBinManager(binManager);
 		this.warehouse = warehouse;
-		this.binPacking = binPacking;
-		this.tspAlgorithm = tspAlgorithm;
+		this.setBinPacking(binPacking);
 		this.bppAlgorithm = bppAlgorithm;
-		this.width = width;
-		this.height = height;
 		this.useDetectedSize = useDetectedSize;
 
 		// maak een array aan met een plek voor elke robot in het warehouse
@@ -88,6 +125,12 @@ public class ExecutionManager {
 		}
 	}
 
+	/**
+	 * Bepaalt de grootte van het produt op basis van de kleur
+	 * 
+	 * @param color
+	 * @return size
+	 */
 	private int getSizeFromColor(byte color) {
 		switch (color) {
 		case 1:
@@ -118,7 +161,7 @@ public class ExecutionManager {
 	 * @param robotId
 	 */
 	public void pickedUpProduct(int robotId, byte color) {
-		//Als er daadwerkelijk producten op de fork staan
+		// Als er daadwerkelijk producten op de fork staan
 		if (!robots[robotId].productsOnFork.isEmpty()) {
 
 			// Verander de status en waarschuw het tabel
@@ -153,13 +196,18 @@ public class ExecutionManager {
 		}
 	}
 
+	/**
+	 * Stuurt de meegegeven robot naar het volgende product
+	 * 
+	 * @param robotId
+	 */
 	private void retrieveNextProduct(int robotId) {
 		// Zoek naar het volgende product...
 		Product nextProduct = robots[robotId].getNextProduct();
 
-		//Sla op dat deze is opgepakt
+		// Sla op dat deze is opgepakt
 		robots[robotId].pickUp(nextProduct);
-		
+
 		// Als er een is, haal deze op.
 		warehouse.retrieveProduct(nextProduct.getLocation(), robotId);
 	}
@@ -173,7 +221,7 @@ public class ExecutionManager {
 		// Sla eerst alle producten die de robot aflevert op voor de Bin packer,
 		// haal de producten daarna van de robot af.
 		bppProducts.addAll(robots[robotId].productsOnFork);
-		
+
 		robots[robotId].productsOnFork.clear();
 
 		// Als de robot producten heeft afgeleverd, stuur deze producten dan
@@ -183,7 +231,7 @@ public class ExecutionManager {
 			// Kijk in welke bin het product het beste past
 			Bin bin;
 			bin = bppAlgorithm
-					.calculateBin(bppProducts.get(0), binManager.bins);
+					.calculateBin(bppProducts.get(0), getBinManager().bins);
 
 			// Verander de status en waarschuw het tabel
 			bppProducts.get(0).setStatus("ingepakt");
@@ -192,19 +240,19 @@ public class ExecutionManager {
 			// Als er een passende bin is gevonden, stuur het nummer daarvan
 			// dan door
 			if (bin != null) {
-				binManager.bins.get(binManager.bins.indexOf(bin)).fill(
+				getBinManager().bins.get(getBinManager().bins.indexOf(bin)).fill(
 						bppProducts.get(0));
-				
-				binPacking.packProduct((byte) binManager.bins.indexOf(bin),
+
+				getBinPacking().packProduct((byte) getBinManager().bins.indexOf(bin),
 						bppProducts.get(0));
 			} else {
 				// Als er geen passende bin is, stuur de grootte van de
 				// ArrayList toe. Aangezien het terugsturen van een 'null'
 				// byte onmogelijk bleek, was dit een passend alternatief.
-				binPacking.packProduct((byte) binManager.bins.size(),
+				getBinPacking().packProduct((byte) getBinManager().bins.size(),
 						bppProducts.get(0));
 			}
-			
+
 			bppProducts.remove(0);
 		}
 
@@ -218,48 +266,76 @@ public class ExecutionManager {
 
 	}
 
-	// Alle getters
+	/**
+	 * Getter voor de Main
+	 * 
+	 * @return
+	 */
 	public Main getMain() {
 		return main;
 	}
 
-	public Order getOrder() {
-		return order;
-	}
+	/**
+	 * Setter voor de Main
+	 * 
+	 * @param main
+	 */
 
+	public void setMain(Main main) {
+		this.main = main;
+	}
+	
+	/**
+	 * Getter voor de BinManager
+	 * 
+	 * @return binManager
+	 */
 	public BinManager getBinManager() {
 		return binManager;
 	}
-
-	public Warehouse getWarehouse() {
-		return warehouse;
+	
+	/**
+	 * Setter voor de BinManager
+	 * 
+	 * @param binManager
+	 */
+	public void setBinManager(BinManager binManager) {
+		this.binManager = binManager;
 	}
-
+	
+	/**
+	 * Getter voor het BinPacking interface
+	 * 
+	 * @return
+	 */
 	public BinPacking getBinPacking() {
 		return binPacking;
 	}
-
-	public TSPAlgorithm getTspAlgorithm() {
-		return tspAlgorithm;
+	
+	/**
+	 * Setter voor het BinPacking interface
+	 * 
+	 * @param binPacking
+	 */
+	public void setBinPacking(BinPacking binPacking) {
+		this.binPacking = binPacking;
 	}
-
-	public BPPAlgorithm getBppAlgorithm() {
-		return bppAlgorithm;
+	
+	/**
+	 * Getter voor de order
+	 * 
+	 * @return order
+	 */
+	public Order getOrder() {
+		return order;
 	}
-
-	public int getWidth() {
-		return width;
-	}
-
-	public int getHeight() {
-		return height;
-	}
-
-	public Boolean getUseDetectedSize() {
-		return useDetectedSize;
-	}
-
-	public int getLoad() {
-		return load;
-	}
+	
+	/**
+	 * Setter voor de order
+	 * 
+	 * @param order
+	 */
+	public void setOrder(Order order) {
+		this.order = order;
+	}	
 }
