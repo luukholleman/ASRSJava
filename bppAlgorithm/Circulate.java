@@ -1,27 +1,36 @@
-/**
- * @author Bas van Koesveld
- * @date 24 april
- */
+
 package bppAlgorithm;
 
 import java.util.ArrayList;
-
 import productInfo.Product;
 
+/**
+ * Een algoritme die altijd om de beurt een bin kiest
+ * 
+ * @author Bas
+ */
 public class Circulate implements BPPAlgorithm {
-	private static String name = "Circulate";
+	/**
+	 * De naam van het algoritme
+	 */
+	private static final String NAME = "Circulate";
+	
+	/**
+	 * De bin waar als laatst iets is in gelegd.
+	 */
 	private Bin lastBin = null;
 	
-	@Override
-	public String getName() {
-		return name;
-	}
 	/**
 	 * Berekend waar het product nog in past
 	 * 
 	 * @param Product, ArrayList<Bin>
 	 * @return Bin
 	 */
+	
+	public String getName(){
+		return NAME;
+	}
+	
 	@Override
 	public Bin calculateBin(Product product, ArrayList<Bin> bins) {
 		
@@ -53,10 +62,5 @@ public class Circulate implements BPPAlgorithm {
 		
 		//Als er geen bin is gevonden, return null.
 		return null;
-	}
-	@Override
-	public int getBinCount() {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 }

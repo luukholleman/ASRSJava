@@ -12,24 +12,88 @@ import bppAlgorithm.Bin;
 
 import productInfo.Product;
 
+/**
+ * De panel waarin de bin packing simulatie wordt getekend.
+ * 
+ * @author Bas
+ */
 public class BinPackingPanel extends JPanel implements Runnable, BinPacking {
+	/**
+	 * Het aantal lijntjes op de lopende band
+	 */
 	private static final int LINE_COUNT = 13;
-	private static final int PRODUCT_SIZE_STRING_ADJUSTMENT = 3;
+	/**
+	 * De afstand die de string naar links moet worden bewogen om in het midden
+	 * van een product te staan
+	 */
+	private static final int PRODUCT_SIZE_STRING_SPACE = 3;
+	/**
+	 * De grootte van een product (vierkant)
+	 */
 	private static final int PRODUCT_SIZE = 50;
+	/**
+	 * De lengte van de overflow bin
+	 */
 	private static final int OVERFLOW_LENGTH = 150;
+	/**
+	 * De beedte van de overflow bin
+	 */
 	private static final int OVERFLOW_WIDTH = 300;
+	/**
+	 * De horizontale inspring lengte van de string die de grootte van een
+	 * product in een bin ingeeft.
+	 */
 	private static final int STRING_INDENT_X = 3;
+	/**
+	 * De verticale inspring lengte van de string die de grootte van een product
+	 * in een bin ingeeft.
+	 */
 	private static final int STRING_INDENT_Y = 15;
+	/**
+	 * De grootte van een bin (vierkant)
+	 */
 	private static final int BIN_SIZE = 75;
+	/**
+	 * De Y locatie van de hoogste bin
+	 */
 	private static final int BIN_Y = 200;
+	/**
+	 * De verticale afstand tussen bins
+	 */
 	private static final int BIN_VERTICAL_DISTANCE = 100;
+	/**
+	 * De horizantale afstand tussen bins
+	 */
 	private static final int BIN_HORIZONTAL_DISTANCE = 225;
+	/**
+	 * De X locatie van de lopende band
+	 */
 	private static final int CONVEYOR_X = 100;
+	/**
+	 * De Y locatie van de lopende band
+	 */
 	private static final int CONVEYOR_Y = 240;
+	/**
+	 * De lengte van de lopende band
+	 */
 	private static final int CONVEYOR_LENGTH = 260;
+	/**
+	 * De breedte van de lopende band
+	 */
 	private static final int CONVEYOR_WIDTH = 100;
-	private static final int STRING_SPACE = LINE_COUNT;
+	/**
+	 * De horizontale afstand dat alles in de simulatie naar rechts bewogen moet
+	 * worden om links ruimte over te houden voor de grootte van de inhoud van
+	 * de bins
+	 */
+	private static final int STRING_SPACE = 13;
+	/**
+	 * Afstand tussen lijntjes op de lopende band
+	 */
 	private static final int LINE_DISTANCE = 20;
+	/**
+	 * De onderkant van het panel
+	 */
 	private static final int BORDER_Y = 500;
 
 	/**
@@ -82,9 +146,8 @@ public class BinPackingPanel extends JPanel implements Runnable, BinPacking {
 		lines = new int[LINE_COUNT];
 
 		// Hier krijgt elke lijn een hoogte
-		for (int a = 0; a < lines.length; a++) {
+		for (int a = 0; a < lines.length; a++)
 			lines[a] = BORDER_Y - LINE_DISTANCE * a;
-		}
 		productY = BORDER_Y;
 	}
 
@@ -143,8 +206,8 @@ public class BinPackingPanel extends JPanel implements Runnable, BinPacking {
 		if (!productLine.isEmpty())
 			g.drawString(Integer.toString(productLine.get(0).getSize()),
 					CONVEYOR_X + STRING_SPACE + CONVEYOR_WIDTH / 2
-							- PRODUCT_SIZE_STRING_ADJUSTMENT, productY
-							+ PRODUCT_SIZE / 2 + PRODUCT_SIZE_STRING_ADJUSTMENT);
+							- PRODUCT_SIZE_STRING_SPACE, productY
+							+ PRODUCT_SIZE / 2 + PRODUCT_SIZE_STRING_SPACE);
 	}
 
 	/**
@@ -254,17 +317,12 @@ public class BinPackingPanel extends JPanel implements Runnable, BinPacking {
 				else {
 					overflow = overflow + productLine.get(0).getSize();
 				}
-				// Zet in de tabel dat hij is ingepakt.
-//				productLine.get(0).setStatus("ingepakt");
-//				executionManager.getMain().productStatusUpdated(
-//						productLine.get(0));
-
 				// Haal het product en de bin waar hij in moet uit de wachtwij
 				productLine.remove(0);
 				binLine.remove(0);
 			}
 			repaint();
-			frame();
+			sleep();
 		}
 	}
 
@@ -282,11 +340,11 @@ public class BinPackingPanel extends JPanel implements Runnable, BinPacking {
 	}
 
 	/**
-	 * Stop the animation for 25 milliseconds
+	 * Stopt de animatie for 20 milliseconden
 	 * 
 	 * @author Bas
 	 */
-	private void frame() {
+	private void sleep() {
 		/*
 		 * Omdat ik niet steeds deze try/catch in de code wil hebben staan, heb
 		 * ik hier een private method gemaakt.
@@ -294,11 +352,12 @@ public class BinPackingPanel extends JPanel implements Runnable, BinPacking {
 		try {
 			Thread.sleep(20);
 		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
 	}
 
 	/**
-	 * Stops the simulation
+	 * Stopt de simulatie
 	 * 
 	 * @author Bas
 	 */
@@ -315,7 +374,7 @@ public class BinPackingPanel extends JPanel implements Runnable, BinPacking {
 	 * @param ExecutionManager
 	 * @author Bas
 	 */
-	public void setEM(ExecutionManager executionManager) {
+	public void setExecutionManager(ExecutionManager executionManager) {
 		this.executionManager = executionManager;
 		bins = new ArrayList<Bin>();
 		for (Bin bin : executionManager.getBinManager().bins)

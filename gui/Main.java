@@ -211,8 +211,8 @@ public class Main extends JFrame implements XMLUploadedListener,
 				binManager, opPanel, bpPanel, tsp, bpp, 10, 20, useDetectedSize);
 
 		// geef de em door aan de panels zodat ze de gegevens kunnen uitlezen
-		bpPanel.setEM(executionManager);
-		opPanel.setEM(executionManager);
+		bpPanel.setExecutionManager(executionManager);
+		opPanel.setExecutionManager(executionManager);
 
 		// maak een frame aan met de panels die we net gemaakt hebben
 		SimulationFrame frame = new SimulationFrame(bpPanel, opPanel);

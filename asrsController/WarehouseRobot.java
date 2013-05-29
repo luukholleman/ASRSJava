@@ -4,7 +4,6 @@ import gui.OrderPickingPanel;
 
 import java.util.ArrayList;
 
-
 import productInfo.Location;
 import productInfo.Product;
 
@@ -18,7 +17,7 @@ public class WarehouseRobot {
 	/**
 	 * De locatie van de robot in het warenhuis
 	 */
-	public Location loc;
+	public Location location;
 	/**
 	 * De pixels van de robot worden alleen gebruikt voor het tekenen in de
 	 * simulatie
@@ -48,12 +47,12 @@ public class WarehouseRobot {
 	/**
 	 * Constructor voor de simulatie
 	 * 
-	 * @param loc
+	 * @param location
 	 * @param products
 	 * @param id
 	 */
-	public WarehouseRobot(Location loc, ArrayList<Product> products, int id) {
-		this.loc = loc;
+	public WarehouseRobot(Location location, ArrayList<Product> products, int id) {
+		this.location = location;
 		
 		//De lading begint op 0
 		load = 0;
@@ -69,12 +68,12 @@ public class WarehouseRobot {
 	/**
 	 * Constructor voor de Task
 	 * 
-	 * @param loc
+	 * @param location
 	 * @param id
 	 */
-	public WarehouseRobot(Location loc, int id) {
-		this.loc = loc;
-		pixels = loc;
+	public WarehouseRobot(Location location, int id) {
+		this.location = location;
+		pixels = location;
 		load = 0;
 		productsOnFork = new ArrayList<Product>();
 		this.id = id;

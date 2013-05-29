@@ -1,7 +1,3 @@
-/** 
- * @author Bas van Koesveld
- */
-
 package gui;
 
 import java.awt.*;
@@ -20,30 +16,85 @@ import asrsController.ExecutionManager;
 import asrsController.WarehouseRobot;
 import asrsController.Warehouse;
 
+/**
+ * De panel waarin het warenhuis wordt gesimuleerd
+ * 
+ * @author Bas
+ */
 public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
+	/**
+	 * De inspring van de getekende robot
+	 */
 	private static final int ROBOT_INDENT = 1;
+	/**
+	 * De tijdsduur van een frame
+	 */
 	private static final int FRAME_TIME = 25;
+	/**
+	 * De Y locatie van de bin packer
+	 */
 	private static final int BINPACKER_Y = 3;
+	/**
+	 * De X locatie van de bin packer
+	 */
 	private static final int BINPACKER_X = -2;
+	/**
+	 * De tijdsduur dat de robot stil staat nadat hij iets heeft opgepakt
+	 */
 	private static final int PAUSE_TIME_ON_PICKUP = 1000;
-	private static final int LOAD_MAX = BINPACKER_Y;
+	/**
+	 * De maximale lading van de robot
+	 */
+	private static final int LOAD_MAX = 3;
+	/**
+	 * De grootte van een product in het warenhuis
+	 */
 	private static final int PRODUCT_SIZE = 15;
-	private static final int PRODUCT_INDENT = LOAD_MAX;
+	/**
+	 * De inspring van een product
+	 */
+	private static final int PRODUCT_INDENT = 3;
+	/**
+	 * De grootte van een robot
+	 */
 	private static final int ROBOT_SIZE = 18;
+	/**
+	 * De X locatie van het rechter uiteinde van de rails
+	 */
 	private static final int RAILS_X = 260;
+	/**
+	 * De hoogte van de rails
+	 */
 	private static final int RAILS_Y = 420;
+	/**
+	 * De grootte van een markering van een bestemming
+	 */
 	private static final int DESTINATION_SIZE = 16;
+	/**
+	 * De inspring van een bestemming
+	 */
 	private static final int DESTINATION_INDENT = 2;
+	/**
+	 * De maximale lengte van het warenhuis
+	 */
 	private static final int WAREHOUSE_MAX_Y = 19;
+	/**
+	 * De grootte van elke cel in het warenhuis
+	 */
 	private static final int CELL_SIZE = 20;
+	/**
+	 * De maximale breedte van het warenhuis
+	 */
 	private static final int WAREHOUSE_MAX_X = 9;
+	/**
+	 * De grootte van de bin packer (vierkant)
+	 */
 	private static final int BINPACKER_SIZE = 60;
+	/**
+	 * De Y pixel locatie van de bin packer
+	 */
 	private static final int BINPACKER_DEPTH = 340;
 
-	/**
-	 * De panel van de bin packer
-	 */
-	private BinPackingPanel binPackingPanel;
 	/**
 	 * De ExecutionManager die alle data opslaat en simulatie ger elateerde
 	 * berekeningen uitvoert
@@ -78,32 +129,28 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 	/**
 	 * constructor
 	 * 
-	 * @param bpPanel
+	 * @param BinPackingPanel
 	 * @author Bas
 	 */
 	public OrderPickingPanel(BinPackingPanel bpPanel) {
 		super();
 		setSize(300, 500);
 
-		/*
-		 * Het BinPackingPanel wordt in het OrderPickingPanel opgeslagen zodat
-		 * het Order Picker kan zeggen wanneer er producten naar de Bin Packer
-		 * moeten worden gestuurd.
-		 */
-		this.binPackingPanel = bpPanel;
 		// Beide robots worden aangemaakt en op hun begin plek gezet.
 		robotLeft = new WarehouseRobot(getStartLocation(0), 0);
 		robotLeft.pixels = new Location(BINPACKER_SIZE + ROBOT_INDENT
-				+ (robotLeft.loc.getX() * CELL_SIZE), ROBOT_INDENT
-				+ ((WAREHOUSE_MAX_Y - robotLeft.loc.getY()) * CELL_SIZE));
+				+ (robotLeft.location.getX() * CELL_SIZE), ROBOT_INDENT
+				+ ((WAREHOUSE_MAX_Y - robotLeft.location.getY()) * CELL_SIZE));
+
 		robotRight = new WarehouseRobot(getStartLocation(1), 1);
 		robotRight.pixels = new Location(BINPACKER_SIZE + ROBOT_INDENT
-				+ (robotRight.loc.getX() * CELL_SIZE), ROBOT_INDENT
-				+ ((WAREHOUSE_MAX_Y - robotRight.loc.getY()) * CELL_SIZE));
+				+ (robotRight.location.getX() * CELL_SIZE), ROBOT_INDENT
+				+ ((WAREHOUSE_MAX_Y - robotRight.location.getY()) * CELL_SIZE));
 		// Beide robots worden in een array gezet om makkelijk aan te roepen.
 		robots = new WarehouseRobot[2];
 		robots[0] = robotLeft;
 		robots[1] = robotRight;
+
 		/*
 		 * Alle producten worden uit het warenhuis gehaald zodat ze kunnen
 		 * getoont worden.
@@ -153,8 +200,9 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 		g.setColor(Color.blue);
 		for (WarehouseRobot robot : robots)
 			if (robot.destination != null)
-				g.drawRect(BINPACKER_SIZE + DESTINATION_INDENT
-						+ (robot.destination.getX() * CELL_SIZE),
+				g.drawRect(
+						BINPACKER_SIZE + DESTINATION_INDENT
+								+ (robot.destination.getX() * CELL_SIZE),
 						((WAREHOUSE_MAX_Y - robot.destination.getY()) * CELL_SIZE)
 								+ DESTINATION_INDENT, DESTINATION_SIZE,
 						DESTINATION_SIZE);
@@ -176,21 +224,22 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 		 */
 		for (WarehouseRobot robot : robots) {
 			if (robot != null) {
-				g.drawRect(robot.pixels.getX(), robot.pixels.getY(), ROBOT_SIZE,
-						ROBOT_SIZE);
+				g.drawRect(robot.pixels.getX(), robot.pixels.getY(),
+						ROBOT_SIZE, ROBOT_SIZE);
 				g.drawLine(robot.pixels.getX() - 1, robot.pixels.getY(),
 						robot.pixels.getX() - 1, RAILS_Y);
-				g.drawLine(robot.pixels.getX() + ROBOT_SIZE + 1, robot.pixels.getY(),
-						robot.pixels.getX() + ROBOT_SIZE + 1, RAILS_Y);
+				g.drawLine(robot.pixels.getX() + ROBOT_SIZE + 1,
+						robot.pixels.getY(), robot.pixels.getX() + ROBOT_SIZE
+								+ 1, RAILS_Y);
 
 			}
 		}
 
 		// Inhoud van de robots tekenen
 		for (WarehouseRobot robot : robots) {
-			g.fillRect(robot.loc.getX() + 7 - (robot.load * 2), robot.loc.getY() + 7
-					- (robot.load * 2), LOAD_MAX + (robot.load * 5), LOAD_MAX
-					+ (robot.load * 5));
+			g.fillRect(robot.location.getX() + 7 - (robot.load * 2),
+					robot.location.getY() + 7 - (robot.load * 2), LOAD_MAX
+							+ (robot.load * 5), LOAD_MAX + (robot.load * 5));
 		}
 	}
 
@@ -218,8 +267,6 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 	/**
 	 * Begint de thread om de animatie te laten lopen
 	 * 
-	 * @param void
-	 * @return void
 	 * @author Bas
 	 */
 	public void start() {
@@ -242,8 +289,7 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 		Order order = executionManager.getOrder();
 		products = order.getProducts();
 
-		// Deze regel komt van het internet. Ik begrijp nog steeds threads niet
-		// volledig, sorry.
+		// Haal de huidige thread op
 		Thread thisThread = Thread.currentThread();
 		while (runner == thisThread) {
 			// Als de robots niet vol zijn, haal het volgende product op.
@@ -265,18 +311,13 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 				warehouse.remove(robots[0].destination);
 				warehouse.remove(robots[1].destination);
 				for (WarehouseRobot robot : robots) {
-					if (robot.loc.getX() == BINPACKER_X
-							&& robot.loc.getY() == BINPACKER_Y)
+					if (robot.location.getX() == BINPACKER_X
+							&& robot.location.getY() == BINPACKER_Y)
 						executionManager.deliveredProduct(robot.id);
 					else
 						for (Product product : products)
-							if (robot.destination == product.getLocation()) {
+							if (robot.destination == product.getLocation())
 								robot.productsOnFork.add(product);
-//								product.setStatus("opgepakt");
-//								executionManager.getMain()
-//										.productStatusUpdated(product);
-							}
-
 				}
 
 				// Als een van de robots vol is, laat deze robot dan naar de
@@ -318,14 +359,16 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 	 */
 	private void move() {
 		// De beweging wordt verdeelt in stappen over de X en Y as.
-		int stepx0 = robots[0].destination.getX() - robots[0].loc.getX();
-		int stepy0 = robots[0].destination.getY() - robots[0].loc.getY();
+		int stepx0 = robots[0].destination.getX() - robots[0].location.getX();
+		int stepy0 = robots[0].destination.getY() - robots[0].location.getY();
 
-		int stepx1 = robots[1].destination.getX() - robots[1].loc.getX();
-		int stepy1 = robots[1].destination.getY() - robots[1].loc.getY();
+		int stepx1 = robots[1].destination.getX() - robots[1].location.getX();
+		int stepy1 = robots[1].destination.getY() - robots[1].location.getY();
+
 		// De robot wordt naar het doel verplaatst
-		robots[0].loc = robots[0].destination;
-		robots[1].loc = robots[1].destination;
+		robots[0].location = robots[0].destination;
+		robots[1].location = robots[1].destination;
+
 		// Hier wordt in 20 frames de animatie van de verplaatsing getekent
 		for (int i = 0; i < CELL_SIZE; i++) {
 			robots[0].pixels.setX(robots[0].pixels.getX() + stepx0);
@@ -347,6 +390,7 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 		try {
 			Thread.sleep(FRAME_TIME);
 		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -360,6 +404,7 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 		try {
 			Thread.sleep(pause);
 		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -369,8 +414,8 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 	}
 
 	@Override
-	public void bringToBinPacker(int robotID) {
-		robots[robotID].destination = new Location(BINPACKER_X, LOAD_MAX);
+	public void bringToBinPacker(int robotId) {
+		robots[robotId].destination = new Location(BINPACKER_X, LOAD_MAX);
 	}
 
 	@Override
@@ -390,30 +435,28 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 
 	@Override
 	public int getMaxLoad() {
-		// We stellen hier dat er maximaal LOAD_MAX producten op de fork van een robot
-		// kunnen kunnen.
-		return LOAD_MAX;
+		// Omdat we het terug brengen van producten anders behandellen, sturen
+		// we een oneindig aantal maximum producten
+		return WIDTH * HEIGHT;
 	}
 
 	@Override
 	public Location getStartLocation(int robotId) {
-		if (robotId == 0) {
+		if (robotId == 0)
 			return new Location(-1, 0);
-		} else if (robotId == 1) {
+		else if (robotId == 1)
 			return new Location(10, 0);
-		} else {
+		else
 			return null;
-		}
-
 	}
 
 	/**
 	 * EM setter
 	 * 
-	 * @param eM
+	 * @param exectuionManager
 	 * @author Bas
 	 */
-	public void setEM(ExecutionManager eM) {
-		this.executionManager = eM;
+	public void setExecutionManager(ExecutionManager exectuionManager) {
+		this.executionManager = exectuionManager;
 	}
 }
