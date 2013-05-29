@@ -5,7 +5,7 @@ import asrs.ProductNotFoundException;
 
 /**
  * Deze classe bevat informatie over een product
- * @author timpotze
+ * @author Tim
  *
  */
 public class Product {
@@ -57,11 +57,21 @@ public class Product {
 		Database.getProductDatabaseInfo(this);
 	}
 	
+	/**
+	 * 
+	 * @param location locatie van het product
+	 * @param id artikelnummer van dit product
+	 */
 	public Product(Location location, int id){
 		this.location = location;
 		this.id = id;
 	}
 	
+	/**
+	 * 
+	 * @param size formaat van het product
+	 * @param id artikelnummer van dit product
+	 */
 	public Product(int size, int id){
 		this.size = size;
 		this.id = id;
@@ -139,9 +149,6 @@ public class Product {
 		this.location = location;
 	}
 	
-	/**
-	 * String representatief voor dit Product
-	 */
 	@Override
 	public String toString() {
 		return "Product(" + id + ", " + description + " @ " + location + ")";

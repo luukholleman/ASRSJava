@@ -3,23 +3,19 @@ package tspAlgorithm;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-
-import bppAlgorithm.Bin;
-
-import order.Location;
 import order.Product;
 
 /**
  * TSP algoritme die per colom alle producten langs gaat
- * @author timpotze
+ * @author Tim
  *
  */
 public class Column extends TSPAlgorithm {
-	private static String name = "Column";
+	private static final String NAME = "Column";
 
 	@Override
 	public String getName() {
-		return name;
+		return NAME;
 	}
 
 	public ArrayList<Product> calculateRoute(ArrayList<Product> products,

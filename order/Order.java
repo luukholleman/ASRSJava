@@ -4,7 +4,7 @@ import java.util.Date;
 
 /**
  * Deze classe bevat informatie over de order
- * @author timpotze
+ * @author Tim
  *
  */
 public class Order {
