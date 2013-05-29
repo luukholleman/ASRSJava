@@ -4,6 +4,12 @@ import gnu.io.CommPortIdentifier;
 import tspAlgorithm.TSPAlgorithm;
 import bppAlgorithm.BPPAlgorithm;
 
+/**
+ * 
+ * @author Luuk
+ *
+ * Listener voor start event
+ */
 public interface ExecuteButtonPressedListener {
 
 	/**

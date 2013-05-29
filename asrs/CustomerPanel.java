@@ -1,11 +1,8 @@
-/**
- * @author Luuk
- * 
- * Deze class weergeeft de klantinformatie in de GUI
- */
+
 package asrs;
 
 import java.awt.Dimension;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -15,6 +12,11 @@ import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+/**
+ * @author Luuk
+ * 
+ * Deze class weergeeft de klantinformatie in de GUI
+ */
 public class CustomerPanel extends JPanel {
 	/**
 	 * Klantnummer string
@@ -128,7 +130,7 @@ public class CustomerPanel extends JPanel {
 	 * @param date
 	 */
 	public void setDate(Date date) {
-		DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+		DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
 		dateVal.setText(df.format(date));
 	}
 
