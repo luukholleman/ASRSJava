@@ -1,4 +1,4 @@
-package asrs;
+package gui;
 
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -15,6 +15,11 @@ import javax.swing.filechooser.FileFilter;
 
 import listener.XMLUploadedListener;
 
+/**
+ * @author Luuk
+ *
+ * Verantwoordelijk voor het uploaden van de xml
+ */
 public class XMLPanel extends JPanel implements ActionListener {
 	private JButton xmlBtn = new JButton("XML Inlezen");
 	private JLabel fileLbl = new JLabel("Geen bestand gekozen");
@@ -50,6 +55,9 @@ public class XMLPanel extends JPanel implements ActionListener {
 			xul.xmlUploaded(xmlFileLocation);
 	}
 
+	/**
+	 * Bouw de ui
+	 */
 	private void buildUI() {
 		// maak er een big ass button van
 		xmlBtn.setPreferredSize(new Dimension(480, 100));
@@ -75,15 +83,15 @@ public class XMLPanel extends JPanel implements ActionListener {
 				}
 
 				@Override
-				public boolean accept(File f) {
+				public boolean accept(File file) {
 					// als het een map is returnen we gelijk true
-					if (f.isDirectory())
+					if (file.isDirectory())
 						return true;
 
 					// haalt de extentie op
-					String extension = f.getName().substring(
-							f.getName().lastIndexOf(".") + 1,
-							f.getName().length());
+					String extension = file.getName().substring(
+							file.getName().lastIndexOf(".") + 1,
+							file.getName().length());
 
 					// als het een xml file is triggeren we het event
 					if (extension.equals("xml"))
@@ -103,7 +111,5 @@ public class XMLPanel extends JPanel implements ActionListener {
 				fileLbl.setText("Gekozen bestand: " + file.getName());
 			}
 		}
-		// TODO Auto-generated method stub
-
 	}
 }

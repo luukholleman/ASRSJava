@@ -1,21 +1,15 @@
-/**
- * @author Tim Potze
- * @date 3 mei
- */
+
 package tspAlgorithm;
 
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
-import order.Location;
-import order.Product;
+import productInfo.Location;
+import productInfo.Product;
 
 /**
- * Brute force algoritme om de allerbeste route te berekenen
- * 
- * @author timpotze
- * 
+ * @author Luuk
  */
 public class ForcedGreedy extends TSPAlgorithm {
 	private static final int INFINITY = 99999;
@@ -42,7 +36,7 @@ public class ForcedGreedy extends TSPAlgorithm {
 		ArrayList<Product> splittedProducts = splitOrder(products, numberOfRobots, currentRobot);
 		
 		// als er meer dan 11 producten moet worden berekend is het niet meer haalbaar met bruteforce, greedy is het alternatief
-		if(splittedProducts.size() < 10) {
+		if(splittedProducts.size() <= 10) {
 			// steinhaus om alle combinaties te maken
 			Steinhaus sh = new Steinhaus();
 
@@ -54,7 +48,7 @@ public class ForcedGreedy extends TSPAlgorithm {
 				locations.add(p.getLocation());
 			
 			// laat de kortste berekenen
-			ArrayList<Location> fastest = sh.getShortestPathForLocation(locations, new Location(0, 0));
+			ArrayList<Location> fastest = sh.getShortestPathForLocation(locations, new Location((20 * currentRobot) - 1, 0));
 			
 			// nieuwe lijst met producten
 			ArrayList<Product> newProducts = new ArrayList<Product>();
@@ -67,9 +61,11 @@ public class ForcedGreedy extends TSPAlgorithm {
 			
 			return newProducts;
 		}
+		
+		location = new Location(19 * currentRobot, 0);
 
 		this.route = new ArrayList<Product>();
-		
+
 		while (nextNode(splittedProducts));
 
 		return this.route;
@@ -95,11 +91,9 @@ public class ForcedGreedy extends TSPAlgorithm {
 		for (Product product : products) {
 			float distance = location.getDistanceTo(product.getLocation());
 
-			// als minDistance is de eerste keer, dan moet hij altijd geset
-			// worden.
 			// de andere statement is als de net berekende distance korter is
 			// dan de vorige
-			if (minDistance > distance) {
+			if (distance <= minDistance) {
 				minDistance = distance;
 				minProduct = product;
 			}

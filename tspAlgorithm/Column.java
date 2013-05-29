@@ -4,22 +4,19 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import bppAlgorithm.Bin;
-
-import order.Location;
-import order.Product;
+import productInfo.Product;
 
 /**
  * TSP algoritme die per colom alle producten langs gaat
- * @author timpotze
+ * @author Tim
  *
  */
 public class Column extends TSPAlgorithm {
-	private static String name = "Column";
+	private static final String NAME = "Column";
 
 	@Override
 	public String getName() {
-		return name;
+		return NAME;
 	}
 
 	public ArrayList<Product> calculateRoute(ArrayList<Product> products,
@@ -43,7 +40,7 @@ public class Column extends TSPAlgorithm {
 
 			//Ga door alle producten heen, en vind de juisten
 			for (Product product : products)
-				if (product.getLocation().x == x)
+				if (product.getLocation().getX() == x)
 					column.add(product);
 
 			//Verwijder de gevonden producten
@@ -54,7 +51,7 @@ public class Column extends TSPAlgorithm {
 				//Sorteer de colom op y as coordinaat
 				Collections.sort(column, new Comparator<Product>() {
 					public int compare(Product one, Product two) {
-						return ((Integer)(one.getLocation().y)).compareTo(two.getLocation().y);
+						return ((Integer)(one.getLocation().getY())).compareTo(two.getLocation().getY());
 					}
 				});
 				

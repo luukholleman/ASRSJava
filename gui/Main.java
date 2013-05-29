@@ -1,17 +1,10 @@
-/**
- * De main class is de core class in deze applicatie, hij start de init van de
- * gui en koppelt de verschillende packages aan elkaar
- * 
- * @author Luuk
- */
-package asrs;
+package gui;
 
 import gnu.io.CommPortIdentifier;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 
-import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -19,16 +12,27 @@ import javax.swing.UIManager;
 
 import listener.ExecuteButtonPressedListener;
 import listener.XMLUploadedListener;
-import order.Order;
-import order.Product;
+import productInfo.Order;
+import productInfo.Product;
+import productInfo.ProductNotFoundException;
 import taskSimulate.TaskSimulationFrame;
 import tspAlgorithm.TSPAlgorithm;
+import utilities.Database;
+import utilities.DatabaseConnectionFailedException;
+import utilities.XMLLoader;
 import asrsController.BinPackingArduino;
 import asrsController.ExecutionManager;
 import asrsController.WarehouseArduino;
 import bppAlgorithm.BPPAlgorithm;
 import bppAlgorithm.Bin;
 import bppAlgorithm.BinManager;
+
+/**
+ * De main class is de core class in deze applicatie, hij start de init van de
+ * gui en koppelt de verschillende packages aan elkaar
+ * 
+ * @author Luuk
+ */
 public class Main extends JFrame implements XMLUploadedListener,
 		ExecuteButtonPressedListener {
 	
@@ -96,14 +100,14 @@ public class Main extends JFrame implements XMLUploadedListener,
 		// sluit het proces als je op kruisje drukt
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		/**
+		/*
 		 * Het scherm is op te delen in 2 kolommen De flowlayout zorgt voor de
 		 * kolommen en de panels zorgen dat we meerdere componenten in 1 kant
 		 * kunnen stoppen
 		 */
 		setLayout(new BorderLayout());
 
-		// start de ui
+		// bouw de ui
 		buildUI();
 
 		// bind listeners zodat we acties kunnen tracken
@@ -119,13 +123,13 @@ public class Main extends JFrame implements XMLUploadedListener,
 	 * @return void
 	 */
 	private void buildUI() {
-		/**
+		/*
 		 * Linker en rechterkant van het scherm
 		 */
 		JPanel leftPanel = new JPanel();
 		JPanel rightPanel = new JPanel();
 
-		/**
+		/*
 		 * zet de leftpanel op een breedte de rechter heeft dit niet nodig omdat
 		 * daar maar 1 panel in zit
 		 */
@@ -207,8 +211,8 @@ public class Main extends JFrame implements XMLUploadedListener,
 				binManager, opPanel, bpPanel, tsp, bpp, 10, 20, useDetectedSize);
 
 		// geef de em door aan de panels zodat ze de gegevens kunnen uitlezen
-		bpPanel.setEM(executionManager);
-		opPanel.setEM(executionManager);
+		bpPanel.setExecutionManager(executionManager);
+		opPanel.setExecutionManager(executionManager);
 
 		// maak een frame aan met de panels die we net gemaakt hebben
 		SimulationFrame frame = new SimulationFrame(bpPanel, opPanel);
@@ -245,10 +249,6 @@ public class Main extends JFrame implements XMLUploadedListener,
 		warehouseArduino.setExecutionManager(executionManager);
 
 		executionManager.start();
-
-		// warehouseArduino.start();
-
-		System.out.println("test");
 	}
 
 	@Override

@@ -1,34 +1,57 @@
-/**
- * @author Luuk
- */
+
 package asrsController;
 
 import gnu.io.CommPortIdentifier;
-import gnu.io.SerialPort;
+import productInfo.Location;
 
-import java.io.InputStream;
-import java.io.OutputStream;
-
-import order.Location;
-import order.Order;
-import order.Product;
-
+/**
+ * @author Luuk
+ * 
+ * Class verantwoordelijk voor het ophalen van de producten uit het fyxieke magazijn
+ */
 public class WarehouseArduino extends Arduino implements Warehouse {
 
+	/**
+	 * Pick up product commando
+	 */
 	public static final byte PICKUP_PRODUCT = 1;
+
+	/**
+	 * Deliver up product commando
+	 */
 	public static final byte DELIVER_PRODUCT = 2;
+
+	/**
+	 * Done commando
+	 */
 	public static final byte DONE = 3;
 
+	/**
+	 * Execution manager
+	 */
 	private ExecutionManager executionManager;
 
+	/**
+	 * Executing command, laatste commando
+	 */
 	private byte executingCommand;
 
+	/**
+	 * ctor
+	 * 
+	 * @param port
+	 */
 	public WarehouseArduino(CommPortIdentifier port) {
 		super(port);
 
 		open();
 	}
 
+	/**
+	 * EM setter
+	 * 
+	 * @param executionManager
+	 */
 	public void setExecutionManager(ExecutionManager executionManager) {
 		this.executionManager = executionManager;
 	}
@@ -39,7 +62,7 @@ public class WarehouseArduino extends Arduino implements Warehouse {
 		System.out.println("Retrieve product");
 
 		// geef het commando retrieve, parameters zijn de x en y locatie
-		Byte[] bytes = { PICKUP_PRODUCT, (byte) location.x, (byte) location.y };
+		Byte[] bytes = { PICKUP_PRODUCT, (byte) location.getX(), (byte) location.getY() };
 
 		sendBytes(bytes);
 
@@ -59,9 +82,6 @@ public class WarehouseArduino extends Arduino implements Warehouse {
 		sendByte(DONE);
 
 		executingCommand = DONE;
-		
-		//Sluit de connectie...
-		close();
 	}
 
 	@Override
@@ -78,23 +98,28 @@ public class WarehouseArduino extends Arduino implements Warehouse {
 	public int getMaxLoad() {
 		return 1;
 	}
+	
 	@Override
 	public void receivedData() {
-		System.out.println("Response!");
+		
 		switch (executingCommand) {
-		case PICKUP_PRODUCT:
-			System.out.println("Pickup's response...");
-			if(getInputBuffer().size() == 2)
-			{
-				System.out.println("Pickup has two bytes in buffer...");
-				//Vertel EM dat we een product hebben
-				executionManager.pickedUpProduct(0, (byte)((int)getInputBuffer().get(0)));
-			}
-			break;
-		case DELIVER_PRODUCT:
-			System.out.println("Deliver's response...");
-			executionManager.deliveredProduct(0);
-			break;
+			case PICKUP_PRODUCT:
+				System.out.println("Pickup's response...");
+				
+				if(getInputBuffer().size() == 2) {
+					System.out.println("Pickup has two bytes in buffer...");
+					
+					//Vertel EM dat we een product hebben
+					executionManager.pickedUpProduct(0, (byte)((int)getInputBuffer().get(0)));
+				}
+				
+				break;
+			case DELIVER_PRODUCT:
+				System.out.println("Deliver's response...");
+				
+				executionManager.deliveredProduct(0);
+				
+				break;
 		}
 	}
 }

@@ -3,8 +3,8 @@ package tspAlgorithm;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import order.Location;
-import order.Product;
+import productInfo.Location;
+import productInfo.Product;
 
 /**
  * Bereken de korste route door om en om per robot het dichts bijzijnde product
@@ -16,13 +16,14 @@ import order.Product;
 public class Simultaneously extends TSPAlgorithm {
 
 	private static final float INFINITY = 99999.0f;
-	private static String name = "Simultaneous";
+	private static final String NAME = "Simultaneous";
 
 	@Override
 	public String getName() {
-		return name;
+		return NAME;
 	}
 
+	@Override
 	public ArrayList<Product> calculateRoute(ArrayList<Product> products,
 			int numberOfRobots, int currentRobot) {
 

@@ -1,28 +1,41 @@
-/**
- * @author Tim Potze
- * @date 15 april
- */
 package tspAlgorithm;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import order.Product;
+import productInfo.Product;
 
+/**
+ * Algoritme interface voor de TSP algoritmes
+ * @author Tim
+ *
+ */
 public abstract class TSPAlgorithm {
+	
+	/**
+	 * Verkrijg naam van algoritme
+	 * @return
+	 */
 	public abstract String getName();
 
 	/**
-	 * Calculates best route for the products that should be on-route
-	 * 
-	 * @param products
-	 *            the products that have to be picked up
-	 * @return list of products in the proper order
+	 * Bereken de snelste route
+	 * @param products producten om op te halen
+	 * @param numberOfRobots het aantal robots
+	 * @param currentRobot de huidige robot voor wie het pad moet worden berekend
+	 * @return de route
 	 */
 	public abstract ArrayList<Product> calculateRoute(
 			ArrayList<Product> products, int numberOfRobots, int currentRobot);
 
+	/**
+	 * Splits de order efficient voor het aantal robots megegeven
+	 * @param products produducten om op te halen
+	 * @param numberOfRobots het aantal robots
+	 * @param currentRobot de robot voor wie je aan het splitsen bent
+	 * @return het gesplitste producten
+	 */
 	protected ArrayList<Product> splitOrder(ArrayList<Product> products,
 			int numberOfRobots, int currentRobot) {
 
@@ -31,8 +44,8 @@ public abstract class TSPAlgorithm {
 
 		Collections.sort(allProducts, new Comparator<Product>() {
 			public int compare(Product one, Product two) {
-				return ((Integer) (one.getLocation().x)).compareTo(two
-						.getLocation().x);
+				return ((Integer) (one.getLocation().getX())).compareTo(two
+						.getLocation().getX());
 			}
 		});
 

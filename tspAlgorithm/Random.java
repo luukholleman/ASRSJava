@@ -8,10 +8,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import order.Location;
-import order.Product;
+import productInfo.Location;
+import productInfo.Product;
 
 public class Random extends TSPAlgorithm {
+	/**
+	 * De naam
+	 */
 	public static String name = "Random";
 	
 	@Override
@@ -23,10 +26,11 @@ public class Random extends TSPAlgorithm {
 	public ArrayList<Product> calculateRoute(ArrayList<Product> products,
 			int numberOfRobots, int currentRobot) {
 		
+		// een lekker split ijsje
 		ArrayList<Product> splittedProducts = splitOrder(products, numberOfRobots, currentRobot);
 		
-		 Collections.shuffle(splittedProducts);
+		Collections.shuffle(splittedProducts);
 		 
-		 return splittedProducts;
+		return splittedProducts;
 	}
 }

@@ -6,8 +6,8 @@ package tspAlgorithm;
 
 import java.util.ArrayList;
 
-import order.Location;
-import order.Product;
+import productInfo.Location;
+import productInfo.Product;
 
 public class Greedy extends TSPAlgorithm {
 	private static final int INFINITY = 99999;
@@ -35,6 +35,8 @@ public class Greedy extends TSPAlgorithm {
 	public ArrayList<Product> calculateRoute(ArrayList<Product> products,
 			int numberOfRobots, int currentRobot) {
 		this.products = splitOrder(products, numberOfRobots, currentRobot);
+		
+		location = new Location((20 * currentRobot) - 1, 0);
 
 		this.route = new ArrayList<Product>();
 
@@ -62,11 +64,9 @@ public class Greedy extends TSPAlgorithm {
 		for (Product product : products) {
 			float distance = location.getDistanceTo(product.getLocation());
 
-			// als minDistance is de eerste keer, dan moet hij altijd geset
-			// worden.
 			// de andere statement is als de net berekende distance korter is
 			// dan de vorige
-			if (minDistance > distance) {
+			if (distance <= minDistance) {
 				minDistance = distance;
 				minProduct = product;
 			}

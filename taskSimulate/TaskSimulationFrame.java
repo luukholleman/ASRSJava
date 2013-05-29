@@ -6,8 +6,9 @@ import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import order.Location;
-import order.Product;
+
+import productInfo.Location;
+import productInfo.Product;
 
 import tspAlgorithm.TSPAlgorithm;
 import bppAlgorithm.BPPAlgorithm;

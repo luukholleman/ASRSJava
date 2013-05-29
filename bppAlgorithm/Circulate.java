@@ -2,8 +2,8 @@
 package bppAlgorithm;
 
 import java.util.ArrayList;
+import productInfo.Product;
 
-import order.Product;
 /**
  * Een algoritme die altijd om de beurt een bin kiest
  * 
@@ -20,16 +20,17 @@ public class Circulate implements BPPAlgorithm {
 	 */
 	private Bin lastBin = null;
 	
-	@Override
-	public String getName() {
-		return NAME;
-	}
 	/**
 	 * Berekend waar het product nog in past
 	 * 
 	 * @param Product, ArrayList<Bin>
 	 * @return Bin
 	 */
+	
+	public String getName(){
+		return NAME;
+	}
+	
 	@Override
 	public Bin calculateBin(Product product, ArrayList<Bin> bins) {
 		

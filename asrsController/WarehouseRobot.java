@@ -1,16 +1,12 @@
 package asrsController;
 
+import gui.OrderPickingPanel;
+
 import java.util.ArrayList;
 
-import asrs.OrderPickingPanel;
+import productInfo.Location;
+import productInfo.Product;
 
-import order.Location;
-import order.Product;
-/** 
- * De robot van het warenhuis
- * 
- * @author Bas
- */
 public class WarehouseRobot {
 	/**
 	 * De ID van de robot wordt opgeslagen zodat in de simulatie een

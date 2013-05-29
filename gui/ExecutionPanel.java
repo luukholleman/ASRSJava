@@ -1,12 +1,4 @@
-/**
- * @author Luuk
- * 
- * Deze class zorgt voor de algoritmes en het starten daarvan
- * 
- * Hij geeft het panel weer waar de algoritmes en compoorten worden weergegeven
- * Verder zorgt hij voor het triggeren van de events van het starten van de opdracht
- */
-package asrs;
+package gui;
 
 import gnu.io.CommPortIdentifier;
 
@@ -44,6 +36,14 @@ import bppAlgorithm.Circulate;
 import bppAlgorithm.FirstFit;
 import bppAlgorithm.WorstFit;
 
+/**
+ * @author Luuk
+ * 
+ * Deze class zorgt voor de algoritmes en het starten daarvan
+ * 
+ * Hij geeft het panel weer waar de algoritmes en compoorten worden weergegeven
+ * Verder zorgt hij voor het triggeren van de events van het starten van de opdracht
+ */
 public class ExecutionPanel extends JPanel implements ActionListener {
 	/**
 	 * Alle beschikbare bpp algoritmes
@@ -271,7 +271,7 @@ public class ExecutionPanel extends JPanel implements ActionListener {
 	 * Voegt een listener toe, wordt getriggerd als er een nieuw bestand wordt
 	 * geupload
 	 * 
-	 * @param xul
+	 * @param listener
 	 */
 	public void addExecutionListener(ExecuteButtonPressedListener el) {
 		executeButtonPressedListeners.add(el);
@@ -280,7 +280,8 @@ public class ExecutionPanel extends JPanel implements ActionListener {
 	/**
 	 * Triggert het simulate button press event
 	 * 
-	 * @param xmlFileLocation
+	 * @param bpp
+	 * @param tsp
 	 */
 	private void simulateButtonPressed(BPPAlgorithm bpp, TSPAlgorithm tsp) {
 		// trigger elk event
@@ -291,7 +292,9 @@ public class ExecutionPanel extends JPanel implements ActionListener {
 	/**
 	 * Triggert het simulate button press event
 	 * 
-	 * @param xmlFileLocation
+	 * @param bpp
+	 * @param tsp
+	 * @param seed
 	 */
 	private void simulateTaskButtonPressed(BPPAlgorithm bpp, TSPAlgorithm tsp,
 			String seed) {
@@ -311,7 +314,10 @@ public class ExecutionPanel extends JPanel implements ActionListener {
 	/**
 	 * Triggert het button press uploaded event
 	 * 
-	 * @param xmlFileLocation
+	 * @param bpp
+	 * @param tsp
+	 * @param com1
+	 * @param com2
 	 */
 	private void executeButtonPressed(BPPAlgorithm bpp, TSPAlgorithm tsp,
 			CommPortIdentifier com1, CommPortIdentifier com2) {
@@ -352,6 +358,13 @@ public class ExecutionPanel extends JPanel implements ActionListener {
 			}
 		}
 	}
+	
+	/**
+	 * Convert een string naar comport object
+	 * 
+	 * @param comport
+	 * @return commport
+	 */
 	private CommPortIdentifier stringToComport(String comport) {
 		Enumeration portEnum = CommPortIdentifier.getPortIdentifiers();
 		// Zoeken naar de poort
@@ -372,9 +385,7 @@ public class ExecutionPanel extends JPanel implements ActionListener {
 
 	/**
 	 * Bepaal het gekozen tsp algoritme op basis van de radio buttons
-	 * 
-	 * @author Luuk
-	 * 
+	 *  
 	 * @return bppAlgorithm
 	 */
 	private BPPAlgorithm getBPPAlgorithmFromRadioButtons() {
@@ -402,9 +413,7 @@ public class ExecutionPanel extends JPanel implements ActionListener {
 
 	/**
 	 * Bepaal het gekozen tsp algoritme op basis van de radio buttons
-	 * 
-	 * @author Luuk
-	 * 
+	 *  
 	 * @return TSPAlgorithm
 	 */
 	private TSPAlgorithm getTSPAlgorithmFromRadioButtons() {

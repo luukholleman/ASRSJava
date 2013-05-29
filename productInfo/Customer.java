@@ -1,8 +1,8 @@
-package order;
+package productInfo;
 
 /**
  * Deze classe bevat invormatie over de klant
- * @author timpotze
+ * @author Tim
  *
  */
 public class Customer {

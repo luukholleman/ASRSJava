@@ -1,4 +1,5 @@
-package asrs;
+
+package gui;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -6,9 +7,11 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import order.Location;
-import order.Order;
-import order.Product;
+import productInfo.Location;
+import productInfo.Order;
+import productInfo.Product;
+import utilities.Database;
+import utilities.DatabaseConnectionFailedException;
 
 import asrsController.ExecutionManager;
 import asrsController.WarehouseRobot;
@@ -93,7 +96,7 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 	private static final int BINPACKER_DEPTH = 340;
 	
 	/**
-	 * De ExecutionManager die alle data opslaat en simulatie gerelateerde
+	 * De ExecutionManager die alle data opslaat en simulatie ger elateerde
 	 * berekeningen uitvoert
 	 */
 	private ExecutionManager executionManager;
@@ -136,14 +139,13 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 		// Beide robots worden aangemaakt en op hun begin plek gezet.
 		robotLeft = new WarehouseRobot(getStartLocation(0), 0);
 		robotLeft.pixels = new Location(BINPACKER_SIZE + ROBOT_INDENT
-				+ (robotLeft.location.x * CELL_SIZE), ROBOT_INDENT
-				+ ((WAREHOUSE_MAX_Y - robotLeft.location.y) * CELL_SIZE));
+				+ (robotLeft.location.getX() * CELL_SIZE), ROBOT_INDENT
+				+ ((WAREHOUSE_MAX_Y - robotLeft.location.getY()) * CELL_SIZE));
 		
 		robotRight = new WarehouseRobot(getStartLocation(1), 1);
 		robotRight.pixels = new Location(BINPACKER_SIZE + ROBOT_INDENT
-				+ (robotRight.location.x * CELL_SIZE), ROBOT_INDENT
-				+ ((WAREHOUSE_MAX_Y - robotRight.location.y) * CELL_SIZE));
-		
+				+ (robotRight.location.getX() * CELL_SIZE), ROBOT_INDENT
+				+ ((WAREHOUSE_MAX_Y - robotRight.location.getY()) * CELL_SIZE));
 		// Beide robots worden in een array gezet om makkelijk aan te roepen.
 		robots = new WarehouseRobot[2];
 		robots[0] = robotLeft;
@@ -199,8 +201,8 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 		for (WarehouseRobot robot : robots)
 			if (robot.destination != null)
 				g.drawRect(BINPACKER_SIZE + DESTINATION_INDENT
-						+ (robot.destination.x * CELL_SIZE),
-						((WAREHOUSE_MAX_Y - robot.destination.y) * CELL_SIZE)
+						+ (robot.destination.getX() * CELL_SIZE),
+						((WAREHOUSE_MAX_Y - robot.destination.getY()) * CELL_SIZE)
 								+ DESTINATION_INDENT, DESTINATION_SIZE,
 						DESTINATION_SIZE);
 	}
@@ -221,19 +223,19 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 		 */
 		for (WarehouseRobot robot : robots) {
 			if (robot != null) {
-				g.drawRect(robot.pixels.x, robot.pixels.y, ROBOT_SIZE,
+				g.drawRect(robot.pixels.getX(), robot.pixels.getY(), ROBOT_SIZE,
 						ROBOT_SIZE);
-				g.drawLine(robot.pixels.x - 1, robot.pixels.y,
-						robot.pixels.x - 1, RAILS_Y);
-				g.drawLine(robot.pixels.x + ROBOT_SIZE + 1, robot.pixels.y,
-						robot.pixels.x + ROBOT_SIZE + 1, RAILS_Y);
+				g.drawLine(robot.pixels.getX() - 1, robot.pixels.getY(),
+						robot.pixels.getX() - 1, RAILS_Y);
+				g.drawLine(robot.pixels.getX() + ROBOT_SIZE + 1, robot.pixels.getY(),
+						robot.pixels.getX() + ROBOT_SIZE + 1, RAILS_Y);
 
 			}
 		}
 
 		// Inhoud van de robots tekenen
 		for (WarehouseRobot robot : robots) {
-			g.fillRect(robot.location.x + 7 - (robot.load * 2), robot.location.y + 7
+			g.fillRect(robot.location.getX() + 7 - (robot.load * 2), robot.location.getY() + 7
 					- (robot.load * 2), LOAD_MAX + (robot.load * 5), LOAD_MAX
 					+ (robot.load * 5));
 		}
@@ -248,12 +250,13 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 	private void drawWarehouseProducts(Graphics g) {
 		for (Location location : warehouse) {
 			Location loc = new Location(0, 0);
+
 			// De y location wordt hier omgedraait zodat 0,0 links onderin zit.
-			loc.y = WAREHOUSE_MAX_Y - location.y;
-			loc.x = location.x;
-			if (loc.x <= WAREHOUSE_MAX_X && loc.y <= WAREHOUSE_MAX_Y) {
+			loc.setY(WAREHOUSE_MAX_Y - location.getY());
+			loc.setX(location.getX());
+			if (loc.getX() <= WAREHOUSE_MAX_X && loc.getY() <= WAREHOUSE_MAX_Y) {
 				g.fillRect(BINPACKER_SIZE + PRODUCT_INDENT
-						+ (loc.x * CELL_SIZE), (loc.y * CELL_SIZE)
+						+ (loc.getX() * CELL_SIZE), (loc.getY() * CELL_SIZE)
 						+ PRODUCT_INDENT, PRODUCT_SIZE, PRODUCT_SIZE);
 			}
 		}
@@ -305,8 +308,8 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 				warehouse.remove(robots[0].destination);
 				warehouse.remove(robots[1].destination);
 				for (WarehouseRobot robot : robots) {
-					if (robot.location.x == BINPACKER_X
-							&& robot.location.y == BINPACKER_Y)
+					if (robot.location.getX() == BINPACKER_X
+							&& robot.location.getY() == BINPACKER_Y)
 						executionManager.deliveredProduct(robot.id);
 					else
 						for (Product product : products)
@@ -353,21 +356,23 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 	 */
 	private void move() {
 		// De beweging wordt verdeelt in stappen over de X en Y as.
-		int stepx0 = robots[0].destination.x - robots[0].location.x;
-		int stepy0 = robots[0].destination.y - robots[0].location.y;
+		int stepx0 = robots[0].destination.getX() - robots[0].location.getX();
+		int stepy0 = robots[0].destination.getY() - robots[0].location.getY();
 
-		int stepx1 = robots[1].destination.x - robots[1].location.x;
-		int stepy1 = robots[1].destination.y - robots[1].location.y;
+		int stepx1 = robots[1].destination.getX() - robots[1].location.getX();
+		int stepy1 = robots[1].destination.getY() - robots[1].location.getY();
+		
 		// De robot wordt naar het doel verplaatst
 		robots[0].location = robots[0].destination;
 		robots[1].location = robots[1].destination;
+		
 		// Hier wordt in 20 frames de animatie van de verplaatsing getekent
 		for (int i = 0; i < CELL_SIZE; i++) {
-			robots[0].pixels.x = robots[0].pixels.x + stepx0;
-			robots[0].pixels.y = robots[0].pixels.y - stepy0;
+			robots[0].pixels.setX(robots[0].pixels.getX() + stepx0);
+			robots[0].pixels.setY(robots[0].pixels.getY() - stepy0);
 
-			robots[1].pixels.x = robots[1].pixels.x + stepx1;
-			robots[1].pixels.y = robots[1].pixels.y - stepy1;
+			robots[1].pixels.setX(robots[1].pixels.getX() + stepx1);
+			robots[1].pixels.setY(robots[1].pixels.getY() - stepy1);
 			repaint();
 			sleep();
 		}
