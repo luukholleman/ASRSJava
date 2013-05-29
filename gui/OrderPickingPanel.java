@@ -224,10 +224,15 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 		 */
 		for (WarehouseRobot robot : robots) {
 			if (robot != null) {
+				// Tekent de robot
 				g.drawRect(robot.pixels.getX(), robot.pixels.getY(),
 						ROBOT_SIZE, ROBOT_SIZE);
+
+				// Tekent de linker ondersteuning
 				g.drawLine(robot.pixels.getX() - 1, robot.pixels.getY(),
 						robot.pixels.getX() - 1, RAILS_Y);
+
+				// Tekent de rechter ondersteuning
 				g.drawLine(robot.pixels.getX() + ROBOT_SIZE + 1,
 						robot.pixels.getY(), robot.pixels.getX() + ROBOT_SIZE
 								+ 1, RAILS_Y);
@@ -257,6 +262,7 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 			loc.setY(WAREHOUSE_MAX_Y - location.getY());
 			loc.setX(location.getX());
 			if (loc.getX() <= WAREHOUSE_MAX_X && loc.getY() <= WAREHOUSE_MAX_Y) {
+				// Tekent het product
 				g.fillRect(BINPACKER_SIZE + PRODUCT_INDENT
 						+ (loc.getX() * CELL_SIZE), (loc.getY() * CELL_SIZE)
 						+ PRODUCT_INDENT, PRODUCT_SIZE, PRODUCT_SIZE);
@@ -292,7 +298,8 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 		// Haal de huidige thread op
 		Thread thisThread = Thread.currentThread();
 		while (runner == thisThread) {
-			// Als de robots niet vol zijn, haal het volgende product op.
+			// Als de robots niet vol of klaar zijn, haal het volgende product
+			// op.
 			if (robots[0].load <= LOAD_MAX || robots[1].load <= LOAD_MAX) {
 				for (WarehouseRobot robot : robots)
 					if (robot.finished == false)
@@ -306,22 +313,28 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 				move();
 				sleep(PAUSE_TIME_ON_PICKUP);
 
-				// Als de robot de producten heeft opgepakt, haal ze uit het
-				// warenhuis en leg ze op de robot of op de bin packer.
+				/*
+				 * Als de robot de producten heeft opgepakt, haal ze uit het
+				 * warenhuis en leg ze op de robot of op de bin packer.
+				 */
 				warehouse.remove(robots[0].destination);
 				warehouse.remove(robots[1].destination);
+				
 				for (WarehouseRobot robot : robots) {
 					if (robot.location.getX() == BINPACKER_X
 							&& robot.location.getY() == BINPACKER_Y)
 						executionManager.deliveredProduct(robot.id);
+					
 					else
 						for (Product product : products)
 							if (robot.destination == product.getLocation())
 								robot.productsOnFork.add(product);
 				}
 
-				// Als een van de robots vol is, laat deze robot dan naar de
-				// bin packer bewegen.
+				/*
+				 * Als een van de robots vol is, laat deze robot dan naar de bin
+				 * packer bewegen.
+				 */
 			} else {
 				if (robots[0].load <= LOAD_MAX)
 					robots[0].destination = new Location(BINPACKER_X,
