@@ -2,7 +2,7 @@ package asrsController;
 
 import order.Product;
 /**
- * Bin packing interface die gebruikt wordt voor de simulaties en de Arduino 
+ * Interface die gebruikt wordt voor de simulaties en de Arduino 
  * 
  * @author Mike
  *
