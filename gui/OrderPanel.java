@@ -1,4 +1,4 @@
-package asrs;
+package gui;
 
 import java.awt.Dimension;
 import java.util.LinkedList;
@@ -8,9 +8,14 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
-import order.Order;
-import order.Product;
+import productInfo.Order;
+import productInfo.Product;
 
+/**
+ * @author Luuk
+ * 
+ * Deze class zorgt voor het weergeven van de productinformatie in een tabel
+ */
 public class OrderPanel extends JPanel {
 
 	private ProductModel productModel = new ProductModel();
@@ -58,11 +63,14 @@ public class OrderPanel extends JPanel {
 	 * @param order
 	 */
 	public void setOrder(Order order) {
+		// eerst de tabel leeggooie
 		productModel.removeAllRows();
-		
+
+		// producten toevoegen aan de productmodel
 		for (Product product : order.getProducts()) {
 			productModel.addElement(product);
 
+			// fire het update event van dit product
 			productModel.fireTableRowsUpdated(
 					productModel.products.indexOf(product),
 					productModel.products.indexOf(product));
@@ -93,11 +101,15 @@ public class OrderPanel extends JPanel {
 	 */
 	private class ProductModel extends AbstractTableModel {
 
-		// De kolomnamen
+		/**
+		 * De kolomnamen
+		 */
 		private final String[] columnNames = { "#", "Omschrijving", "Prijs",
 				"Grootte", "Status" };
 
-		// Lijst van weer te geven producten
+		/**
+		 * Lijst van weer te geven producten
+		 */
 		private final LinkedList<Product> products;
 
 		/**
@@ -107,6 +119,15 @@ public class OrderPanel extends JPanel {
 		 */
 		private ProductModel() {
 			products = new LinkedList<Product>();
+		}
+
+		/**
+		 * Bepaalt de kolomnaam
+		 * 
+		 * @return string
+		 */
+		public String getColumnName(int column) {
+			return columnNames[column];
 		}
 
 		/**
@@ -123,33 +144,16 @@ public class OrderPanel extends JPanel {
 		}
 
 		@Override
-		/**
-		 * Returnt aantal kollommen
-		 * 
-		 * @author Luuk
-		 */
 		public int getColumnCount() {
 			return columnNames.length;
 		}
 
 		@Override
-		/**
-		 * Returnt aantal rijen
-		 * 
-		 * @author Luuk
-		 */
 		public int getRowCount() {
 			return products.size();
 		}
 
 		@Override
-		/**
-		 * De waardes per kolom en rij
-		 * 
-		 * @author Luuk
-		 * 
-		 * @return mixed
-		 */
 		public Object getValueAt(int rowIndex, int columnIndex) {
 			switch (columnIndex) {
 			case 0:
@@ -167,24 +171,11 @@ public class OrderPanel extends JPanel {
 		}
 
 		/**
-		 * Verwijder regel
-		 * 
-		 * @author Tim
-		 * 
-		 * @param row
-		 */
-		public void removeRow(int row) {
-		    fireTableRowsDeleted(row, row);
-		    products.remove(row);
-		}
-		
-		/**
 		 * Verwijder alle regels
 		 * 
 		 * @author Tim
 		 */
-		public void removeAllRows()
-		{
+		public void removeAllRows() {
 			fireTableRowsDeleted(0, getRowCount());
 			products.clear();
 		}

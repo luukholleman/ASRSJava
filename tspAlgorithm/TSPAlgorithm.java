@@ -1,59 +1,66 @@
-/**
- * @author Luuk Holleman
- * @date 15 april
- */
 package tspAlgorithm;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
-import order.Product;
+import productInfo.Product;
 
+/**
+ * Algoritme interface voor de TSP algoritmes
+ * @author Tim
+ *
+ */
 public abstract class TSPAlgorithm {
+	
+	/**
+	 * Verkrijg naam van algoritme
+	 * @return
+	 */
 	public abstract String getName();
 
 	/**
-	 * Calculates best route for the products that should be on-route
-	 * 
-	 * @param products
-	 *            the products that have to be picked up
-	 * @return list of products in the proper order
+	 * Bereken de snelste route
+	 * @param products producten om op te halen
+	 * @param numberOfRobots het aantal robots
+	 * @param currentRobot de huidige robot voor wie het pad moet worden berekend
+	 * @return de route
 	 */
 	public abstract ArrayList<Product> calculateRoute(
 			ArrayList<Product> products, int numberOfRobots, int currentRobot);
 
+	/**
+	 * Splits de order efficient voor het aantal robots megegeven
+	 * @param products produducten om op te halen
+	 * @param numberOfRobots het aantal robots
+	 * @param currentRobot de robot voor wie je aan het splitsen bent
+	 * @return het gesplitste producten
+	 */
 	protected ArrayList<Product> splitOrder(ArrayList<Product> products,
 			int numberOfRobots, int currentRobot) {
-		ArrayList<Product> filteredProducts = new ArrayList<Product>();
-		int width = getEffectiveWarehouseWidth(products);
 
-		for (Product p : products) {
-			// splits het magazijn
-			int cols = width / numberOfRobots;
+		// Sla
+		ArrayList<Product> allProducts = new ArrayList<Product>(products);
 
-			// Als de breedte oneven is, de cols 1 verhogen om het missen van
-			// colomen te voorkomen
-			if (width % 2 == 1)
-				cols++;
-
-			// pak de producten uit het eigen deel van het magazijn
-			if (p.getLocation().x >= cols * currentRobot
-					&& p.getLocation().x < cols * (currentRobot + 1)) {
-				filteredProducts.add(p);
+		Collections.sort(allProducts, new Comparator<Product>() {
+			public int compare(Product one, Product two) {
+				return ((Integer) (one.getLocation().getX())).compareTo(two
+						.getLocation().getX());
 			}
-		}
+		});
 
-		return filteredProducts;
-	}
-	
-	private int getEffectiveWarehouseWidth(ArrayList<Product> products) {
+		// Verdeel de producten over de robots
+		int productsPerRobot = allProducts.size() / numberOfRobots;
 
-		int maxX = 0;
+		// Berenken de start en begin indexen
+		int startIndex = currentRobot * productsPerRobot;
+		int endIndex = (currentRobot + 1) * productsPerRobot;
 
-		for (Product p : products)
-			if (p.getLocation().x > maxX)
-				maxX = p.getLocation().x;
+		// Als er een oneven aantal producten zijn, tel er een bij op
+		if (allProducts.size() % numberOfRobots == 1
+				&& currentRobot == numberOfRobots - 1)
+			endIndex++;
 
-		// omdat het magazijn op 0 begint is de breedte 1 hoger
-		return maxX + 1;
+		return new ArrayList<Product>(allProducts.subList(startIndex, endIndex));
 	}
 }

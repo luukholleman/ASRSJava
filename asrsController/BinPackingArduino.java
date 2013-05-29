@@ -6,21 +6,30 @@ import gnu.io.SerialPort;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import order.Product;
+import productInfo.Product;
 
+/**
+ *  De bin packing arduino klasse om de producten naar bins te versturen
+ *  
+ * @author Mike
+ *
+ */
 public class BinPackingArduino extends Arduino implements BinPacking{
-	private CommPortIdentifier port;
 	
+	/**
+	 * 
+	 * @param port Poort om mee te verbinden
+	 */
 	public BinPackingArduino (CommPortIdentifier port){
 		super(port);
+		
+		//opent seriele communicatie
+		open();
 	}
 	
+	@Override
 	public void packProduct(Byte binNummer, Product product){
-		//opent seriële communicatie
-		open();
 		//stuurt het binnummer naar de Arduino
 		sendByte(binNummer);
-		//sluit de seriële communicatie
-		close();
 	}
 }

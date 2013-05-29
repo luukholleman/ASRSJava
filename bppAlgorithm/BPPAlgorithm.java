@@ -6,7 +6,7 @@ package bppAlgorithm;
 
 import java.util.ArrayList;
 
-import order.Product;
+import productInfo.Product;
 
 public interface BPPAlgorithm {
 	public abstract String getName();

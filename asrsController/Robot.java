@@ -2,8 +2,8 @@ package asrsController;
 
 import java.util.ArrayList;
 
-import order.Location;
-import order.Product;
+import productInfo.Location;
+import productInfo.Product;
 
 public class Robot {
 	private Location currentLocation;

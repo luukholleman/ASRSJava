@@ -4,31 +4,42 @@ import gnu.io.CommPortIdentifier;
 import tspAlgorithm.TSPAlgorithm;
 import bppAlgorithm.BPPAlgorithm;
 
+/**
+ * 
+ * @author Luuk
+ *
+ * Listener voor start event
+ */
 public interface ExecuteButtonPressedListener {
-	
+
 	/**
 	 * Event dat de simulatie knop is ingedrukt
 	 * 
-	 * @param bpp
-	 * @param tsp
+	 * @param bpp Algoritme
+	 * @param tsp Algoritme
+	 * @param useDetectedSize gebruik de gedetecteerde grote
 	 */
-	public abstract void simulatePressed(BPPAlgorithm bpp, TSPAlgorithm tsp);
-	
+	public abstract void simulatePressed(BPPAlgorithm bpp, TSPAlgorithm tsp, Boolean useDetectedSize);
+
 	/**
-	 * Event dat de simulatie task knop is ingedrukt
+	 * Start de simulatie met de task
 	 * 
-	 * @param bpp
-	 * @param tsp
+	 * @param bpp Algoritme
+	 * @param tsp Algoritme
+	 * @param seed de seed
 	 */
-	public abstract void simulateTaskPressed(BPPAlgorithm bpp, TSPAlgorithm tsp, long seed);
-	
+	public abstract void simulateTaskPressed(BPPAlgorithm bpp,
+			TSPAlgorithm tsp, long seed);
+
 	/**
-	 * Event dat de  knop is ingedrukt
+	 * Event dat de knop is ingedrukt
 	 * 
-	 * @param bpp
-	 * @param tsp
-	 * @param com1
-	 * @param com2
+	 * @param bpp Algoritme
+	 * @param tsp Algoritme
+	 * @param com1 COM poort
+	 * @param com2 COM poort
+	 * @param useDetectedSize gebruik de gedetecteerde grote
 	 */
-	public abstract void executePressed(BPPAlgorithm bpp, TSPAlgorithm tsp, CommPortIdentifier com1, CommPortIdentifier com2);
+	public abstract void executePressed(BPPAlgorithm bpp, TSPAlgorithm tsp,
+			CommPortIdentifier com1, CommPortIdentifier com2, Boolean useDetectedSize);
 }
