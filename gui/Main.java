@@ -1,4 +1,4 @@
-package asrs;
+package gui;
 
 import gnu.io.CommPortIdentifier;
 
@@ -12,10 +12,14 @@ import javax.swing.UIManager;
 
 import listener.ExecuteButtonPressedListener;
 import listener.XMLUploadedListener;
-import order.Order;
-import order.Product;
+import productInfo.Order;
+import productInfo.Product;
+import productInfo.ProductNotFoundException;
 import taskSimulate.TaskSimulationFrame;
 import tspAlgorithm.TSPAlgorithm;
+import utilities.Database;
+import utilities.DatabaseConnectionFailedException;
+import utilities.XMLLoader;
 import asrsController.BinPackingArduino;
 import asrsController.ExecutionManager;
 import asrsController.WarehouseArduino;

@@ -2,7 +2,7 @@ package taskSimulate;
 
 import java.util.ArrayList;
 
-import order.Product;
+import productInfo.Product;
 
 /**
  * Resultaten van het traveling salesman problem

@@ -1,4 +1,4 @@
-package asrs;
+package gui;
 
 import java.awt.Dimension;
 import java.util.LinkedList;
@@ -8,8 +8,8 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
-import order.Order;
-import order.Product;
+import productInfo.Order;
+import productInfo.Product;
 
 /**
  * @author Luuk

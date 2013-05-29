@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import order.Product;
+import productInfo.Product;
 
 /**
  * Algoritme interface voor de TSP algoritmes
@@ -44,8 +44,8 @@ public abstract class TSPAlgorithm {
 
 		Collections.sort(allProducts, new Comparator<Product>() {
 			public int compare(Product one, Product two) {
-				return ((Integer) (one.getLocation().x)).compareTo(two
-						.getLocation().x);
+				return ((Integer) (one.getLocation().getX())).compareTo(two
+						.getLocation().getX());
 			}
 		});
 

@@ -1,4 +1,4 @@
-package order;
+package productInfo;
 import java.util.ArrayList;
 import java.util.Date;
 

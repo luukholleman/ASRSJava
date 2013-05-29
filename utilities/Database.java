@@ -1,4 +1,4 @@
-package asrs;
+package utilities;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -7,8 +7,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import order.Location;
-import order.Product;
+import productInfo.Location;
+import productInfo.Product;
+import productInfo.ProductNotFoundException;
 
 /**
  * Class om met de database te verbinden

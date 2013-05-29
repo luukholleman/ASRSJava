@@ -1,4 +1,4 @@
-package order;
+package productInfo;
 
 /**
  * Deze classe bevat invormatie over de klant

@@ -6,7 +6,7 @@ import gnu.io.SerialPort;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import order.Product;
+import productInfo.Product;
 
 /**
  *  De bin packing arduino klasse om de producten naar bins te versturen

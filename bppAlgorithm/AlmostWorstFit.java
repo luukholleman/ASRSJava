@@ -3,7 +3,8 @@ package bppAlgorithm;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import order.Product;
+
+import productInfo.Product;
 
 /**
  * Het Almost Worst Fit algoritme berekent welke bin de op een na meeste ruimte

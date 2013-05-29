@@ -3,8 +3,7 @@ package bppAlgorithm;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-
-import order.Product;
+import productInfo.Product;
 
 /**
  * Het Worst Fit algoritme berekent welke bin er de meeste ruimte heeft en of

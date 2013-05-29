@@ -2,7 +2,7 @@
 package asrsController;
 
 import gnu.io.CommPortIdentifier;
-import order.Location;
+import productInfo.Location;
 
 /**
  * @author Luuk
@@ -62,7 +62,7 @@ public class WarehouseArduino extends Arduino implements Warehouse {
 		System.out.println("Retrieve product");
 
 		// geef het commando retrieve, parameters zijn de x en y locatie
-		Byte[] bytes = { PICKUP_PRODUCT, (byte) location.x, (byte) location.y };
+		Byte[] bytes = { PICKUP_PRODUCT, (byte) location.getX(), (byte) location.getY() };
 
 		sendBytes(bytes);
 

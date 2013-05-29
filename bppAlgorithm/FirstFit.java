@@ -1,7 +1,8 @@
 package bppAlgorithm;
 
 import java.util.ArrayList;
-import order.Product;
+
+import productInfo.Product;
 
 /**
  * Het First Fit algoritme berekent de eerste bin waar het product in past

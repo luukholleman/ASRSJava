@@ -1,4 +1,4 @@
-package asrs;
+package productInfo;
 
 /**
  * Exception die gegooit wordt als een product niet in de database gegooit is

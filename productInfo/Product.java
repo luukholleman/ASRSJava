@@ -1,7 +1,7 @@
-package order;
+package productInfo;
 
-import asrs.Database;
-import asrs.ProductNotFoundException;
+import productInfo.Location;
+import utilities.Database;
 
 /**
  * Deze classe bevat informatie over een product

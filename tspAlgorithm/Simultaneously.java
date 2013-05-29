@@ -3,8 +3,8 @@ package tspAlgorithm;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import order.Location;
-import order.Product;
+import productInfo.Location;
+import productInfo.Product;
 
 /**
  * Bereken de korste route door om en om per robot het dichts bijzijnde product

@@ -1,11 +1,12 @@
 package asrsController;
 
+import gui.OrderPickingPanel;
+
 import java.util.ArrayList;
 
-import asrs.OrderPickingPanel;
 
-import order.Location;
-import order.Product;
+import productInfo.Location;
+import productInfo.Product;
 
 public class WarehouseRobot {
 	/**

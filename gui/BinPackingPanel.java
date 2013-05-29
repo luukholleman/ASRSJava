@@ -1,4 +1,4 @@
-package asrs;
+package gui;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -10,7 +10,7 @@ import asrsController.BinPacking;
 import asrsController.ExecutionManager;
 import bppAlgorithm.Bin;
 
-import order.Product;
+import productInfo.Product;
 
 public class BinPackingPanel extends JPanel implements Runnable, BinPacking {
 	private static final int LINE_COUNT = 13;

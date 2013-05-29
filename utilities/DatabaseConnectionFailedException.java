@@ -1,4 +1,4 @@
-package asrs;
+package utilities;
 
 /**
  * Expeption die gegooit wordt als de database connectie mislukt

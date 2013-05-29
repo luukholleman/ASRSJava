@@ -1,6 +1,6 @@
 package asrsController;
 
-import order.Location;
+import productInfo.Location;
 
 /**
  * Interface dat gebruikt word voor de simulaties en de Arduino  

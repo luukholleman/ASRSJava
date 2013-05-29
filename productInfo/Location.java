@@ -1,4 +1,4 @@
-package order;
+package productInfo;
 
 /**
  * Deze classe bevant informatie over een locatie binnen het warenhuis
@@ -14,16 +14,22 @@ public class Location {
 	 * Y coordinaat van location
 	 */
 	public int y;
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + x;
-		result = prime * result + y;
-		return result;
+	
+	/**
+	 * 
+	 * @param x coordinaat
+	 * @param y coordinaat
+	 */
+	public Location(int x, int y) {
+		this.x = x;
+		this.y = y;
 	}
-
+	
+	/**
+	 * Vergelijk instantie van Location met andere instantie van Location
+	 * 
+	 * Atuo-generated
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -39,16 +45,6 @@ public class Location {
 			return false;
 		return true;
 	}
-	
-	/**
-	 * 
-	 * @param x coordinaat
-	 * @param y coordinaat
-	 */
-	public Location(int x, int y) {
-		this.x = x;
-		this.y = y;
-	}
 
 	/**
 	 * Vergelijk deze Location met toLocation
@@ -62,8 +58,47 @@ public class Location {
 				+ Math.pow(Math.abs(toLocation.y - y), 2));
 	}
 	
+	/**
+	 * Genereer een string die de instantie representeerd
+	 */
 	@Override
 	public String toString() {
 		return x + ", " + y;
+	}
+	
+	/**
+	 * Haal de x op
+	 * 
+	 * @return
+	 */
+	public int getX() {
+		return x;
+	}
+	
+	/**
+	 * Haal de y op
+	 * 
+	 * @return
+	 */
+	public int getY() {
+		return y;
+	}
+	
+	/**
+	 * Zet de x
+	 * 
+	 * @param x
+	 */
+	public void setX(int x) {
+		this.x = x;
+	}
+	
+	/**
+	 * Zet de y
+	 * 
+	 * @param y
+	 */
+	public void setY(int y) {
+		this.y = y;
 	}
 }

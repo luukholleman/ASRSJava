@@ -25,7 +25,7 @@ package tspAlgorithm;
 
 import java.util.ArrayList;
 
-import order.Location;
+import productInfo.Location;
 
 /**
  * Steinhaus, berekent alle permutaties
