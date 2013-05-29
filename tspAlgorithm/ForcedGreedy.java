@@ -5,8 +5,8 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
-import order.Location;
-import order.Product;
+import productInfo.Location;
+import productInfo.Product;
 
 /**
  * @author Luuk

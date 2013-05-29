@@ -5,8 +5,8 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 
-import order.Location;
-import order.Product;
+import productInfo.Location;
+import productInfo.Product;
 
 public class OrderPickingTaskSimulation extends JPanel {
 	private static final int LINE_WIDTH = 2;

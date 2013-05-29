@@ -2,7 +2,7 @@
 package asrsController;
 
 import gnu.io.CommPortIdentifier;
-import order.Location;
+import productInfo.Location;
 
 /**
  * @author Luuk

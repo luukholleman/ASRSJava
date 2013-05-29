@@ -1,6 +1,6 @@
 package asrsController;
 
-import order.Location;
+import productInfo.Location;
 
 public interface Warehouse {
 	public abstract void retrieveProduct(Location location, int robotId);

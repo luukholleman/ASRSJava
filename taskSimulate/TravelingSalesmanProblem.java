@@ -2,7 +2,7 @@ package taskSimulate;
 
 import java.util.ArrayList;
 
-import order.Product;
+import productInfo.Product;
 
 public class TravelingSalesmanProblem {
 	private ArrayList<ArrayList<Product>> problem;

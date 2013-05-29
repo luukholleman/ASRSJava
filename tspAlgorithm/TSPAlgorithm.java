@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import order.Product;
+import productInfo.Product;
 
 public abstract class TSPAlgorithm {
 	public abstract String getName();

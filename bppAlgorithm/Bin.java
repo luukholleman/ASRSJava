@@ -2,7 +2,7 @@ package bppAlgorithm;
 
 import java.util.ArrayList;
 
-import order.Product;
+import productInfo.Product;
 
 public class Bin {
 	private int size;

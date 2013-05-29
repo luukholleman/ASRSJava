@@ -6,7 +6,7 @@ package bppAlgorithm;
 
 import java.util.ArrayList;
 
-import order.Product;
+import productInfo.Product;
 
 public class Circulate implements BPPAlgorithm {
 	private static String name = "Circulate";

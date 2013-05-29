@@ -7,7 +7,8 @@ package bppAlgorithm;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import order.Product;
+
+import productInfo.Product;
 
 public class BestFit implements BPPAlgorithm {
 	public static String name = "Best Fit";

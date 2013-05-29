@@ -5,7 +5,8 @@
 package bppAlgorithm;
 
 import java.util.ArrayList;
-import order.Product;
+
+import productInfo.Product;
 
 public class FirstFit implements BPPAlgorithm {
 	public static String name = "First Fit";

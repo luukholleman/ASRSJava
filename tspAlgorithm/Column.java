@@ -6,8 +6,8 @@ import java.util.Comparator;
 
 import bppAlgorithm.Bin;
 
-import order.Location;
-import order.Product;
+import productInfo.Location;
+import productInfo.Product;
 
 /**
  * TSP algoritme die per colom alle producten langs gaat

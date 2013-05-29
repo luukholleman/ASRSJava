@@ -6,8 +6,8 @@ package tspAlgorithm;
 
 import java.util.ArrayList;
 
-import order.Location;
-import order.Product;
+import productInfo.Location;
+import productInfo.Product;
 
 public class Greedy extends TSPAlgorithm {
 	private static final int INFINITY = 99999;

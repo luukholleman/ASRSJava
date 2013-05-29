@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 
-import order.Product;
+import productInfo.Product;
 
 public class WorstFit implements BPPAlgorithm {
 	public static String name = "Worst Fit";
