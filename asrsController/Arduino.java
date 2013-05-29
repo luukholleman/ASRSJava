@@ -13,21 +13,43 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.TooManyListenersException;
 
+/**
+ * Abstracte classe om met de arduino te verbinden
+ * 
+ * @author Tim, Jorn, Luuk
+ *
+ */
 public abstract class Arduino implements SerialPortEventListener {
 
+	/**
+	 * Seriele poort om mee te verbinden
+	 */
 	SerialPort serialPort;
 
-	// Buffered input stream van de poort
+	/**
+	 * De input stream om data uit te verwachten
+	 */
 	private InputStream input;
-	// De output stream naar de poort
+	
+	/**
+	 * De output stream om data naar te sturen
+	 */
 	private OutputStream output;
 
-	// Aantal milliseconden wachten tot de poort opent
+	
+	/**
+	 * Maximale timeout om te wachten bij het versturen van data
+	 */
 	private static final int TIME_OUT = 2000;
 
-	// Standaard bits per second voor de COM poort.
+	/**
+	 * Baut-rate om data mee te versturen
+	 */
 	private static final int DATA_RATE = 9600;
 
+	/**
+	 * De poort om via te verbinden
+	 */
 	private CommPortIdentifier port;
 
 	/**
@@ -47,7 +69,6 @@ public abstract class Arduino implements SerialPortEventListener {
 	/**
 	 * Open de connectie met de arduino
 	 * 
-	 * @return void
 	 */
 	public void open() {
 		System.out.println("Serial Open");
@@ -95,7 +116,7 @@ public abstract class Arduino implements SerialPortEventListener {
 	/**
 	 * Verzend een byte naar de arduino
 	 * 
-	 * @param b
+	 * @param b de byte om te versturen
 	 */
 	public void sendByte(Byte b) {
 		inputBuffer.clear();
@@ -114,7 +135,7 @@ public abstract class Arduino implements SerialPortEventListener {
 			}
 			
 		} catch (IOException e) {
-			System.err.println(e.toString());
+			e.printStackTrace();
 		}
 	}
 
@@ -159,13 +180,13 @@ public abstract class Arduino implements SerialPortEventListener {
 	 * Wordt aangeroepen als er data binnenkomt
 	 */
 	public void receivedData() {
-		// Overwritable
+		// Overwritable methode, wordt hier niks in gedaan.
 	}
 
 	/**
 	 * Verkrijg een lijst met inkomende data
 	 * 
-	 * @return
+	 * @return de input buffer
 	 */
 	public ArrayList<Integer> getInputBuffer() {
 		return inputBuffer;

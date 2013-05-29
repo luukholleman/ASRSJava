@@ -4,15 +4,30 @@ import java.util.ArrayList;
 
 import productInfo.Product;
 
+/**
+ * Resultaten van het traveling salesman problem
+ * @author Tim
+ *
+ */
 public class TravelingSalesmanProblem {
+	
+	/**
+	 * Alle robots met met producten die opgehaald moeten worden
+	 */
 	private ArrayList<ArrayList<Product>> problem;
 	
+	/**
+	 * 
+	 * @param problem De problemen
+	 */
 	public TravelingSalesmanProblem(ArrayList<ArrayList<Product>> problem){
 		this.problem = problem;
 	}
 	
 	@Override
 	public String toString(){
+		
+		//Voeg alle producten terug alle robots
 		String string = "";
 		for(ArrayList<Product> robot : problem)
 		{
