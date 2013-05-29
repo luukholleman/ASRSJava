@@ -61,21 +61,21 @@ public class OrderPickingTaskSimulation extends JPanel {
 		for (ArrayList<Product> robot : problems.get(currentProblem)
 				.getProblem()) {
 			// Teken eerst het begin punt.
-			g.fillRect(lastLocation.x * CELL_SIZE + DOT_INDENT + CELL_SIZE,
-					(WAREHOUSE_Y - lastLocation.y) * CELL_SIZE + DOT_INDENT,
+			g.fillRect(lastLocation.getX() * CELL_SIZE + DOT_INDENT + CELL_SIZE,
+					(WAREHOUSE_Y - lastLocation.getY()) * CELL_SIZE + DOT_INDENT,
 					PRODUCT_SIZE, PRODUCT_SIZE);
 			for (Product product : robot) {
 				// Teken het huidige product
 				Location productLocation = product.getLocation();
-				g.fillRect(productLocation.x * CELL_SIZE + DOT_INDENT
-						+ CELL_SIZE, (WAREHOUSE_Y - productLocation.y)
+				g.fillRect(productLocation.getX() * CELL_SIZE + DOT_INDENT
+						+ CELL_SIZE, (WAREHOUSE_Y - productLocation.getY())
 						* CELL_SIZE + DOT_INDENT, PRODUCT_SIZE, PRODUCT_SIZE);
 				// Teken een lijn tussen het huidige product en de vorige
-				g2D.drawLine(lastLocation.x * CELL_SIZE + LINE_INDENT
-						+ CELL_SIZE, (WAREHOUSE_Y - lastLocation.y) * CELL_SIZE
-						+ LINE_INDENT, productLocation.x * CELL_SIZE
+				g2D.drawLine(lastLocation.getX() * CELL_SIZE + LINE_INDENT
+						+ CELL_SIZE, (WAREHOUSE_Y - lastLocation.getY()) * CELL_SIZE
+						+ LINE_INDENT, productLocation.getX() * CELL_SIZE
 						+ LINE_INDENT + CELL_SIZE,
-						(WAREHOUSE_Y - productLocation.y) * CELL_SIZE
+						(WAREHOUSE_Y - productLocation.getY()) * CELL_SIZE
 								+ LINE_INDENT);
 				// Voeg de afstand tussen het huidige en het vorige product toe
 				// bij het totaal
@@ -84,8 +84,8 @@ public class OrderPickingTaskSimulation extends JPanel {
 			}
 			// Teken uiteindelijk een lijn tussen het laatste product en het
 			// begin punt.
-			g2D.drawLine(lastLocation.x * CELL_SIZE + LINE_INDENT + CELL_SIZE,
-					(WAREHOUSE_Y - lastLocation.y) * CELL_SIZE + LINE_INDENT,
+			g2D.drawLine(lastLocation.getX() * CELL_SIZE + LINE_INDENT + CELL_SIZE,
+					(WAREHOUSE_Y - lastLocation.getY()) * CELL_SIZE + LINE_INDENT,
 					(STARTING_X1 + count * (WAREHOUSE_X + 2)) * CELL_SIZE
 							+ LINE_INDENT + CELL_SIZE, (WAREHOUSE_Y)
 							* CELL_SIZE + LINE_INDENT);

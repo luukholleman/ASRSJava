@@ -31,8 +31,8 @@ public abstract class TSPAlgorithm {
 
 		Collections.sort(allProducts, new Comparator<Product>() {
 			public int compare(Product one, Product two) {
-				return ((Integer) (one.getLocation().x)).compareTo(two
-						.getLocation().x);
+				return ((Integer) (one.getLocation().getX())).compareTo(two
+						.getLocation().getX());
 			}
 		});
 
