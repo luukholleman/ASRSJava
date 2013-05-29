@@ -18,6 +18,11 @@ public class BestFit implements BPPAlgorithm {
 	 * Naam
 	 */
 	public static final String NAME = "Best Fit";
+	
+	@Override
+	public String getName(){
+		return NAME;
+	}
 
 	@Override
 	/**

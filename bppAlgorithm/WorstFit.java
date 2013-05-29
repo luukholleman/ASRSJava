@@ -19,6 +19,11 @@ public class WorstFit implements BPPAlgorithm {
 	public static final String NAME = "Worst Fit";
 
 	@Override
+	public String getName(){
+		return NAME;
+	}
+	
+	@Override
 	/**
 	 * Berekent in welke bin het gegeven product moet
 	 * 

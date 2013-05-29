@@ -18,7 +18,12 @@ public class AlmostWorstFit implements BPPAlgorithm {
 	 * Naam
 	 */
 	public static final String NAME = "Almost Worst Fit";
-
+	
+	@Override
+	public String getName(){
+		return NAME;
+	}
+	
 	@Override
 	/**
 	 * Berekent in welke bin het gegeven product moet

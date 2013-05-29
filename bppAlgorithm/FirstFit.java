@@ -15,6 +15,11 @@ public class FirstFit implements BPPAlgorithm {
 	 * Naam
 	 */
 	public static final String NAME = "First Fit";
+	
+	@Override
+	public String getName(){
+		return NAME;
+	}
 
 	@Override
 	/**
