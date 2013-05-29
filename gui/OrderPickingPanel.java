@@ -448,10 +448,9 @@ public class OrderPickingPanel extends JPanel implements Runnable, Warehouse {
 
 	@Override
 	public int getMaxLoad() {
-		// We stellen hier dat er maximaal LOAD_MAX producten op de fork van een
-		// robot
-		// kunnen kunnen.
-		return LOAD_MAX;
+		// Omdat we het terug brengen van producten anders behandellen, sturen
+		// we een oneindig aantal maximum producten
+		return WIDTH * HEIGHT;
 	}
 
 	@Override

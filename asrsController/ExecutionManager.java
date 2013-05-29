@@ -85,6 +85,7 @@ public class ExecutionManager {
 			int height, Boolean useDetectedSize) {
 
 		this.setMain(main);
+		this.order = order;
 		this.setBinManager(binManager);
 		this.warehouse = warehouse;
 		this.setBinPacking(binPacking);
