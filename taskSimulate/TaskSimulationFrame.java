@@ -13,6 +13,11 @@ import tspAlgorithm.TSPAlgorithm;
 import bppAlgorithm.BPPAlgorithm;
 import bppAlgorithm.Bin;
 
+/**
+ * De frame waarin de simulaties staan
+ * 
+ * @author Bas
+ */
 public class TaskSimulationFrame extends JFrame implements ActionListener {
 
 	private static final int NUMBER_ROBOTS = 2;
@@ -178,11 +183,12 @@ public class TaskSimulationFrame extends JFrame implements ActionListener {
 	 * @author Bas
 	 */
 	private void buildUI() {
-		GridBagConstraints c = new GridBagConstraints();
-		// natural height, maximum width
-		/**
-		 * Linker en rechterkant van het scherm
+		/*
+		 * Binnen het GridBagConstraint staan allerlei variabelen waarvan ik
+		 * niet goed kan uitleggen wat ze doen. Om dit te weten, zoek het
+		 * voorbeeld op oracle tutorials op.
 		 */
+		GridBagConstraints c = new GridBagConstraints();
 
 		// Opvullen selection Panel
 		c.fill = GridBagConstraints.HORIZONTAL;
@@ -232,7 +238,8 @@ public class TaskSimulationFrame extends JFrame implements ActionListener {
 		c.weightx = 0.5;
 		c.ipady = 400;
 		add(binPackingPanel = new BinPackingTaskSimulation(problems), c);
-
+		
+		//Action Listeners
 		nextBtnOrderPicker.addActionListener(this);
 		previousBtnOrderPicker.addActionListener(this);
 		nextBtnBinPacker.addActionListener(this);
@@ -257,83 +264,98 @@ public class TaskSimulationFrame extends JFrame implements ActionListener {
 			binPackingPanel.previousProblem();
 	}
 
+	/**
+	 * Thread om de TSP algoritmes op te lossen
+	 * 
+	 * @author Tim
+	 */
 	private class TSPThread implements Runnable {
 
+		/**
+		 * Het Traveling Salesman Probleem
+		 */
 		private TravelingSalesmanProblem travelingSalesmanProblem = null;
 
+		/**
+		 * De task voor de warehouse
+		 */
 		private WarehouseTask warehouseTask;
+		/**
+		 * Het ID van het problem
+		 */
 		private int problemId;
+		/**
+		 * Het tsp Algoritme
+		 */
 		private TSPAlgorithm tspAlgorithm;
 
+		/**
+		 * Of de berekening af is of niet
+		 */
 		private Boolean isDone = false;
-		
-		public TSPThread(WarehouseTask warehouseTask, int problemId, TSPAlgorithm tspAlgorithm) {
+
+		/**
+		 * Constructor
+		 * 
+		 * @param warehouseTask
+		 * @param problemId
+		 * @param tspAlgorithm
+		 */
+		public TSPThread(WarehouseTask warehouseTask, int problemId,
+				TSPAlgorithm tspAlgorithm) {
 			this.warehouseTask = warehouseTask;
 			this.problemId = problemId;
 			this.tspAlgorithm = tspAlgorithm;
 		}
 
-		//@Override
+		@Override
 		public void run() {
-			//Debug
-//			System.out.println("TSP Thread for problem " + problemId + " started");
-			
-			 // Lijst van de producten per robot
-			 ArrayList<ArrayList<Product>> problem = new
-			 ArrayList<ArrayList<Product>>();
-			
-			 // Lijst van alle producten
-			 ArrayList<Product> products = new ArrayList<Product>();
-			
-			 // Initializeren robots lijst
-			 for (int r = 0; r < NUMBER_ROBOTS; r++)
-			 problem.add(new ArrayList<Product>());
-			
-			 // Doorlopen van alle items
-			 for (int i = 0; i < warehouseTask.getNumberOfItems(problemId); i++) {
-			
-			 // Sla de locatie van de items op in een product
-			 products.add(new Product(new Location(warehouseTask
-			 .getCoordHorDigit(problemId, i), warehouseTask
-			 .getCoordVertDigit(problemId, i)), i));
-			
-			 }
-			
-			 // DEBUG
-			 System.out.println("Probleem: " + problemId + ", producten: " + products.size());
-			 // System.out.println("===========================");
-			 // System.out.println("PRINTING ALL PRODUCTS:");
-			 // for(Product pr : products)
-			 // System.out.println(pr);
-			 // System.out.println("===========================");
-			 // END DEBUG
-			
-			 // //Bereken nu de volgorde volgends het algoritme
-			 for (int r = 0; r < NUMBER_ROBOTS; r++) {
-			
-			 // Oplossen volgens algoritme
-			 problem.set(r, tspAlgorithm.calculateRoute(products, NUMBER_ROBOTS, r));
-			
-			 //Geef alles van dit probleem door aan task classe
-			 for (int i = 0; i < problem.get(r).size(); i++)
-			 warehouseTask.setOrder(problemId, problem.get(r).get(i).getId(), r, i);
-			
-			 }
-			
-			 travelingSalesmanProblem = new TravelingSalesmanProblem(problem);
-			
-			//We zijn klaar
-			isDone=true;
-			
-//			System.out.println("TSP Thread for problem " + problemId + " ended");
+
+			// Lijst van de producten per robot
+			ArrayList<ArrayList<Product>> problem = new ArrayList<ArrayList<Product>>();
+
+			// Lijst van alle producten
+			ArrayList<Product> products = new ArrayList<Product>();
+
+			// Initializeren robots lijst
+			for (int r = 0; r < NUMBER_ROBOTS; r++)
+				problem.add(new ArrayList<Product>());
+
+			// Doorlopen van alle items
+			for (int i = 0; i < warehouseTask.getNumberOfItems(problemId); i++) {
+
+				// Sla de locatie van de items op in een product
+				products.add(new Product(new Location(warehouseTask
+						.getCoordHorDigit(problemId, i), warehouseTask
+						.getCoordVertDigit(problemId, i)), i));
+
+			}
+
+			// //Bereken nu de volgorde volgends het algoritme
+			for (int r = 0; r < NUMBER_ROBOTS; r++) {
+
+				// Oplossen volgens algoritme
+				problem.set(r,
+						tspAlgorithm.calculateRoute(products, NUMBER_ROBOTS, r));
+
+				// Geef alles van dit probleem door aan task classe
+				for (int i = 0; i < problem.get(r).size(); i++)
+					warehouseTask.setOrder(problemId, problem.get(r).get(i)
+							.getId(), r, i);
+
+			}
+
+			travelingSalesmanProblem = new TravelingSalesmanProblem(problem);
+
+			// We zijn klaar
+			isDone = true;
 		}
 
 		public TravelingSalesmanProblem getResult() {
 			return travelingSalesmanProblem;
 		}
-		
-		public Boolean isDone()
-		{
+
+		public Boolean isDone() {
 			return isDone;
 		}
 	}

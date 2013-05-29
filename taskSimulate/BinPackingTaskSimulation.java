@@ -7,11 +7,25 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 
 import bppAlgorithm.Bin;
-
+/**
+ * De panel waarin de bin packing task simulatie wordt uitgevoerd.
+ * 
+ * @author Bas
+ */
 public class BinPackingTaskSimulation extends JPanel {
+	/**
+	 * De inspring van de text binnen de bin
+	 */
 	private static final int BIN_STRING_INDENT = 10;
+	/**
+	 * Lengte van de bins
+	 */
 	private static final int BIN_LENGTH = 300;
+	/**
+	 * Breedte van de bins
+	 */
 	private static final int BIN_WIDTH = 50;
+	
 	/**
 	 * Een ArrayList met daarin de problemen die moeten worden getekent
 	 */
@@ -21,12 +35,18 @@ public class BinPackingTaskSimulation extends JPanel {
 	 */
 	private int currentProblem = 0;
 
+	/**
+	 * Constructor
+	 * 
+	 * @param problems
+	 */
 	public BinPackingTaskSimulation(ArrayList<BinPackingProblem> problems) {
 		super();
 
 		this.problems = problems;
 	}
-
+	
+	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		/*

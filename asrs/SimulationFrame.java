@@ -5,8 +5,19 @@ import java.awt.event.*;
 
 import javax.swing.JFrame;
 
+/**
+ * De frame voor de simulaties
+ * 
+ * @author Bas
+ */
 public class SimulationFrame extends JFrame {
+	/**
+	 * Het panel voor het warenhuis
+	 */
 	private OrderPickingPanel warehousePanel;
+	/**
+	 * Het panel voor de bin packer
+	 */
 	private BinPackingPanel binPackingPanel;
 	
 	public SimulationFrame(BinPackingPanel binPackingPanel, OrderPickingPanel warehousePanel){
