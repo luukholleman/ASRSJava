@@ -164,22 +164,22 @@ public class ExecutionManager {
 	 */
 	public void pickedUpProduct(int robotId, byte color) {
 		// Als er daadwerkelijk producten op de fork staan
-		if (!robots[robotId].productsOnFork.isEmpty()) {
+		if (!robots[robotId].getProductsOnFork().isEmpty()) {
 
 			// Verander de status en waarschuw het tabel
-			robots[robotId].productsOnFork.get(
-					robots[robotId].productsOnFork.size() - 1).setStatus(
+			robots[robotId].getProductsOnFork().get(
+					robots[robotId].getProductsOnFork().size() - 1).setStatus(
 					"opgepakt");
 			getMain().productStatusUpdated(
-					robots[robotId].productsOnFork
-							.get(robots[robotId].productsOnFork.size() - 1));
+					robots[robotId].getProductsOnFork()
+							.get(robots[robotId].getProductsOnFork().size() - 1));
 
 			// Als de gescande kleur moet worden gebruikt als indicatie van de
 			// grootte, verander dan lokaal de grootte van het laatst opgepakte
 			// product op basis van de kleur.
 			if (useDetectedSize) {
-				robots[robotId].productsOnFork.get(
-						robots[robotId].productsOnFork.size() - 1).setSize(
+				robots[robotId].getProductsOnFork().get(
+						robots[robotId].getProductsOnFork().size() - 1).setSize(
 						getSizeFromColor(color));
 				// De gegeven kleur is door de robot gegeven
 			}
@@ -187,13 +187,15 @@ public class ExecutionManager {
 
 		// Als er nog een product op te halen is, en de fork is nog niet vol...
 		if (robots[robotId].hasNextProduct()
-				&& warehouse.getMaxLoad() > robots[robotId].getProducts()
+				&& warehouse.getMaxLoad() > robots[robotId].getProductsOnFork()
 						.size()) {
 			// Haal het volgende product op
 			retrieveNextProduct(robotId);
+			System.out.println("Sending robot " + robotId + " to retrieve a product.");
 		} else {
 			// Anders, breng de producten naar de binpacker.
 			warehouse.bringToBinPacker(robotId);
+			System.out.println("Returning robot to Bin Packer.");
 
 		}
 	}
@@ -222,9 +224,9 @@ public class ExecutionManager {
 	public void deliveredProduct(int robotId) {
 		// Sla eerst alle producten die de robot aflevert op voor de Bin packer,
 		// haal de producten daarna van de robot af.
-		bppProducts.addAll(robots[robotId].productsOnFork);
+		bppProducts.addAll(robots[robotId].getProductsOnFork());
 
-		robots[robotId].productsOnFork.clear();
+		robots[robotId].getProductsOnFork().clear();
 
 		// Als de robot producten heeft afgeleverd, stuur deze producten dan
 		// naar de Bin Packer

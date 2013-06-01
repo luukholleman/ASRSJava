@@ -13,24 +13,24 @@ public class WarehouseRobot {
 	 * soortgelijke robot kan worden gebruikt zonder dat ze tegelijkertijd
 	 * dezelfde informatie hebben
 	 */
-	public int id;
+	private int id;
 	/**
 	 * De locatie van de robot in het warenhuis
 	 */
-	public Location location;
+	private Location location;
 	/**
 	 * De pixels van de robot worden alleen gebruikt voor het tekenen in de
 	 * simulatie
 	 */
-	public Location pixels;
+	private Location pixels;
 	/**
 	 * De huidige bestemming van de robot
 	 */
-	public Location destination;
+	private Location destination;
 	/**
 	 * De lading van de robot in aantal producten
 	 */
-	public int load;
+	private int load;
 	/**
 	 * De ArrayList van alle producten die moeten worden opgehaald
 	 */
@@ -38,11 +38,11 @@ public class WarehouseRobot {
 	/**
 	 * De ArrayList van alle producten die zijn opgehaald
 	 */
-	public ArrayList<Product> productsOnFork;
+	private ArrayList<Product> productsOnFork;
 	/**
 	 * De boolean die aangeeft of de robot klaar is of niet.
 	 */
-	public boolean finished;
+	private boolean finished;
 
 	/**
 	 * Constructor voor de simulatie
@@ -52,17 +52,17 @@ public class WarehouseRobot {
 	 * @param id
 	 */
 	public WarehouseRobot(Location location, ArrayList<Product> products, int id) {
-		this.location = location;
+		this.setLocation(location);
 		
 		//De lading begint op 0
-		load = 0;
+		setLoad(0);
 		
 		//De fork is op het begin altijd leeg
-		productsOnFork = new ArrayList<Product>();
+		setProductsOnFork(new ArrayList<Product>());
 		
-		this.id = id;
+		this.setId(id);
 		this.setProducts(products);
-		finished = false;
+		setFinished(false);
 	}
 
 	/**
@@ -72,11 +72,11 @@ public class WarehouseRobot {
 	 * @param id
 	 */
 	public WarehouseRobot(Location location, int id) {
-		this.location = location;
-		pixels = location;
-		load = 0;
-		productsOnFork = new ArrayList<Product>();
-		this.id = id;
+		this.setLocation(location);
+		setPixels(location);
+		setLoad(0);
+		setProductsOnFork(new ArrayList<Product>());
+		this.setId(id);
 	}
 
 	/**
@@ -109,7 +109,7 @@ public class WarehouseRobot {
 	 * @author Bas
 	 */
 	public void pickUp(Product product) {
-		productsOnFork.add(product);
+		getProductsOnFork().add(product);
 	}
 
 	/**
@@ -125,5 +125,103 @@ public class WarehouseRobot {
 	 */
 	public void setProducts(ArrayList<Product> products) {
 		this.products = products;
+	}
+
+	/**
+	 * @return the productsOnFork
+	 */
+	public ArrayList<Product> getProductsOnFork() {
+		return productsOnFork;
+	}
+
+	/**
+	 * @param productsOnFork the productsOnFork to set
+	 */
+	public void setProductsOnFork(ArrayList<Product> productsOnFork) {
+		this.productsOnFork = productsOnFork;
+	}
+
+	/**
+	 * @return the load
+	 */
+	public int getLoad() {
+		return load;
+	}
+
+	/**
+	 * @param load the load to set
+	 */
+	public void setLoad(int load) {
+		this.load = load;
+	}
+
+	/**
+	 * @return the destination
+	 */
+	public Location getDestination() {
+		return destination;
+	}
+
+	/**
+	 * @param destination the destination to set
+	 */
+	public void setDestination(Location destination) {
+		this.destination = destination;
+	}
+
+	/**
+	 * @return the pixels
+	 */
+	public Location getPixels() {
+		return pixels;
+	}
+
+	/**
+	 * @param pixels the pixels to set
+	 */
+	public void setPixels(Location pixels) {
+		this.pixels = pixels;
+	}
+
+	/**
+	 * @return the location
+	 */
+	public Location getLocation() {
+		return location;
+	}
+
+	/**
+	 * @param location the location to set
+	 */
+	public void setLocation(Location location) {
+		this.location = location;
+	}
+
+	/**
+	 * @return the id
+	 */
+	public int getId() {
+		return id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	/**
+	 * @return the finished
+	 */
+	public boolean isFinished() {
+		return finished;
+	}
+
+	/**
+	 * @param finished the finished to set
+	 */
+	public void setFinished(boolean finished) {
+		this.finished = finished;
 	}
 }
